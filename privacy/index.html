@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy — Password Whisper</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="brand" href="../">
+        <span class="iris-dot" aria-hidden="true"></span>
+        <span>Password Whisper</span>
+      </a>
+      <nav aria-label="Primary">
+        <a href="../">Overview</a>
+        <a href="../support/">Support</a>
+        <a href="./">Privacy Policy</a>
+        <a href="../terms/">Terms of Use</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>Privacy Policy</h1>
+        <p class="lead">Effective Date: November 15, 2026 • Applies to Password Whisper (macOS, iOS, iPadOS, and Browser Extension)</p>
+      </section>
+
+      <section class="section">
+        <h2>1. Zero Data Collection (English)</h2>
+        <p>Password Whisper is built with a strict zero-knowledge architecture. We do not operate servers, user databases, analytics SDKs, or advertising trackers.</p>
+        <ul>
+          <li><strong>Vault Encryption:</strong> Your passwords, cards, notes, 2FA secrets, and redacted screenshots remain encrypted on your device using Argon2id and authenticated encryption.</li>
+          <li><strong>On-Device Vision Redaction:</strong> Login screenshot OCR and masking run 100% locally via Apple Vision on your Mac, iPhone, or iPad.</li>
+          <li><strong>Personal iCloud Sync:</strong> If enabled, encrypted vault records sync solely through your personal Apple iCloud (CloudKit) account (<code>iCloud.com.dvoineu.passwordwhisper.vault</code>).</li>
+          <li><strong>Breach Audit (k-Anonymity):</strong> When manually triggered, Password Whisper sends only a 5-character SHA-1 prefix over a cookie-less ephemeral HTTPS request to <code>api.pwnedpasswords.com</code>; full hashes and credentials never leave your device.</li>
+          <li><strong>Browser Extension:</strong> On macOS, the extension communicates exclusively over local Native Messaging (<code>stdio</code>) with your Mac app and stores only local UI preferences in <code>chrome.storage.local</code>.</li>
+          <li><strong>Purchases:</strong> Subscriptions and Lifetime unlocks are processed by Apple via StoreKit 2; we do not receive billing details.</li>
+        </ul>
+      </section>
+
+      <section class="section" lang="ru">
+        <h2>2. Политика конфиденциальности (Русский)</h2>
+        <p><strong>Password Whisper</strong> не собирает, не хранит на серверах разработчика и не передаёт третьим лицам ваши пароли, карты, документы, заметки, историю браузера или телеметрию.</p>
+        <ul>
+          <li><strong>Шифрование на устройстве:</strong> Сейф <code>.whispervault</code> шифруется локально с помощью Argon2id и AEAD. Мастер-пароль и ключи никогда не покидают устройство в пользу разработчика.</li>
+          <li><strong>Локальное маскирование снимков:</strong> Распознавание и скрытие полей на скриншотах входа выполняется полностью на устройстве средствами Apple Vision.</li>
+          <li><strong>Личный iCloud:</strong> Синхронизация зашифрованных данных идёт только через ваш личный аккаунт Apple iCloud (CloudKit).</li>
+          <li><strong>Проверка утечек (k-Anonymity):</strong> При ручной проверке на сервер <code>api.pwnedpasswords.com</code> в эфемерном запросе без cookies передаются только первые 5 символов SHA-1 хеша.</li>
+          <li><strong>Браузерное расширение:</strong> На macOS расширение общается с приложением только локально по Native Messaging (<code>stdio</code>) и не отправляет данные в сеть.</li>
+        </ul>
+        <p>По вопросам конфиденциальности пишите: <a href="mailto:dvoineu@gmail.com">dvoineu@gmail.com</a>.</p>
+      </section>
+    </main>
+
+    <footer>
+      <span>© 2026 Password Whisper</span>
+      <span><a href="../terms/">Terms of Use</a> • <a href="../support/">Support & FAQ</a></span>
+    </footer>
+  </div>
+</body>
+</html>
