@@ -28,7 +28,7 @@
       </section>
 
       <section class="section">
-        <h2>1. Zero Data Collection (English)</h2>
+        <h2>1. Your Vault and Optional Network Services (English)</h2>
         <p>Password Whisper is built with a strict zero-knowledge architecture. We do not operate servers, user databases, analytics SDKs, or advertising trackers.</p>
         <ul>
           <li><strong>Vault Encryption:</strong> Your passwords, cards, notes, 2FA secrets, and redacted screenshots remain encrypted on your device using Argon2id and authenticated encryption.</li>
@@ -40,8 +40,15 @@
         </ul>
       </section>
 
+      <section class="section">
+        <h2>Optional breach audit: network processing</h2>
+        <p>The HIBP service and its network providers receive your connection IP address and request metadata, including the app User-Agent. <a href="https://haveibeenpwned.com/privacy/">HIBP's privacy policy</a> allows operational/security logs potentially including IP addresses, headers, and submitted information to be retained for up to 31 days, and describes service performance metrics. The developer does not receive those logs. No advertising tracking is used.</p>
+        <p>HIBP says it does not store identifying information about the owner of a checked password; this does not rule out network metadata logging. Password Whisper sends only a five-character hash prefix, never your password or full hash. Do not run the optional breach audit if you wish to avoid this external request.</p>
+      </section>
+
       <section class="section" lang="ru">
         <h2>2. Политика конфиденциальности (Русский)</h2>
+        <p><strong>Дополнительная проверка утечек:</strong> сервис HIBP и его сетевые провайдеры видят IP-адрес соединения и заголовки, включая User-Agent приложения. <a href="https://haveibeenpwned.com/privacy/">Политика HIBP</a> допускает служебные журналы с IP, заголовками и переданной информацией со сроком хранения до 31 дня, а также показатели производительности сервиса. Разработчик эти журналы не получает. Приложение передаёт только пять символов префикса хеша, но не пароль и не полный хеш. HIBP не сохраняет идентифицирующую информацию о владельце пароля; это не исключает сетевые журналы. Не запускайте дополнительную проверку утечек, если хотите избежать внешнего запроса.</p>
         <p><strong>Password Whisper</strong> не собирает, не хранит на серверах разработчика и не передаёт третьим лицам ваши пароли, карты, документы, заметки, историю браузера или телеметрию.</p>
         <ul>
           <li><strong>Шифрование на устройстве:</strong> Сейф <code>.whispervault</code> шифруется локально с помощью Argon2id и AEAD. Мастер-пароль и ключи никогда не покидают устройство в пользу разработчика.</li>
@@ -50,7 +57,7 @@
           <li><strong>Проверка утечек (k-Anonymity):</strong> При ручной проверке на сервер <code>api.pwnedpasswords.com</code> в эфемерном запросе без cookies передаются только первые 5 символов SHA-1 хеша.</li>
           <li><strong>Браузерное расширение:</strong> На macOS расширение общается с приложением только локально по Native Messaging (<code>stdio</code>) и не отправляет данные в сеть.</li>
         </ul>
-        <p>По вопросам конфиденциальности пишите: <a href="mailto:dvoineu@gmail.com">dvoineu@gmail.com</a>.</p>
+        <p>По вопросам конфиденциальности пишите: <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a>.</p>
       </section>
     </main>
 
