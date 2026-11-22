@@ -24,40 +24,42 @@
     <main>
       <section class="hero">
         <h1>Privacy Policy</h1>
-        <p class="lead">Effective Date: November 15, 2026 • Applies to Password Whisper (macOS, iOS, iPadOS, and Browser Extension)</p>
+        <p class="lead">Updated November 23, 2026 • Applies to Password Whisper (macOS, iOS, iPadOS, and browser extensions)</p>
       </section>
 
       <section class="section">
         <h2>1. Your Vault and Optional Network Services (English)</h2>
-        <p>Password Whisper is built with a strict zero-knowledge architecture. We do not operate servers, user databases, analytics SDKs, or advertising trackers.</p>
+        <p>Your vault is encrypted on your device. The developer does not receive its contents or operate a user account database. Password Whisper uses no analytics SDKs or advertising trackers. The optional breach check uses the network services described below.</p>
         <ul>
           <li><strong>Vault Encryption:</strong> Your passwords, cards, notes, 2FA secrets, and redacted screenshots remain encrypted on your device using Argon2id and authenticated encryption.</li>
           <li><strong>On-Device Vision Redaction:</strong> Login screenshot OCR and masking run 100% locally via Apple Vision on your Mac, iPhone, or iPad.</li>
           <li><strong>Personal iCloud Sync:</strong> If enabled, encrypted vault records sync solely through your personal Apple iCloud (CloudKit) account (<code>iCloud.com.dvoineu.passwordwhisper.vault</code>).</li>
-          <li><strong>Breach Audit (k-Anonymity):</strong> When manually triggered, Password Whisper sends only a 5-character SHA-1 prefix over a cookie-less ephemeral HTTPS request to <code>api.pwnedpasswords.com</code>; full hashes and credentials never leave your device.</li>
-          <li><strong>Browser Extension:</strong> On macOS, the extension communicates exclusively over local Native Messaging (<code>stdio</code>) with your Mac app and stores only local UI preferences in <code>chrome.storage.local</code>.</li>
+          <li><strong>Breach Check:</strong> When you run the check, Password Whisper sends the first five characters of a password hash over HTTPS without cookies. Your device compares the results locally. Your password, full hash, username, and website are never sent.</li>
+          <li><strong>Browser Extensions:</strong> The bundled Safari extension communicates locally with Password Whisper. The companion extension for Chrome, Brave, Opera, and Firefox uses local Native Messaging on macOS and stores UI preferences in your browser.</li>
           <li><strong>Purchases:</strong> Subscriptions and Lifetime unlocks are processed by Apple via StoreKit 2; we do not receive billing details.</li>
         </ul>
       </section>
 
       <section class="section">
         <h2>Optional breach audit: network processing</h2>
-        <p>The HIBP service and its network providers receive your connection IP address and request metadata, including the app User-Agent. <a href="https://haveibeenpwned.com/privacy/">HIBP's privacy policy</a> allows operational/security logs potentially including IP addresses, headers, and submitted information to be retained for up to 31 days, and describes service performance metrics. The developer does not receive those logs. No advertising tracking is used.</p>
-        <p>HIBP says it does not store identifying information about the owner of a checked password; this does not rule out network metadata logging. Password Whisper sends only a five-character hash prefix, never your password or full hash. Do not run the optional breach audit if you wish to avoid this external request.</p>
+        <p>Version 1.3.0 sends the prefix to a proxy hosted on Cloudflare Workers. Cloudflare receives the connection IP address and request metadata when it handles the request. The proxy constructs a separate query to Have I Been Pwned (HIBP) using the prefix, requests a padded response, and does not copy the app's request headers. The proxy does not write request logs. Cloudflare may process network metadata under its <a href="https://www.cloudflare.com/privacypolicy/">privacy policy</a>.</p>
+        <p>Earlier versions may query HIBP directly. In that case, HIBP and its network providers receive the connection IP address and request metadata, including the app's User-Agent. <a href="https://haveibeenpwned.com/privacy/">HIBP's privacy policy</a> describes operational and security logs that may include IP addresses, headers, and submitted information and may be retained for up to 31 days. The developer does not receive HIBP logs or use this data for advertising.</p>
+        <p>The app only makes these requests when you run a breach check. You can avoid future requests by skipping the check. For privacy questions or deletion requests, contact <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a>.</p>
       </section>
 
       <section class="section" lang="ru">
         <h2>2. Политика конфиденциальности (Русский)</h2>
-        <p><strong>Дополнительная проверка утечек:</strong> сервис HIBP и его сетевые провайдеры видят IP-адрес соединения и заголовки, включая User-Agent приложения. <a href="https://haveibeenpwned.com/privacy/">Политика HIBP</a> допускает служебные журналы с IP, заголовками и переданной информацией со сроком хранения до 31 дня, а также показатели производительности сервиса. Разработчик эти журналы не получает. Приложение передаёт только пять символов префикса хеша, но не пароль и не полный хеш. HIBP не сохраняет идентифицирующую информацию о владельце пароля; это не исключает сетевые журналы. Не запускайте дополнительную проверку утечек, если хотите избежать внешнего запроса.</p>
-        <p><strong>Password Whisper</strong> не собирает, не хранит на серверах разработчика и не передаёт третьим лицам ваши пароли, карты, документы, заметки, историю браузера или телеметрию.</p>
+        <p><strong>Проверка паролей на утечки:</strong> при запуске проверки Password Whisper передаёт первые пять символов хеша пароля по HTTPS без файлов cookie. Сравнение выполняется на устройстве. Приложение не отправляет пароль, полный хеш, логин или адрес сайта.</p>
+        <p>В версии 1.3.0 префикс передаётся прокси на Cloudflare Workers. Cloudflare получает IP-адрес соединения и метаданные запроса при его обработке. Прокси создаёт отдельный запрос к Have I Been Pwned (HIBP) по этому префиксу, запрашивает ответ с дополнением и не копирует заголовки запроса приложения. Прокси не записывает журналы запросов. Cloudflare может обрабатывать сетевые метаданные согласно своей <a href="https://www.cloudflare.com/privacypolicy/">политике конфиденциальности</a>.</p>
+        <p>Ранние версии могут обращаться к HIBP напрямую. В этом случае HIBP и его сетевые провайдеры получают IP-адрес соединения и метаданные запроса, включая User-Agent приложения. <a href="https://haveibeenpwned.com/privacy/">Политика HIBP</a> описывает служебные журналы и журналы безопасности, которые могут содержать IP-адреса, заголовки и переданную информацию и храниться до 31 дня. Разработчик не получает журналы HIBP и не использует эти данные для рекламы. Чтобы избежать будущих запросов, не запускайте проверку утечек.</p>
+        <p>Сейф <strong>Password Whisper</strong> зашифрован на устройстве. Разработчик не получает содержимое сейфа, историю браузера или телеметрию. У приложения нет базы пользовательских аккаунтов, средств аналитики и рекламных трекеров.</p>
         <ul>
           <li><strong>Шифрование на устройстве:</strong> Сейф <code>.whispervault</code> шифруется локально с помощью Argon2id и AEAD. Мастер-пароль и ключи никогда не покидают устройство в пользу разработчика.</li>
           <li><strong>Локальное маскирование снимков:</strong> Распознавание и скрытие полей на скриншотах входа выполняется полностью на устройстве средствами Apple Vision.</li>
           <li><strong>Личный iCloud:</strong> Синхронизация зашифрованных данных идёт только через ваш личный аккаунт Apple iCloud (CloudKit).</li>
-          <li><strong>Проверка утечек (k-Anonymity):</strong> При ручной проверке на сервер <code>api.pwnedpasswords.com</code> в эфемерном запросе без cookies передаются только первые 5 символов SHA-1 хеша.</li>
-          <li><strong>Браузерное расширение:</strong> На macOS расширение общается с приложением только локально по Native Messaging (<code>stdio</code>) и не отправляет данные в сеть.</li>
+          <li><strong>Расширения браузеров:</strong> Встроенное расширение Safari взаимодействует с приложением локально. Расширение для Chrome, Brave, Opera и Firefox взаимодействует с приложением через локальный канал Native Messaging на macOS и хранит настройки интерфейса в браузере.</li>
         </ul>
-        <p>По вопросам конфиденциальности пишите: <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a>.</p>
+        <p>По вопросам конфиденциальности и удаления данных пишите на <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a>.</p>
       </section>
     </main>
 
