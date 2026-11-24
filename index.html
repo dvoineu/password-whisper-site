@@ -1,72 +1,1356 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-title-en="Password Whisper 1.3 — Visual Zero-Knowledge Password Manager" data-title-ru="Password Whisper 1.3 — Визуальный Zero-Knowledge менеджер паролей">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Password Whisper — Visual Zero-Knowledge Password Manager</title>
+  <meta name="color-scheme" content="light dark">
+  <script>
+    try {
+      var t = localStorage.getItem('pw-site-theme');
+      var m = document.querySelector('meta[name="color-scheme"]');
+      if (t === 'night' || t === 'dusk') { m.content = 'dark'; document.documentElement.dataset.sentinelTheme = t; }
+      else if (t === 'day') { m.content = 'light'; document.documentElement.dataset.sentinelTheme = 'day'; }
+      var l = localStorage.getItem('pw-site-lang');
+      document.documentElement.dataset.uiLang = (l === 'ru' || l === 'en') ? l : ((navigator.language || '').toLowerCase().startsWith('ru') ? 'ru' : 'en');
+    } catch (e) {}
+  </script>
+  <title>Password Whisper 1.3 — Visual Zero-Knowledge Password Manager</title>
+  <meta name="description" content="Password Whisper v1.3.0 for macOS, iOS, and iPadOS. Visual login context with on-device Vision OCR masking, Passkeys, 2FA QR scanner, Safari/Chrome/Firefox extensions, and personal iCloud E2EE sync with zero developer servers.">
+  <link rel="icon" type="image/svg+xml" href="./assets/sentinel-iris.svg">
   <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
 </head>
 <body>
-  <div class="wrap">
-    <header>
+  <a class="skip-link" href="#main-content">
+    <span data-lang="en">Skip to main content</span>
+    <span data-lang="ru">Перейти к основному содержимому</span>
+  </a>
+
+  <!-- Sticky Glass Navigation -->
+  <header class="site-header">
+    <div class="container header-inner">
       <a class="brand" href="./">
-        <span class="iris-dot" aria-hidden="true"></span>
+        <img class="brand-mark" src="./assets/sentinel-iris.svg" alt="" width="30" height="30">
         <span>Password Whisper</span>
+        <span class="version-pill">v1.3.0</span>
       </a>
-      <nav aria-label="Primary">
-        <a href="./">Overview</a>
-        <a href="./support/">Support</a>
-        <a href="./privacy/">Privacy Policy</a>
-        <a href="./terms/">Terms of Use</a>
-      </nav>
-    </header>
 
-    <main>
-      <section class="hero">
-        <div class="badges">
-          <span class="badge">macOS • iOS • iPadOS</span>
-          <span class="badge">Zero-Knowledge Argon2id + AEAD</span>
-          <span class="badge">Personal iCloud Sync</span>
-        </div>
-        <h1>Password Whisper — Visual Zero-Knowledge Vault</h1>
-        <p class="lead">
-          Verify every login visually with on-device redacted login screenshots, Touch ID / Face ID unlock, 2FA TOTP codes, and browser autofill across Mac, iPhone, and iPad.
-        </p>
-        <p class="lead" lang="ru">
-          Визуальный менеджер паролей без сторонних серверов: узнавайте нужный аккаунт по замаскированному скриншоту окна входа (Apple Vision OCR работает полностью на устройстве) и синхронизируйте сейф только через личный Apple iCloud.
-        </p>
-      </section>
-
-      <section class="grid">
-        <article class="card">
-          <h2>Visual Login Context</h2>
-          <p>Attach a window capture or screenshot with on-device Vision OCR Smart Redaction before encrypting it inside your vault.</p>
-        </article>
-        <article class="card">
-          <h2>Zero-Knowledge Storage</h2>
-          <p>No developer servers, no analytics, and no tracking. Your vault syncs only via your personal Apple iCloud (CloudKit) container.</p>
-        </article>
-        <article class="card">
-          <h2>Safari & Browser Extensions</h2>
-          <p>System AutoFill on iOS/macOS plus local Native Messaging for Chrome, Brave, Opera, and Mozilla Firefox on Mac.</p>
-        </article>
-      </section>
-
-      <section class="section">
-        <h2>Pricing & Apple Family Sharing</h2>
-        <p class="lead">Free tier includes up to 25 vault items and 5 visual screenshots, with permanent read access and CSV export forever.</p>
-        <ul>
-          <li><strong>Password Whisper Pro (Monthly):</strong> $1.99/month</li>
-          <li><strong>Password Whisper Pro (Yearly):</strong> $19.99/year with a 14-day free trial</li>
-          <li><strong>Password Whisper Lifetime:</strong> $59.99 one-time purchase</li>
+      <nav aria-label="Primary navigation">
+        <ul class="nav-links">
+          <li><a href="#screenshots"><span data-lang="en">Screenshots</span><span data-lang="ru">Скриншоты</span></a></li>
+          <li><a href="#tutorial"><span data-lang="en">Tutorial</span><span data-lang="ru">Как начать</span></a></li>
+          <li><a href="#security"><span data-lang="en">Security</span><span data-lang="ru">Защита</span></a></li>
+          <li><a href="#pricing"><span data-lang="en">Pricing</span><span data-lang="ru">Тарифы</span></a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="./support/"><span data-lang="en">Support</span><span data-lang="ru">Поддержка</span></a></li>
         </ul>
-      </section>
-    </main>
+      </nav>
 
-    <footer>
-      <span>© 2026 Password Whisper</span>
-      <span><a href="./terms/">Terms of Use</a> • Contact: <a href="mailto:dvoineu@gmail.com">dvoineu@gmail.com</a></span>
-    </footer>
+      <div class="header-controls">
+        <div class="seg-control" role="group" aria-label="Language">
+          <button type="button" class="seg-btn" data-lang-choice="ru" aria-pressed="false">RU</button>
+          <button type="button" class="seg-btn" data-lang-choice="en" aria-pressed="true">EN</button>
+        </div>
+
+        <button type="button" class="btn btn--soft theme-popover-btn" popovertarget="theme-popover" aria-label="Appearance theme" title="Theme">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M8 2a6 6 0 0 1 0 12V2Z" fill="currentColor"/>
+          </svg>
+        </button>
+
+        <a class="btn btn--primary btn--sm header-cta" href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">
+          <span data-lang="en">App Store</span>
+          <span data-lang="ru">App Store</span>
+        </a>
+
+        <button type="button" id="mobile-menu-open" class="btn btn--soft mobile-menu-btn" aria-label="Open menu">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M2.5 4.5h13M2.5 9h13M2.5 13.5h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="theme-popover" class="theme-popover" popover>
+    <div class="theme-popover-list" role="group" aria-label="Color theme">
+      <button type="button" class="seg-btn" data-theme-choice="system" aria-pressed="true">
+        <span><span data-lang="en">Auto (System)</span><span data-lang="ru">Авто (система)</span></span>
+        <span class="theme-swatch" style="background: linear-gradient(135deg, #10131a 50%, #f3efff 50%);"></span>
+      </button>
+      <button type="button" class="seg-btn" data-theme-choice="night" aria-pressed="false">
+        <span><span data-lang="en">Night</span><span data-lang="ru">Ночь</span></span>
+        <span class="theme-swatch" style="background: #10131a;"></span>
+      </button>
+      <button type="button" class="seg-btn" data-theme-choice="dusk" aria-pressed="false">
+        <span><span data-lang="en">Dusk</span><span data-lang="ru">Сумерки</span></span>
+        <span class="theme-swatch" style="background: linear-gradient(160deg, #744a8b, #2f3378);"></span>
+      </button>
+      <button type="button" class="seg-btn" data-theme-choice="day" aria-pressed="false">
+        <span><span data-lang="en">Day · Pearl</span><span data-lang="ru">День · Перламутр</span></span>
+        <span class="theme-swatch" style="background: linear-gradient(160deg, #f3efff, #e8f9f5);"></span>
+      </button>
+    </div>
   </div>
+
+  <main id="main-content">
+    <!-- =====================================================================
+         HERO SECTION + AUTHENTIC 9-BLADE OPTICAL IRIS ANIMATION
+         ===================================================================== -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <div class="hero-pills">
+              <span class="pill pill--accent">
+                <span data-lang="en">v1.3.0 Live · iOS 11 · macOS 12</span>
+                <span data-lang="ru">Версия 1.3.0 · iOS b11 · macOS b12</span>
+              </span>
+              <span class="pill">
+                <span data-lang="en">Extensions v1.3.1 · Safari, Chrome &amp; Firefox</span>
+                <span data-lang="ru">Расширения 1.3.1 · Safari, Chrome и Firefox</span>
+              </span>
+            </div>
+
+            <h1 class="hero-title">
+              <span data-lang="en">Recognize the right login at a glance. Keep every key yours.</span>
+              <span data-lang="ru">Узнавайте нужный вход взглядом. Храните ключи только у себя.</span>
+            </h1>
+
+            <p class="hero-subtitle">
+              <span data-lang="en">Password Whisper is a native visual zero-knowledge vault for Mac, iPhone, and iPad. Attach on-device redacted login screenshots, sign in with Passkeys and 2FA codes, and sync solely through your personal Apple iCloud — with zero developer servers.</span>
+              <span data-lang="ru">Нативный визуальный менеджер паролей для Mac, iPhone и iPad. Прикрепляйте замаскированные снимки экранов входа, входите по Passkeys и кодам 2FA и синхронизируйте сейф только через ваш личный Apple iCloud — без серверов разработчика.</span>
+            </p>
+
+            <div class="hero-actions">
+              <a class="btn btn--primary btn--lg" href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">
+                <span data-lang="en">Download on the App Store</span>
+                <span data-lang="ru">Скачать в App Store</span>
+              </a>
+              <a class="btn btn--soft btn--lg" href="#tutorial">
+                <span data-lang="en">3-Minute Quick Start</span>
+                <span data-lang="ru">Как начать за 3 минуты</span>
+              </a>
+            </div>
+
+            <div class="store-meta-row">
+              <span>
+                <span data-lang="en">Universal Purchase: macOS 15+ · iOS 18+ · iPadOS 18+</span>
+                <span data-lang="ru">Единая покупка: macOS 15+ · iOS 18+ · iPadOS 18+</span>
+              </span>
+              <span>·</span>
+              <a href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">
+                <span data-lang="en">Safari Extension (in App Store)</span>
+                <span data-lang="ru">Расширение Safari (в App Store)</span>
+              </a>
+              <span>·</span>
+              <a href="https://chromewebstore.google.com/detail/olagmnnpoogamifoblpkehbofidliled" target="_blank" rel="noopener">
+                <span data-lang="en">Chrome Web Store v1.3.1</span>
+                <span data-lang="ru">Расширение Chrome v1.3.1</span>
+              </a>
+              <span>·</span>
+              <a href="https://addons.mozilla.org/en-US/firefox/addon/password-whisper-visual-passwo/" target="_blank" rel="noopener">
+                <span data-lang="en">Firefox AMO v1.3.1</span>
+                <span data-lang="ru">Firefox AMO v1.3.1</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Interactive 9-Blade Optical Diaphragm (ported from SentinelIrisRenderer.swift) -->
+          <div class="iris-stage">
+            <div class="iris-canvas-wrap">
+              <canvas
+                id="sentinel-iris-canvas"
+                width="310"
+                height="310"
+                role="img"
+                aria-label="Interactive 9-blade optical iris diaphragm emblem of Password Whisper"
+              ></canvas>
+            </div>
+
+            <div class="iris-stops" role="group" aria-label="Optical aperture stops">
+              <button type="button" class="iris-stop-btn" data-stop="0" aria-pressed="false">f/22</button>
+              <button type="button" class="iris-stop-btn" data-stop="1" aria-pressed="false">f/16</button>
+              <button type="button" class="iris-stop-btn" data-stop="2" aria-pressed="false">f/11</button>
+              <button type="button" class="iris-stop-btn" data-stop="3" aria-pressed="true">f/8</button>
+              <button type="button" class="iris-stop-btn" data-stop="4" aria-pressed="false">f/5.6</button>
+              <button type="button" class="iris-stop-btn" data-stop="5" aria-pressed="false">f/4</button>
+              <button type="button" class="iris-stop-btn" data-stop="6" aria-pressed="false">f/2.8</button>
+            </div>
+
+            <div class="iris-readout">
+              <div>
+                <div class="iris-readout-stop" id="iris-stop-label">f/8</div>
+                <div class="iris-readout-title" id="iris-stop-title">AutoFill &amp; Passkeys</div>
+                <div class="iris-readout-desc" id="iris-stop-desc">System-wide autofill for passwords, 2FA TOTP codes, and passkeys on iPhone, iPad, and Mac.</div>
+              </div>
+              <button type="button" id="iris-replay-btn" class="btn btn--ghost btn--sm">
+                <span data-lang="en">Replay intro</span>
+                <span data-lang="ru">Повторить</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Real App Showcase (LCP high priority) -->
+        <div class="hero-showcase">
+          <button
+            type="button"
+            class="showcase-mac-frame"
+            data-lightbox-group="hero"
+            data-title-en="Password Whisper 1.3 for macOS — Visual Login Context & Live 2FA"
+            data-title-ru="Password Whisper 1.3 для macOS — Визуальный контекст входа и коды 2FA"
+          >
+            <img
+              src="./assets/screenshots/en/macos-01-workspace.webp"
+              data-shot-prefix="./assets/screenshots/"
+              data-shot-file="macos-01-workspace.webp"
+              data-alt-en="Password Whisper 1.3 macOS workspace showing encrypted vault sidebar, item list, redacted login screenshot preview, password strength estimate, and live TOTP 2FA code"
+              data-alt-ru="Рабочее пространство Password Whisper 1.3 для macOS: категории сейфа, карточки записей, замаскированный снимок экрана входа и живой код 2FA"
+              alt="Password Whisper 1.3 macOS workspace showing encrypted vault and redacted login screenshot preview"
+              width="1440"
+              height="900"
+              fetchpriority="high"
+            >
+          </button>
+
+          <button
+            type="button"
+            class="showcase-iphone-float"
+            data-lightbox-group="hero"
+            data-title-en="Password Whisper 1.3 for iPhone — New Bottom Tab Bar"
+            data-title-ru="Password Whisper 1.3 для iPhone — Новая панель вкладок"
+          >
+            <img
+              src="./assets/screenshots/en/iphone-01-vault.webp"
+              data-shot-prefix="./assets/screenshots/"
+              data-shot-file="iphone-01-vault.webp"
+              data-alt-en="Password Whisper 1.3 iPhone vault with instant search, filter chips, visual thumbnails, and bottom tab bar"
+              data-alt-ru="Сейф Password Whisper 1.3 на iPhone с быстрым поиском, фильтрами, миниатюрами снимков и новой панелью вкладок"
+              alt="Password Whisper 1.3 iPhone vault with bottom tab bar"
+              width="660"
+              height="1434"
+            >
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         WHAT'S NEW IN v1.3.0 & EXTENSION v1.3.1
+         ===================================================================== -->
+    <section id="whats-new" class="section-block reveal">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span>RELEASE 1.3.0 · EXTENSION 1.3.1 · NOVEMBER 2026</span></p>
+          <h2 class="section-title">
+            <span data-lang="en">What's new in Password Whisper 1.3</span>
+            <span data-lang="ru">Что нового в Password Whisper 1.3</span>
+          </h2>
+          <p class="section-lead">
+            <span data-lang="en">Published across the App Store (iOS build 11, macOS build 12), Chrome Web Store (v1.3.1), and Firefox Add-ons (v1.3.1).</span>
+            <span data-lang="ru">Уже доступно в App Store (iOS build 11, macOS build 12), Chrome Web Store (v1.3.1) и каталоге дополнений Firefox (v1.3.1).</span>
+          </p>
+        </div>
+
+        <div class="release-strip">
+          <article class="card">
+            <span class="card-tag">Passkeys</span>
+            <h3>
+              <span data-lang="en">Create &amp; sign in with Passkeys</span>
+              <span data-lang="ru">Создание и вход по Passkeys</span>
+            </h3>
+            <p>
+              <span data-lang="en">Register and authenticate passwordless passkeys natively inside Password Whisper AutoFill across iPhone, iPad, and Mac — stored encrypted inside your vault.</span>
+              <span data-lang="ru">Создавайте и используйте ключи доступа Passkeys прямо через системное автозаполнение Password Whisper на iPhone, iPad и Mac — ключи шифруются внутри вашего сейфа.</span>
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="card-tag">Safari Extension</span>
+            <h3>
+              <span data-lang="en">Bundled Safari Web Extension (iOS &amp; Mac)</span>
+              <span data-lang="ru">Встроенное расширение для Safari</span>
+            </h3>
+            <p>
+              <span data-lang="en">Open &amp; Fill straight from the page with an in-field icon, visual login card preview, and a touch-friendly bottom sheet on iPhone that never interrupts typing. Included inside the <a href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">App Store app</a>.</span>
+              <span data-lang="ru">Открывайте и заполняйте логины прямо со страницы, просматривайте снимок входа в окне расширения и пользуйтесь удобной нижней панелью в Safari на iPhone. Встроено в <a href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">приложение из App Store</a>.</span>
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="card-tag">2FA QR Scanner</span>
+            <h3>
+              <span data-lang="en">Scan 2FA QR codes in one tap</span>
+              <span data-lang="ru">Сканер QR-кодов 2FA / TOTP</span>
+            </h3>
+            <p>
+              <span data-lang="en">Point your camera locally to attach TOTP verification codes to any account. Live 6-digit codes appear right in AutoFill and your item inspector.</span>
+              <span data-lang="ru">Наведите камеру, чтобы прикрепить коды двухфакторной аутентификации к записи. Живые 6-значные коды сразу доступны в инспекторе и системном автозаполнении.</span>
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="card-tag card-tag--amber">UX Upgrade</span>
+            <h3>
+              <span data-lang="en">iPhone Tab Bar &amp; Embedded macOS Touch ID</span>
+              <span data-lang="ru">Панель вкладок iPhone и встроенный Touch ID</span>
+            </h3>
+            <p>
+              <span data-lang="en">Switch instantly between Vault, Overview, Generator, and Settings on iPhone. On Mac, unlock via embedded Touch ID without an extra modal popup.</span>
+              <span data-lang="ru">Мгновенно переключайтесь между Сейфом, Обзором, Генератором и Настройками на iPhone. На Mac разблокировка по Touch ID встроена прямо в экран входа.</span>
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="card-tag">iCloud E2EE</span>
+            <h3>
+              <span data-lang="en">Per-vault iCloud sync &amp; seamless restore</span>
+              <span data-lang="ru">По-сейфовый iCloud и быстрое восстановление</span>
+            </h3>
+            <p>
+              <span data-lang="en">Turn encrypted CloudKit sync on or off per vault, and restore any synced vault on a new device using your master password or Recovery Key.</span>
+              <span data-lang="ru">Включайте сквозную синхронизацию CloudKit для отдельных сейфов и восстанавливайте их на новом устройстве с помощью мастер-пароля или Recovery Key.</span>
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="card-tag card-tag--warn">Zero-Log Proxy</span>
+            <h3>
+              <span data-lang="en">Privacy-preserving HIBP breach check &amp; Extension 1.3.1</span>
+              <span data-lang="ru">Zero-Log прокси утечек и расширение 1.3.1</span>
+            </h3>
+            <p>
+              <span data-lang="en">Optional breach checks now route 5-char hash prefixes through a stateless zero-log Cloudflare Workers proxy. Desktop extension 1.3.1 only offers password generation on new-password fields.</span>
+              <span data-lang="ru">Проверка утечек идёт через stateless-прокси без журналов запросов. Настольное расширение 1.3.1 предлагает генерацию только в полях нового пароля, не мешая обычному входу.</span>
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         VISUAL CONTEXT FIRST + INTERACTIVE SMART REDACTION STUDIO DEMO
+         ===================================================================== -->
+    <section id="visual-context" class="section-block reveal">
+      <div class="container">
+        <div class="redaction-grid">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-dot"></span><span>VISUAL CONTEXT FIRST</span></p>
+            <h2 class="section-title">
+              <span data-lang="en">Never confuse similar portals again</span>
+              <span data-lang="ru">Больше не путайте похожие личные кабинеты</span>
+            </h2>
+            <p class="section-lead">
+              <span data-lang="en">Three Cloudflare dashboards, two router consoles, staging and production admin panels — text titles look identical. Password Whisper pairs your credentials with a redacted snapshot of the actual login screen.</span>
+              <span data-lang="ru">Три облачные панели, два роутера, стейджинг и продакшн — по названию записи их легко перепутать. Password Whisper показывает замаскированный снимок реального экрана входа прямо перед подстановкой пароля.</span>
+            </p>
+
+            <ul class="feature-bullets">
+              <li>
+                <span class="bullet-icon" aria-hidden="true">1</span>
+                <span>
+                  <span data-lang="en"><strong>On-device Apple Vision OCR:</strong> detects emails, passwords, tokens, and numbers locally before saving — zero cloud image processing.</span>
+                  <span data-lang="ru"><strong>Apple Vision OCR на устройстве:</strong> локально находит email, пароли, токены и цифры на снимке — изображения никуда не отправляются.</span>
+                </span>
+              </li>
+              <li>
+                <span class="bullet-icon" aria-hidden="true">2</span>
+                <span>
+                  <span data-lang="en"><strong>Irreversible Pixel Burn-in + HEIC in RAM:</strong> masks are baked into pixels, EXIF/GPS metadata is stripped, and each snapshot compresses to ~50–90 KB encrypted AES-256-GCM.</span>
+                  <span data-lang="ru"><strong>Необратимое запекание масок в пиксели:</strong> EXIF и GPS удаляются, снимок сжимается в HEIC (~50–90 КБ) и расшифровывается только в оперативной памяти.</span>
+                </span>
+              </li>
+              <li>
+                <span class="bullet-icon" aria-hidden="true">3</span>
+                <span>
+                  <span data-lang="en"><strong>Capture in two clicks or two taps:</strong> use window capture or <kbd class="kbd">⌘V</kbd> on Mac, or <em>Share → Password Whisper</em> on iPhone and iPad.</span>
+                  <span data-lang="ru"><strong>Добавление за 2 шага:</strong> захват окна или <kbd class="kbd">⌘V</kbd> на Mac, либо меню <em>Поделиться → Password Whisper</em> на iPhone и iPad.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Interactive Smart Redaction Playground -->
+          <div class="studio-demo" aria-label="Interactive Smart Redaction Studio demo">
+            <div class="studio-toolbar">
+              <div class="studio-dots" aria-hidden="true">
+                <span class="studio-dot"></span>
+                <span class="studio-dot"></span>
+                <span class="studio-dot"></span>
+              </div>
+              <span class="mono-num" style="font-size: 11.5px; color: var(--ink-muted);">
+                <span data-lang="en">SCREENSHOT STUDIO · CLICK ANY FIELD</span>
+                <span data-lang="ru">СТУДИЯ СКРИНШОТОВ · НАЖМИТЕ НА ПОЛЕ</span>
+              </span>
+              <button type="button" id="redaction-toggle-all" class="btn btn--soft btn--sm">Peek under masks</button>
+            </div>
+
+            <div class="studio-canvas">
+              <div class="mock-login-card">
+                <div class="mock-login-url">https://one.dash.cloudflare.com/northstar/sso</div>
+                <p class="mock-login-title">
+                  <span data-lang="en">Corporate SSO Sign-In</span>
+                  <span data-lang="ru">Корпоративный вход SSO</span>
+                </p>
+                <p class="mock-login-sub">
+                  <span data-lang="en">Zero Trust Portal · Hardware MFA</span>
+                  <span data-lang="ru">Портал Zero Trust · Аппаратный MFA</span>
+                </p>
+
+                <button type="button" class="redact-field" data-masked="true" aria-pressed="true">
+                  <span class="redact-field-label">WORK EMAIL</span>
+                  <span>alex.mercer@northstar.dev</span>
+                  <span class="redact-mask"><span>VISION OCR · EMAIL</span><span>MASKED</span></span>
+                </button>
+
+                <button type="button" class="redact-field" data-masked="true" aria-pressed="true">
+                  <span class="redact-field-label">PASSWORD</span>
+                  <span>v9!kQ#2mP8zR$4tL0wX7</span>
+                  <span class="redact-mask"><span>PIXEL BURN-IN · SECRET</span><span>MASKED</span></span>
+                </button>
+
+                <button type="button" class="redact-field" data-masked="true" aria-pressed="true">
+                  <span class="redact-field-label">2FA TOKEN</span>
+                  <span>529 813 · TOTP</span>
+                  <span class="redact-mask"><span>VISION OCR · 2FA</span><span>MASKED</span></span>
+                </button>
+              </div>
+            </div>
+
+            <div class="studio-statusbar">
+              <span id="redaction-status">Masks active: 3 of 3 · EXIF/GPS stripped · ~54 KB HEIC in RAM</span>
+              <span style="color: var(--safe);">AES-256-GCM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         MULTI-PLATFORM REAL v1.3.0 SCREENSHOT GALLERY (ACCESSIBLE TABS + LIGHTBOX)
+         ===================================================================== -->
+    <section id="screenshots" class="section-block reveal">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span>NATIVE INTERFACES · CLICK TO INSPECT</span></p>
+          <h2 class="section-title">
+            <span data-lang="en">Designed natively for every Apple screen &amp; browser</span>
+            <span data-lang="ru">Нативный интерфейс на каждом экране и в браузерах</span>
+          </h2>
+          <p class="section-lead">
+            <span data-lang="en">Explore real Password Whisper v1.3.0 screens. Click any image to open the full-resolution viewer — and switch RU/EN at the top to see localized screenshots.</span>
+            <span data-lang="ru">Реальные экраны Password Whisper v1.3.0. Нажмите на любой снимок, чтобы открыть его в полном размере — при переключении языка RU/EN скриншоты тоже меняются.</span>
+          </p>
+        </div>
+
+        <div class="tabs-wrapper" data-tabs>
+          <div class="tablist-scroller" role="tablist" focusgroup="tablist nomemory" aria-label="Platform screenshots">
+            <button type="button" class="tab-btn" role="tab" id="gal-tab-mac" aria-selected="true" focusgroupstart tabindex="0">
+              <span>macOS</span><span class="version-pill">1.3.0</span>
+            </button>
+            <button type="button" class="tab-btn" role="tab" id="gal-tab-iphone" aria-selected="false" tabindex="-1">
+              <span>iPhone</span><span class="version-pill">1.3.0</span>
+            </button>
+            <button type="button" class="tab-btn" role="tab" id="gal-tab-ipad" aria-selected="false" tabindex="-1">
+              <span>iPad</span><span class="version-pill">1.3.0</span>
+            </button>
+            <button type="button" class="tab-btn" role="tab" id="gal-tab-browser" aria-selected="false" tabindex="-1">
+              <span data-lang="en">Browsers</span><span data-lang="ru">Браузеры</span><span class="version-pill">1.3.1</span>
+            </button>
+          </div>
+
+          <div class="tab-panels-stack">
+            <!-- macOS Panel -->
+            <div role="tabpanel" aria-labelledby="gal-tab-mac">
+              <div class="tab-panel-inner">
+                <div class="gallery-grid">
+                  <article class="shot-card">
+                    <button type="button" class="shot-trigger" data-lightbox-group="gallery-mac">
+                      <img src="./assets/screenshots/en/macos-01-workspace.webp" data-shot-prefix="./assets/screenshots/" data-shot-file="macos-01-workspace.webp" data-alt-en="macOS vault workspace with visual context preview" data-alt-ru="Рабочее пространство сейфа на macOS с визуальным контекстом" alt="macOS vault workspace" width="1440" height="900" loading="lazy">
+                    </button>
+                    <div class="shot-caption">
+                      <h3><span data-lang="en">Vault Workspace &amp; Visual Inspector</span><span data-lang="ru">Сейф и визуальный инспектор</span></h3>
+                      <p><span data-lang="en">Categories, live TOTP countdown, password crack-time estimate, and redacted login preview.</span><span data-lang="ru">Категории, таймер 2FA, оценка времени подбора пароля и замаскированный снимок входа.</span></p>
+                    </div>
+                  </article>
+
+                  <article class="shot-card">
+                    <button type="button" class="shot-trigger" data-lightbox-group="gallery-mac">
+                      <img src="./assets/screenshots/en/macos-02-redaction-studio.webp" data-shot-prefix="./assets/screenshots/" data-shot-file="macos-02-redaction-studio.webp" data-alt-en="macOS Screenshot Studio with Vision OCR masking" data-alt-ru="Студия скриншотов на macOS с маскированием Vision OCR" alt="macOS Screenshot Studio" width="1440" height="900" loading="lazy">
+                    </button>
+                    <div class="shot-caption">
+                      <h3><span data-lang="en">Screenshot Studio (Apple Vision OCR)</span><span data-lang="ru">Студия скриншотов (Apple Vision OCR)</span></h3>
+                      <p><span data-lang="en">One-click masking of emails, tokens, and digits, crop frame, and peek-under-mask verification.</span><span data-lang="ru">Скрытие email, токенов и цифр в один клик, обрезка кадра и проверка под маской перед шифрованием.</span></p>
+                    </div>
+                  </article>
+
+                  <article class="shot-card">
+                    <button type="button" class="shot-trigger" data-lightbox-group="gallery-mac">
+                      <img src="./assets/screenshots/en/macos-03-security-audit.webp" data-shot-prefix="./assets/screenshots/" data-shot-file="macos-03-security-audit.webp" data-alt-en="macOS Security Audit dashboard with score ring and HIBP check" data-alt-ru="Аудит безопасности на macOS с кольцом оценки и проверкой утечек" alt="macOS Security Audit" width="1440" height="900" loading="lazy">
+                    </button>
+                    <div class="shot-caption">
+                      <h3><span data-lang="en">Security Audit &amp; Zero-Log HIBP Check</span><span data-lang="ru">Аудит защиты и проверка утечек</span></h3>
+                      <p><span data-lang="en">Clear score ring, reused/weak password detection, and opt-in k-Anonymity breach scanning.</span><span data-lang="ru">Наглядная оценка, поиск дубликатов и слабых паролей, опциональная проверка утечек через прокси.</span></p>
+                    </div>
+                  </article>
+
+                  <article class="shot-card">
+                    <button type="button" class="shot-trigger" data-lightbox-group="gallery-mac">
+                      <img src="./assets/screenshots/en/macos-04-settings-browsers.webp" data-shot-prefix="./assets/screenshots/" data-shot-file="macos-04-settings-browsers.webp" data-alt-en="macOS AutoFill, Safari Extension, and Chrome/Firefox bridge settings" data-alt-ru="Настройки AutoFill, расширения Safari и моста Chrome/Firefox на macOS" alt="macOS Browsers settings" width="1440" height="900" loading="lazy">
+                    </button>
+                    <div class="shot-caption">
+                      <h3><span data-lang="en">AutoFill, Safari &amp; Browser Bridge Setup</span><span data-lang="ru">AutoFill, Safari и мост для браузеров</span></h3>
+                      <p><span data-lang="en">Indexed logins, 2FA, and Passkeys count plus 1-click connection to Safari, Chrome, Brave, Opera, and Firefox.</span><span data-lang="ru">Индекс логинов, 2FA и Passkeys, настройка Safari и подключение Chrome, Brave, Opera и Firefox.</span></p>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <!-- iPhone Panel -->
+            <div role="tabpanel" aria-labelledby="gal-tab-iphone" hidden="until-found">
+              <div class="tab-panel-inner">
+                <div class="gallery-grid gallery-grid--phone">
+                  <article class="shot-card">
+                    <button type="button" class="shot-trigger" data-lightbox-group="gallery-iphone">
+                      <img src="./assets/screenshots/en/iphone-01-vault.webp" data-shot-prefix="./assets/screenshots/" data-shot-file="iphone-01-vault.webp" data-alt-en="iPhone vault list with new bottom tab bar" data-alt-ru="Список записей сейфа на iPhone с новой панелью вкладок" alt="iPhone vault" width="660" height="1434" loading="lazy" fetchpriority="low">
+                    </button>
+                    <div class="shot-caption">
+                      <h3><span data-lang="en">iPhone Vault &amp; Tab Bar</span><span data-lang="ru">Сейф и вкладки iPhone</span></h3>
+                      <p><span data-lang="en">Fast search, filter pills, and one-hand switching.</span><span data-lang="ru">Быстрый поиск, фильтры и навигация одной рукой.</span></p>
+                    </div>
+                  </article>
+
+                  <article class="shot-card">
+                    <button type="button" class="shot-trigger" data-lightbox-group="gallery-iphone">
+                      <img src="./assets/screenshots/en/iphone-02-inspector.webp" data-shot-prefix="./assets/screenshots/" data-shot-file="iphone-02-inspector.webp" data-alt-en="iPhone item inspector with redacted preview and Open & Fill" data-alt-ru="Карточка записи на iPhone со снимком входа и Открыть и заполнить" alt="iPhone inspector" width="660" height="1434" loading="lazy" fetchpriority="low">
+                    </button>
+                    <div class="shot-caption">
+                      <h3><span data-lang="en">Item Card &amp; Open &amp; Fill</span><span data-lang="ru">Карточка и Open &amp; Fill</span></h3>
+                      <p><span data-lang="en">Tap to verify screenshot, copy 2FA, or jump into Safari.</span><span data-lang="ru">Снимок входа, код 2FA и быстрый переход в Safari.</span></p>
+                    </div>
+                  </article>
+
+                  <article class="shot-card">
+                    <button type="button" class="shot-trigger" data-lightbox-group="gallery-iphone">
+                      <img src="./assets/screenshots/en/iphone-03-redaction-studio.webp" data-shot-prefix="./assets/screenshots/" data-shot-file="iphone-03-redaction-studio.webp" data-alt-en="iPhone Screenshot Studio redacting login fields" data-alt-ru="Студия скриншотов на iPhone с маскированием полей" alt="iPhone Screenshot Studio" width="660" height="1434" loading="lazy" fetchpriority="low">
+                    </button>
+                    <div class="shot-caption">
+                      <h3><span data-lang="en">Mobile Screenshot Studio</span><span data-lang="ru">Мобильная студия масок</span></h3>
+                      <p><span data-lang="en">Share any screenshot in 2 taps and mask sensitive rows.</span><span data-lang="ru">Прикрепите скриншот через «Поделиться» и скройте поля.</span></p>
+                    </div>
+                  </article>
+
+                  <article class="shot-card">
+                    <button type="button" class="shot-trigger" data-lightbox-group="gallery-iphone">
+                      <img src="./assets/screenshots/en/iphone-04-security-audit.webp" data-shot-prefix="./assets/screenshots/" data-shot-file="iphone-04-security-audit.webp" data-alt-en="iPhone Security Audit score ring and breach scan" data-alt-ru="Аудит безопасности на iPhone с кольцом оценки" alt="iPhone Security Audit" width="660" height="1434" loading="lazy" fetchpriority="low">
+                    </button>
+                    <div class="shot-caption">
+                      <h3><span data-lang="en">Audit Score on iPhone</span><span data-lang="ru">Аудит защиты на iPhone</span></h3>
+                      <p><span data-lang="en">Spot weak or reused credentials and check breaches.</span><span data-lang="ru">Находите слабые пароли и проверяйте утечки.</span></p>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <!-- iPad Panel -->
+            <div role="tabpanel" aria-labelledby="gal-tab-ipad" hidden="until-found">
+              <div class="tab-panel-inner">
+                <div class="gallery-grid gallery-grid--phone">
+                  <article class="shot-card">
+                    <button type="button" class="shot-trigger" data-lightbox-group="gallery-ipad">
+                      <img src="./assets/screenshots/en/ipad-01-workspace.webp" data-shot-prefix="./assets/screenshots/" data-shot-file="ipad-01-workspace.webp" data-alt-en="iPad 13-inch three-column split workspace" data-alt-ru="Трёхколоночный интерфейс на iPad 13 дюймов" alt="iPad workspace" width="1032" height="1376" loading="lazy" fetchpriority="low">
+                    </button>
+                    <div class="shot-caption">
+                      <h3><span data-lang="en">3-Column iPad Workspace</span><span data-lang="ru">3 колонки на iPad</span></h3>
+                      <p><span data-lang="en">Full Split View and Stage Manager support without losing unlocked state.</span><span data-lang="ru">Полная поддержка Split View и Stage Manager без сброса сессии.</span></p>
+                    </div>
+                  </article>
+
+                  <article class="shot-card">
+                    <button type="button" class="shot-trigger" data-lightbox-group="gallery-ipad">
+                      <img src="./assets/screenshots/en/ipad-02-redaction-studio.webp" data-shot-prefix="./assets/screenshots/" data-shot-file="ipad-02-redaction-studio.webp" data-alt-en="iPad Screenshot Studio" data-alt-ru="Студия скриншотов на iPad" alt="iPad Screenshot Studio" width="1032" height="1376" loading="lazy" fetchpriority="low">
+                    </button>
+                    <div class="shot-caption">
+                      <h3><span data-lang="en">Precision Masking on iPad</span><span data-lang="ru">Точное маскирование на iPad</span></h3>
+                      <p><span data-lang="en">Draw masks with finger or Apple Pencil on a wide canvas.</span><span data-lang="ru">Удобное маскирование и обрезка на большом экране.</span></p>
+                    </div>
+                  </article>
+
+                  <article class="shot-card">
+                    <button type="button" class="shot-trigger" data-lightbox-group="gallery-ipad">
+                      <img src="./assets/screenshots/en/ipad-03-security-audit.webp" data-shot-prefix="./assets/screenshots/" data-shot-file="ipad-03-security-audit.webp" data-alt-en="iPad Security Audit view" data-alt-ru="Аудит безопасности на iPad" alt="iPad Security Audit" width="1032" height="1376" loading="lazy" fetchpriority="low">
+                    </button>
+                    <div class="shot-caption">
+                      <h3><span data-lang="en">Security Audit Dashboard</span><span data-lang="ru">Панель аудита на iPad</span></h3>
+                      <p><span data-lang="en">Actionable checklist with one-tap navigation to weak items.</span><span data-lang="ru">Список действий с переходом к проблемным записям в 1 тап.</span></p>
+                    </div>
+                  </article>
+
+                  <article class="shot-card">
+                    <button type="button" class="shot-trigger" data-lightbox-group="gallery-ipad">
+                      <img src="./assets/screenshots/en/ipad-04-settings-plans.webp" data-shot-prefix="./assets/screenshots/" data-shot-file="ipad-04-settings-plans.webp" data-alt-en="iPad settings and No-Hostage plans" data-alt-ru="Настройки и тарифы на iPad" alt="iPad settings" width="1032" height="1376" loading="lazy" fetchpriority="low">
+                    </button>
+                    <div class="shot-caption">
+                      <h3><span data-lang="en">Themes, Languages &amp; Plans</span><span data-lang="ru">Темы, язык и тарифы</span></h3>
+                      <p><span data-lang="en">Switch Night, Dusk, or Day theme and RU/EN instantly.</span><span data-lang="ru">Мгновенное переключение Ночи, Сумерек, Дня и языка RU/EN.</span></p>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <!-- Browsers Panel -->
+            <div role="tabpanel" aria-labelledby="gal-tab-browser" hidden="until-found">
+              <div class="tab-panel-inner">
+                <div class="gallery-grid gallery-grid--single">
+                  <article class="shot-card">
+                    <button type="button" class="shot-trigger" data-lightbox-group="gallery-browser">
+                      <img src="./assets/screenshots/browser-extension.webp" alt="Password Whisper Browser Extension v1.3.1 showing redacted login screenshot preview and one-click Fill inside Chrome/Firefox" width="1280" height="800" loading="lazy" fetchpriority="low">
+                    </button>
+                    <div class="shot-caption">
+                      <h3><span data-lang="en">Browser Extension v1.3.1 (Chrome, Brave, Opera, Firefox &amp; Safari)</span><span data-lang="ru">Расширение для браузеров v1.3.1 (Safari, Chrome, Brave, Opera, Firefox)</span></h3>
+                      <p><span data-lang="en">Preview your redacted login screenshot directly in the popup, fill logins, payment cards, and 2FA codes, and save new credentials after submit.</span><span data-lang="ru">Просмотр замаскированного снимка прямо в popup, заполнение логинов, карт и 2FA, а также баннер сохранения новых паролей после отправки формы.</span></p>
+                    </div>
+                  </article>
+
+                  <div class="card">
+                    <span class="card-tag">MANIFEST V3 · LOCAL BRIDGE</span>
+                    <h3><span data-lang="en">Zero cloud, strict HTTPS domain verification</span><span data-lang="ru">Локальный мост и строгая проверка HTTPS-домена</span></h3>
+                    <p style="margin-bottom: 14px;">
+                      <span data-lang="en">Desktop extensions talk directly to your Mac app via sandboxed Native Messaging (<code>stdio</code>). Safari uses the bundled native extension on both Mac and iPhone/iPad.</span>
+                      <span data-lang="ru">Настольные расширения общаются напрямую с вашим Mac-приложением через локальный Native Messaging (<code>stdio</code>). В Safari расширение уже встроено на Mac, iPhone и iPad.</span>
+                    </p>
+                    <ul class="feature-bullets" style="margin-top: 0;">
+                      <li><span class="bullet-icon">✓</span><span><span data-lang="en">No unsolicited Touch ID prompts on passive input focus</span><span data-lang="ru">Никаких навязчивых окон Touch ID при случайном клике в поле</span></span></li>
+                      <li><span class="bullet-icon">✓</span><span><span data-lang="en">Smart inline password generator appears only on new-password fields</span><span data-lang="ru">Inline-генератор паролей появляется только в полях регистрации и смены пароля</span></span></li>
+                      <li><span class="bullet-icon">✓</span><span><span data-lang="en">Public Suffix List anti-phishing matching before every fill</span><span data-lang="ru">Антифишинговая сверка домена (Public Suffix List) перед каждой вставкой</span></span></li>
+                    </ul>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px;">
+                      <a class="btn btn--primary btn--sm" href="https://chromewebstore.google.com/detail/olagmnnpoogamifoblpkehbofidliled" target="_blank" rel="noopener">Chrome Web Store</a>
+                      <a class="btn btn--soft btn--sm" href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">
+                        <span data-lang="en">Safari Extension (App Store)</span><span data-lang="ru">Safari (в App Store)</span>
+                      </a>
+                      <a class="btn btn--soft btn--sm" href="https://addons.mozilla.org/en-US/firefox/addon/password-whisper-visual-passwo/" target="_blank" rel="noopener">Firefox Add-ons</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         CORE CAPABILITIES BENTO GRID + INTERACTIVE AUDIT SCORE DEMO
+         ===================================================================== -->
+    <section id="features" class="section-block reveal">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span>EVERYTHING IN ONE VAULT</span></p>
+          <h2 class="section-title">
+            <span data-lang="en">Built for daily speed, engineered for calm security</span>
+            <span data-lang="ru">Быстро в работе, спокойно за безопасность</span>
+          </h2>
+        </div>
+
+        <div class="bento-grid">
+          <!-- Interactive Security Score Card -->
+          <article class="card bento-span-8">
+            <span class="card-tag">INTERACTIVE AUDIT · TRY IT</span>
+            <div class="audit-demo">
+              <div class="score-ring-wrap">
+                <svg class="score-ring-svg" viewBox="0 0 164 164" aria-hidden="true">
+                  <circle class="score-ring-track" cx="82" cy="82" r="70"></circle>
+                  <circle id="audit-ring-arc" class="score-ring-arc" cx="82" cy="82" r="70"></circle>
+                </svg>
+                <div class="score-ring-value">
+                  <span class="score-ring-num mono-num" id="audit-score-num">87</span>
+                  <span class="score-ring-denom">/ 100</span>
+                </div>
+              </div>
+
+              <div>
+                <h3>
+                  <span data-lang="en">Live Security Audit &amp; Breach Check</span>
+                  <span data-lang="ru">Оценка стойкости и проверка утечек</span>
+                </h3>
+                <p>
+                  <span data-lang="en">Instantly flags reused passwords, weak entropy, missing 2FA, and exposed hashes via our zero-log HIBP proxy.</span>
+                  <span data-lang="ru">Сразу находит повторяющиеся и слабые пароли, записи без 2FA и проверяет утечки через zero-log HIBP прокси.</span>
+                </p>
+
+                <div class="audit-findings">
+                  <div class="audit-row" id="audit-row-1">
+                    <span class="audit-row-text">2 entries reuse the same password</span>
+                    <span class="chip chip--risk">HIGH</span>
+                  </div>
+                  <div class="audit-row" id="audit-row-2">
+                    <span class="audit-row-text">1 entry missing login screenshot &amp; 2FA</span>
+                    <span class="chip chip--warn">TIP</span>
+                  </div>
+                </div>
+
+                <button type="button" id="audit-demo-btn" class="btn btn--primary btn--sm">Fix issues to 100 / 100</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="card bento-span-4">
+            <span class="card-tag card-tag--amber">CARDS &amp; DOCS</span>
+            <h3>
+              <span data-lang="en">Payment cards, IDs &amp; custom fields</span>
+              <span data-lang="ru">Карты, документы и свои поля</span>
+            </h3>
+            <p>
+              <span data-lang="en">Automatic card brand detection and Luhn validation, structured passport/ID templates, unlimited custom fields, and secure notes — all encrypted per item.</span>
+              <span data-lang="ru">Автоопределение платёжной системы и проверка Luhn, шаблоны паспортов и документов, любые кастомные поля и защищённые заметки.</span>
+            </p>
+          </article>
+
+          <article class="card bento-span-4">
+            <span class="card-tag">QUICK ACCESS</span>
+            <h3>
+              <span data-lang="en">Menu Bar HUD (<kbd class="kbd">⌥⌘P</kbd>) &amp; Clipboard Guard</span>
+              <span data-lang="ru">Быстрый доступ (<kbd class="kbd">⌥⌘P</kbd>) и защита буфера</span>
+            </h3>
+            <p>
+              <span data-lang="en">Context-aware Menu Bar panel ranks credentials for the active app or browser tab. Copied secrets are marked concealed &amp; local-only and clear automatically after your chosen timer.</span>
+              <span data-lang="ru">Панель в строке меню сразу поднимает записи для открытого сайта или программы. Скопированный пароль помечается как скрытый (без Universal Clipboard) и сам очищается по таймеру.</span>
+            </p>
+          </article>
+
+          <article class="card bento-span-4">
+            <span class="card-tag">RECOVERY KIT</span>
+            <h3>
+              <span data-lang="en">Printable Recovery Kit PDF</span>
+              <span data-lang="ru">Печатный Recovery Kit (PDF)</span>
+            </h3>
+            <p>
+              <span data-lang="en">Because we never know your Master Password, Password Whisper generates a clean Recovery Kit PDF with a verifiable emergency key you can print and store offline.</span>
+              <span data-lang="ru">У нас нет доступа к вашему мастер-паролю. При создании сейфа формируется лист Recovery Kit PDF с аварийным ключом — единственный способ открыть сейф без пароля.</span>
+            </p>
+          </article>
+
+          <article class="card bento-span-4">
+            <span class="card-tag">MIGRATION</span>
+            <h3>
+              <span data-lang="en">1-minute CSV &amp; JSON import</span>
+              <span data-lang="ru">Перенос из других менеджеров за минуту</span>
+            </h3>
+            <p>
+              <span data-lang="en">Import cleanly from 1Password, Bitwarden, Apple Passwords / Safari, Chrome, Firefox, and KeePass — and export your full vault anytime with zero lock-in.</span>
+              <span data-lang="ru">Импорт из 1Password, Bitwarden, Apple Passwords / Safari, Chrome, Firefox и KeePass — и свободный экспорт в CSV или зашифрованную копию в любой момент.</span>
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         STEP-BY-STEP INTERACTIVE TUTORIAL («КАК НАЧАТЬ ЗА 3 МИНУТЫ»)
+         ===================================================================== -->
+    <section id="tutorial" class="section-block reveal">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span>INTERACTIVE TUTORIAL</span></p>
+          <h2 class="section-title">
+            <span data-lang="en">Quick-start guide for every device</span>
+            <span data-lang="ru">Пошаговый туториал для каждого устройства</span>
+          </h2>
+          <p class="section-lead">
+            <span data-lang="en">Pick your scenario below — from creating your first vault to connecting Safari, Chrome/Firefox, or restoring via iCloud.</span>
+            <span data-lang="ru">Выберите нужный сценарий: от создания первого сейфа до подключения Safari, Chrome/Firefox и переноса на новое устройство.</span>
+          </p>
+        </div>
+
+        <div class="tabs-wrapper" data-tabs>
+          <div class="tablist-scroller" role="tablist" focusgroup="tablist nomemory" aria-label="Tutorial topics">
+            <button type="button" class="tab-btn" role="tab" id="tut-tab-start" aria-selected="true" focusgroupstart tabindex="0">
+              <span data-lang="en">1. First Vault</span><span data-lang="ru">1. Первый сейф</span>
+            </button>
+            <button type="button" class="tab-btn" role="tab" id="tut-tab-ios" aria-selected="false" tabindex="-1">
+              <span data-lang="en">2. iPhone &amp; iPad AutoFill</span><span data-lang="ru">2. iPhone, iPad и Safari</span>
+            </button>
+            <button type="button" class="tab-btn" role="tab" id="tut-tab-mac" aria-selected="false" tabindex="-1">
+              <span data-lang="en">3. macOS &amp; Browsers</span><span data-lang="ru">3. macOS и браузеры</span>
+            </button>
+            <button type="button" class="tab-btn" role="tab" id="tut-tab-sync" aria-selected="false" tabindex="-1">
+              <span data-lang="en">4. iCloud Sync &amp; Restore</span><span data-lang="ru">4. iCloud и перенос</span>
+            </button>
+          </div>
+
+          <div class="tab-panels-stack">
+            <!-- Step 1: First Vault -->
+            <div role="tabpanel" aria-labelledby="tut-tab-start">
+              <div class="tab-panel-inner">
+                <div class="tutorial-steps">
+                  <article class="step-card">
+                    <span class="step-num">STEP 01</span>
+                    <h3><span data-lang="en">Set a strong Master Password</span><span data-lang="ru">Задайте мастер-пароль</span></h3>
+                    <p><span data-lang="en">Use a memorable 4–5 word passphrase or the built-in generator bar. Password Whisper estimates offline crack time right as you type.</span><span data-lang="ru">Придумайте фразу из 4–5 слов или сгенерируйте её встроенной панелью. Приложение сразу покажет расчётное время подбора.</span></p>
+                  </article>
+                  <article class="step-card">
+                    <span class="step-num">STEP 02</span>
+                    <h3><span data-lang="en">Save your Recovery Kit PDF</span><span data-lang="ru">Сохраните Recovery Kit PDF</span></h3>
+                    <p><span data-lang="en">Print or save the Recovery Key sheet offline and confirm its last 4 characters. This is the only emergency way back in if you ever forget your password.</span><span data-lang="ru">Распечатайте или сохраните лист с ключом восстановления офлайн и подтвердите 4 проверочных символа.</span></p>
+                  </article>
+                  <article class="step-card">
+                    <span class="step-num">STEP 03</span>
+                    <h3><span data-lang="en">Enable Face ID / Touch ID &amp; iCloud</span><span data-lang="ru">Включите биометрию и iCloud</span></h3>
+                    <p><span data-lang="en">Choose local-only storage or turn on personal iCloud E2EE sync so your Mac, iPhone, and iPad stay in sync automatically.</span><span data-lang="ru">Выберите локальное хранение или включите личный iCloud (E2EE), чтобы Mac, iPhone и iPad синхронизировались сами.</span></p>
+                  </article>
+                  <article class="step-card">
+                    <span class="step-num">STEP 04</span>
+                    <h3><span data-lang="en">Import CSV or attach your first snapshot</span><span data-lang="ru">Импортируйте CSV или добавьте снимок</span></h3>
+                    <p><span data-lang="en">Import existing logins from 1Password, Bitwarden, Chrome, or Safari, then run your first Security Audit to reach a 100/100 score.</span><span data-lang="ru">Перенесите базу из 1Password, Bitwarden, Chrome или Safari и прикрепите первый замаскированный снимок экрана входа.</span></p>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: iOS & iPadOS -->
+            <div role="tabpanel" aria-labelledby="tut-tab-ios" hidden="until-found">
+              <div class="tab-panel-inner">
+                <div class="tutorial-steps">
+                  <article class="step-card">
+                    <span class="step-num">IOS · 01</span>
+                    <h3><span data-lang="en">Turn on System AutoFill &amp; Passkeys</span><span data-lang="ru">Включите системное автозаполнение</span></h3>
+                    <p><span data-lang="en">Open <strong>Settings → General → AutoFill &amp; Passwords</strong> and switch on <strong>Password Whisper</strong>. This enables passwords, 2FA TOTP, and Passkeys across all apps and browsers.</span><span data-lang="ru">Откройте <strong>Настройки → Основные → Автозаполнение и пароли</strong> и включите <strong>Password Whisper</strong> — заработают пароли, 2FA и Passkeys во всех приложениях и браузерах.</span></p>
+                  </article>
+                  <article class="step-card">
+                    <span class="step-num">IOS · 02</span>
+                    <h3><span data-lang="en">Enable Safari Web Extension</span><span data-lang="ru">Включите расширение в Safari</span></h3>
+                    <p><span data-lang="en">Open <strong>Settings → Apps → Safari → Extensions → Password Whisper</strong>, enable it, and allow website access for instant Open &amp; Fill and in-page login snapshots.</span><span data-lang="ru">Откройте <strong>Настройки → Приложения → Safari → Расширения → Password Whisper</strong>, включите расширение и разрешите доступ к сайтам для Open &amp; Fill.</span></p>
+                  </article>
+                  <article class="step-card">
+                    <span class="step-num">IOS · 03</span>
+                    <h3><span data-lang="en">Attach screenshots in 2 taps</span><span data-lang="ru">Прикрепляйте скриншоты за 2 тапа</span></h3>
+                    <p><span data-lang="en">Take a screenshot of any login page, tap <strong>Share → Password Whisper</strong>, mask sensitive fields with Vision OCR, and save straight into your vault.</span><span data-lang="ru">Сделайте скриншот страницы входа, нажмите <strong>Поделиться → Password Whisper</strong>, скройте лишнее в Студии и сохраните прямо в карточку.</span></p>
+                  </article>
+                  <article class="step-card">
+                    <span class="step-num">IOS · 04</span>
+                    <h3><span data-lang="en">Scan 2FA QR codes</span><span data-lang="ru">Сканируйте QR-коды 2FA</span></h3>
+                    <p><span data-lang="en">Inside any entry editor, tap <strong>Scan QR</strong> next to the 2FA field to add 6-digit TOTP codes without typing secret keys manually.</span><span data-lang="ru">В редакторе записи нажмите <strong>Сканировать QR</strong> рядом с полем 2FA — 6-значные коды сразу начнут обновляться и подставляться в AutoFill.</span></p>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: macOS & Browsers -->
+            <div role="tabpanel" aria-labelledby="tut-tab-mac" hidden="until-found">
+              <div class="tab-panel-inner">
+                <div class="tutorial-steps">
+                  <article class="step-card">
+                    <span class="step-num">MAC · 01</span>
+                    <h3><span data-lang="en">Enable macOS AutoFill &amp; Safari</span><span data-lang="ru">Включите AutoFill и Safari на Mac</span></h3>
+                    <p><span data-lang="en">Go to <strong>Password Whisper → Settings → Browsers</strong>, click <strong>Enable macOS AutoFill</strong>, and activate the bundled extension in <strong>Safari → Settings → Extensions</strong>.</span><span data-lang="ru">Откройте <strong>Настройки → Браузеры</strong> в приложении, включите системное автозаполнение macOS и активируйте встроенное расширение в <strong>Safari → Настройки → Расширения</strong>.</span></p>
+                  </article>
+                  <article class="step-card">
+                    <span class="step-num">MAC · 02</span>
+                    <h3><span data-lang="en">Connect Chrome, Brave, Opera or Firefox</span><span data-lang="ru">Подключите Chrome, Brave, Opera или Firefox</span></h3>
+                    <p><span data-lang="en">Install extension <strong>v1.3.1</strong> from <a href="https://chromewebstore.google.com/detail/olagmnnpoogamifoblpkehbofidliled" target="_blank" rel="noopener">Chrome Web Store</a> or <a href="https://addons.mozilla.org/en-US/firefox/addon/password-whisper-visual-passwo/" target="_blank" rel="noopener">Firefox AMO</a>, then click <strong>Connect</strong> in Settings → Browsers and confirm access to <code>~/Library/Application Support</code> once.</span><span data-lang="ru">Установите расширение <strong>v1.3.1</strong> из <a href="https://chromewebstore.google.com/detail/olagmnnpoogamifoblpkehbofidliled" target="_blank" rel="noopener">Chrome Web Store</a> или <a href="https://addons.mozilla.org/en-US/firefox/addon/password-whisper-visual-passwo/" target="_blank" rel="noopener">Firefox AMO</a>, нажмите <strong>Подключить</strong> в Настройках → Браузеры и один раз подтвердите папку <code>~/Library/Application Support</code>.</span></p>
+                  </article>
+                  <article class="step-card">
+                    <span class="step-num">MAC · 03</span>
+                    <h3><span data-lang="en">Use Quick Access HUD (<kbd class="kbd">⌥⌘P</kbd>)</span><span data-lang="ru">Используйте быстрый HUD (<kbd class="kbd">⌥⌘P</kbd>)</span></h3>
+                    <p><span data-lang="en">Press <kbd class="kbd">⌥⌘P</kbd> or click the iris icon in your Menu Bar to instantly see credentials ranked for your active browser tab or desktop app.</span><span data-lang="ru">Нажмите <kbd class="kbd">⌥⌘P</kbd> или кликните по значку диафрагмы в строке меню — сверху окажутся логины именно для активного окна или вкладки.</span></p>
+                  </article>
+                  <article class="step-card">
+                    <span class="step-num">MAC · 04</span>
+                    <h3><span data-lang="en">Capture login windows effortlessly</span><span data-lang="ru">Снимайте окна входа без лишних прав</span></h3>
+                    <p><span data-lang="en">Press <kbd class="kbd">⌘V</kbd> inside an entry to paste any clipboard screenshot immediately, drag-and-drop an image, or use the macOS system window picker.</span><span data-lang="ru">Нажмите <kbd class="kbd">⌘V</kbd> в карточке для мгновенной вставки скриншота из буфера, перетащите файл мышью или выберите окно через системный пикер macOS.</span></p>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 4: iCloud Sync & Restore -->
+            <div role="tabpanel" aria-labelledby="tut-tab-sync" hidden="until-found">
+              <div class="tab-panel-inner">
+                <div class="tutorial-steps">
+                  <article class="step-card">
+                    <span class="step-num">SYNC · 01</span>
+                    <h3><span data-lang="en">Turn on iCloud E2EE on your primary device</span><span data-lang="ru">Включите iCloud на первом устройстве</span></h3>
+                    <p><span data-lang="en">Open <strong>Settings → Storage</strong> and turn on <strong>iCloud Sync (E2EE)</strong>. Wait until the status indicator shows <em>Synced</em>.</span><span data-lang="ru">Откройте <strong>Настройки → Хранение</strong> и включите тумблер <strong>Синхронизация через iCloud (E2EE)</strong>. Дождитесь статуса «Синхронизировано».</span></p>
+                  </article>
+                  <article class="step-card">
+                    <span class="step-num">SYNC · 02</span>
+                    <h3><span data-lang="en">Open on your second Mac, iPhone, or iPad</span><span data-lang="ru">Откройте на втором Mac, iPhone или iPad</span></h3>
+                    <p><span data-lang="en">Signed into the same Apple Account, launch Password Whisper and tap <strong>I already have a vault</strong> (or tap the detected iCloud vault right on the welcome screen).</span><span data-lang="ru">Войдите в тот же Apple Account, запустите приложение и нажмите <strong>У меня уже есть хранилище</strong> (или выберите найденный сейф iCloud прямо на экране приветствия).</span></p>
+                  </article>
+                  <article class="step-card">
+                    <span class="step-num">SYNC · 03</span>
+                    <h3><span data-lang="en">Unlock locally with your Master Password</span><span data-lang="ru">Расшифруйте своим мастер-паролем</span></h3>
+                    <p><span data-lang="en">Enter your Master Password (or Recovery Key). Password Whisper downloads the encrypted items and screenshots and decrypts them strictly on-device.</span><span data-lang="ru">Введите мастер-пароль (или Recovery Key). Приложение загрузит зашифрованные карточки и скриншоты из вашего iCloud и расшифрует их локально.</span></p>
+                  </article>
+                  <article class="step-card">
+                    <span class="step-num">SYNC · 04</span>
+                    <h3><span data-lang="en">Offline-safe conflict merging</span><span data-lang="ru">Безопасное слияние офлайн-правок</span></h3>
+                    <p><span data-lang="en">Edited the same login offline on both Mac and iPhone? Deterministic per-item merge preserves both versions' password history and screenshots — nothing is overwritten silently.</span><span data-lang="ru">Изменили одну запись офлайн и на Mac, и на iPhone? Алгоритм слияния сохранит оба снимка и положит второй пароль в историю, чтобы ничего не пропало.</span></p>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         HOW SECURITY WORKS (INTERACTIVE E2EE PIPELINE + SPECS)
+         ===================================================================== -->
+    <section id="security" class="section-block reveal">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span>ZERO-KNOWLEDGE ARCHITECTURE</span></p>
+          <h2 class="section-title">
+            <span data-lang="en">Nothing goes to our servers. We don't have any.</span>
+            <span data-lang="ru">Ничего не уходит на наши серверы. У нас их нет.</span>
+          </h2>
+          <p class="section-lead">
+            <span data-lang="en">Click any stage in the pipeline to see exactly how your vault is derived, sealed, stored, and synced.</span>
+            <span data-lang="ru">Нажмите на любой этап цепочки, чтобы увидеть, как создаётся ключ, шифруются записи и работает синхронизация.</span>
+          </p>
+        </div>
+
+        <div class="pipeline-rail" role="group" aria-label="Encryption pipeline stages">
+          <button type="button" class="pipeline-node" aria-pressed="true">
+            <span class="pipeline-step-id">01 · INPUT</span>
+            <strong><span data-lang="en">Master Password</span><span data-lang="ru">Мастер-пароль</span></strong>
+            <span><span data-lang="en">RAM-only, never stored</span><span data-lang="ru">Только в RAM</span></span>
+          </button>
+          <button type="button" class="pipeline-node" aria-pressed="false">
+            <span class="pipeline-step-id">02 · KDF</span>
+            <strong>Argon2id</strong>
+            <span><span data-lang="en">RFC 9106 · 64 MiB</span><span data-lang="ru">RFC 9106 · 64 МиБ</span></span>
+          </button>
+          <button type="button" class="pipeline-node" aria-pressed="false">
+            <span class="pipeline-step-id">03 · AEAD</span>
+            <strong>AES-256-GCM</strong>
+            <span><span data-lang="en">Per-item + AAD</span><span data-lang="ru">По-объектно + AAD</span></span>
+          </button>
+          <button type="button" class="pipeline-node" aria-pressed="false">
+            <span class="pipeline-step-id">04 · VAULT</span>
+            <strong>.whispervault</strong>
+            <span><span data-lang="en">Local package on disk</span><span data-lang="ru">Локальный пакет</span></span>
+          </button>
+          <button type="button" class="pipeline-node" aria-pressed="false">
+            <span class="pipeline-step-id">05 · SYNC</span>
+            <strong>Apple CloudKit</strong>
+            <span><span data-lang="en">Private DB ciphertext</span><span data-lang="ru">Приватный iCloud</span></span>
+          </button>
+        </div>
+
+        <div class="pipeline-detail">
+          <div>
+            <span class="card-tag" id="pipeline-detail-badge">ON DEVICE ONLY</span>
+            <h3 id="pipeline-detail-title" style="margin: 0 0 8px; font-size: 1.2rem;">1. Your Master Password stays only in your memory</h3>
+            <p id="pipeline-detail-body" style="margin: 0; color: var(--ink-muted);">It is never written to disk or sent over the network. When you lock the vault, secrets are zeroed out in RAM via SecureBytes.</p>
+          </div>
+          <div style="background: var(--surface-field); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 16px;">
+            <div class="eyebrow" style="margin-bottom: 6px;">CRYPTOGRAPHIC SPEC</div>
+            <code id="pipeline-detail-code" style="display: block; white-space: pre-wrap; border: 0; background: transparent; padding: 0; font-size: 12.5px; color: var(--safe);">masterPassword -&gt; memory only (zero disk writes)</code>
+          </div>
+        </div>
+
+        <dl class="spec-list">
+          <div class="spec-item">
+            <dt><span data-lang="en">Key Derivation</span><span data-lang="ru">Вывод ключа</span></dt>
+            <dd>Argon2id (RFC 9106, 64 MiB)</dd>
+          </div>
+          <div class="spec-item">
+            <dt><span data-lang="en">Cipher &amp; Integrity</span><span data-lang="ru">Шифрование и целостность</span></dt>
+            <dd>Apple CryptoKit AES-256-GCM + AAD</dd>
+          </div>
+          <div class="spec-item">
+            <dt><span data-lang="en">Biometric Keychain</span><span data-lang="ru">Биометрия Keychain</span></dt>
+            <dd>ThisDeviceOnly · .biometryCurrentSet</dd>
+          </div>
+          <div class="spec-item">
+            <dt><span data-lang="en">Breach Audit (Opt-in)</span><span data-lang="ru">Аудит утечек (по запросу)</span></dt>
+            <dd>5-char SHA-1 · Zero-Log Proxy</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         HONEST PRICING + NO-HOSTAGE GUARANTEE
+         ===================================================================== -->
+    <section id="pricing" class="section-block reveal">
+      <div class="container">
+        <div class="section-header section-header--center">
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span>UNIVERSAL PURCHASE · APPLE FAMILY SHARING</span></p>
+          <h2 class="section-title">
+            <span data-lang="en">Simple pricing. One purchase covers Mac, iPhone, and iPad.</span>
+            <span data-lang="ru">Честные тарифы. Одна покупка на Mac, iPhone и iPad.</span>
+          </h2>
+          <p class="section-lead">
+            <span data-lang="en">Start free with full security, AutoFill, Passkeys, and iCloud sync. Upgrade only if you need more than 25 entries or 5 login screenshots.</span>
+            <span data-lang="ru">Начните бесплатно с полным шифрованием, AutoFill, Passkeys и iCloud. Переходите на Pro, только когда понадобится больше 25 записей или 5 снимков.</span>
+          </p>
+        </div>
+
+        <div class="pricing-grid">
+          <article class="price-card">
+            <span class="card-tag">STARTER</span>
+            <h3>Free</h3>
+            <div class="price-amount mono-num">$0</div>
+            <p class="price-period"><span data-lang="en">Forever · No account needed</span><span data-lang="ru">Навсегда · Без регистрации</span></p>
+            <ul class="price-list">
+              <li><span data-lang="en">Up to 25 active vault items</span><span data-lang="ru">До 25 активных записей</span></li>
+              <li><span data-lang="en">Up to 5 redacted login screenshots</span><span data-lang="ru">До 5 снимков окна входа</span></li>
+              <li><span data-lang="en">Passkeys, 2FA QR, AutoFill &amp; Safari</span><span data-lang="ru">Passkeys, 2FA QR, AutoFill и Safari</span></li>
+              <li><span data-lang="en">Personal iCloud E2EE sync &amp; export</span><span data-lang="ru">Личный iCloud E2EE и экспорт CSV</span></li>
+            </ul>
+            <a class="btn btn--soft" href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">
+              <span data-lang="en">Get Free</span><span data-lang="ru">Скачать бесплатно</span>
+            </a>
+          </article>
+
+          <article class="price-card">
+            <span class="card-tag card-tag--amber">FLEXIBLE</span>
+            <h3>Pro Monthly</h3>
+            <div class="price-amount mono-num">$1.99</div>
+            <p class="price-period"><span data-lang="en">per month · Cancel anytime</span><span data-lang="ru">в месяц · Отмена в любой момент</span></p>
+            <ul class="price-list">
+              <li><span data-lang="en">Unlimited entries, cards &amp; documents</span><span data-lang="ru">Безлимитные записи, карты и документы</span></li>
+              <li><span data-lang="en">Unlimited redacted screenshots</span><span data-lang="ru">Безлимитные снимки экранов входа</span></li>
+              <li><span data-lang="en">Mac, iPhone &amp; iPad included</span><span data-lang="ru">Mac, iPhone и iPad в одной подписке</span></li>
+              <li><span data-lang="en">Apple Family Sharing (up to 6)</span><span data-lang="ru">Семейный доступ Apple до 6 человек</span></li>
+            </ul>
+            <a class="btn btn--soft" href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">
+              <span data-lang="en">Choose Monthly</span><span data-lang="ru">Выбрать месяц</span>
+            </a>
+          </article>
+
+          <article class="price-card price-card--featured">
+            <span class="card-tag">14-DAY FREE TRIAL · SAVE 17%</span>
+            <h3>Pro Yearly</h3>
+            <div class="price-amount mono-num">$19.99</div>
+            <p class="price-period"><span data-lang="en">per year after 14-day free trial</span><span data-lang="ru">в год после 14 дней бесплатно</span></p>
+            <ul class="price-list">
+              <li><span data-lang="en">14 days free for eligible subscribers</span><span data-lang="ru">14 дней бесплатного пробного периода</span></li>
+              <li><span data-lang="en">Unlimited items &amp; login screenshots</span><span data-lang="ru">Безлимитные записи и снимки входа</span></li>
+              <li><span data-lang="en">Mac, iPhone &amp; iPad Universal</span><span data-lang="ru">Единый доступ на Mac, iPhone и iPad</span></li>
+              <li><span data-lang="en">Apple Family Sharing (up to 6)</span><span data-lang="ru">Семейный доступ Apple до 6 человек</span></li>
+            </ul>
+            <a class="btn btn--primary" href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">
+              <span data-lang="en">Start 14-Day Trial</span><span data-lang="ru">Попробовать 14 дней</span>
+            </a>
+          </article>
+
+          <article class="price-card">
+            <span class="card-tag card-tag--warn">ONE-TIME</span>
+            <h3>Lifetime</h3>
+            <div class="price-amount mono-num">$59.99</div>
+            <p class="price-period"><span data-lang="en">Pay once · No recurring bills</span><span data-lang="ru">Один платёж навсегда без подписок</span></p>
+            <ul class="price-list">
+              <li><span data-lang="en">Permanent Pro unlock forever</span><span data-lang="ru">Бессрочный доступ ко всем функциям Pro</span></li>
+              <li><span data-lang="en">Unlimited items &amp; screenshots</span><span data-lang="ru">Безлимитные записи и снимки входа</span></li>
+              <li><span data-lang="en">Mac, iPhone &amp; iPad Universal</span><span data-lang="ru">Mac, iPhone и iPad включены</span></li>
+              <li><span data-lang="en">Apple Family Sharing (up to 6)</span><span data-lang="ru">Семейный доступ Apple до 6 человек</span></li>
+            </ul>
+            <a class="btn btn--soft" href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">
+              <span data-lang="en">Get Lifetime</span><span data-lang="ru">Купить навсегда</span>
+            </a>
+          </article>
+        </div>
+
+        <div class="no-hostage-banner">
+          <div>
+            <h3>
+              <span data-lang="en">No-Hostage Guarantee</span>
+              <span data-lang="ru">Гарантия No-Hostage — ваши пароли никогда не станут заложниками</span>
+            </h3>
+            <p>
+              <span data-lang="en">Even if a subscription expires while your vault holds more than 25 entries, unlocking, viewing, copying, 2FA, AutoFill, editing existing entries, and exporting CSV or encrypted backups stay available forever.</span>
+              <span data-lang="ru">Даже если подписка закончится, когда в сейфе больше 25 записей, доступ к разблокировке, просмотру, копированию, 2FA, автозаполнению, редактированию и экспорту CSV/сейфа остаётся открытым навсегда.</span>
+            </p>
+          </div>
+          <a class="btn btn--soft btn--sm" href="./terms/">
+            <span data-lang="en">Subscription Terms</span><span data-lang="ru">Условия подписки</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ACCESSIBLE NATIVE <details> FAQ ACCORDION
+         ===================================================================== -->
+    <section id="faq" class="section-block reveal" data-accordion-group aria-labelledby="faq-heading">
+      <div class="container container--narrow">
+        <div class="accordion-bar">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-dot"></span><span>FREQUENTLY ASKED QUESTIONS</span></p>
+            <h2 id="faq-heading" class="section-title" style="margin-bottom: 0;">
+              <span data-lang="en">Answers to common questions</span>
+              <span data-lang="ru">Частые вопросы</span>
+            </h2>
+          </div>
+
+          <button
+            type="button"
+            class="btn btn--soft btn--sm accordion-toggle-all"
+            commandfor="faq"
+            command="--toggle-all"
+            aria-expanded="false"
+          >
+            <span class="label-expand">
+              <span data-lang="en">Expand all</span><span data-lang="ru">Развернуть все</span>
+            </span>
+            <span class="label-collapse">
+              <span data-lang="en">Collapse all</span><span data-lang="ru">Свернуть все</span>
+            </span>
+          </button>
+        </div>
+
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>
+              <span data-lang="en">Where are my passwords and screenshots stored? Can the developer read them?</span>
+              <span data-lang="ru">Где хранятся мои пароли и скриншоты? Может ли разработчик их прочитать?</span>
+            </summary>
+            <div class="faq-body">
+              <p><span data-lang="en">Everything is stored locally on your device inside an encrypted <code>.whispervault</code> bundle (Argon2id + AES-256-GCM). If you enable iCloud sync, only encrypted ciphertext is synced through your personal Apple iCloud (CloudKit) account. We operate zero vault servers and have no technical way to access or decrypt your vault.</span><span data-lang="ru">Все данные хранятся локально на вашем устройстве в зашифрованном пакете <code>.whispervault</code> (Argon2id + AES-256-GCM). Если включить синхронизацию iCloud, через ваш личный Apple iCloud (CloudKit) передаётся исключительно шифротекст. У нас нет серверов хранения и нет технической возможности прочитать ваш сейф.</span></p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span data-lang="en">What happens if I forget my Master Password?</span>
+              <span data-lang="ru">Что делать, если я забуду мастер-пароль?</span>
+            </summary>
+            <div class="faq-body">
+              <p><span data-lang="en">Because Password Whisper is strictly zero-knowledge, nobody can reset your Master Password remotely. That is why the onboarding wizard creates a printable <strong>Recovery Kit PDF</strong> with an emergency key (format <code>PS1-XXXX-…</code>). Keep a printed copy offline — you can use it to unlock your vault and set a new Master Password at any time.</span><span data-lang="ru">Поскольку архитектура строго zero-knowledge, сбросить мастер-пароль удалённо невозможно. Именно поэтому при создании сейфа формируется печатный <strong>Recovery Kit PDF</strong> с аварийным ключом (<code>PS1-XXXX-…</code>). Храните его офлайн — с его помощью вы всегда сможете открыть сейф и задать новый мастер-пароль.</span></p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span data-lang="en">How do I sync between my Mac, iPhone, and iPad?</span>
+              <span data-lang="ru">Как синхронизировать хранилище между Mac, iPhone и iPad?</span>
+            </summary>
+            <div class="faq-body">
+              <p><span data-lang="en">Sign into the same Apple Account on all devices and turn on <strong>iCloud Sync (E2EE)</strong> in <strong>Settings → Storage</strong> on the device where your vault lives. On your second device, tap <strong>I already have a vault</strong>, pick the discovered iCloud vault, and enter your Master Password to decrypt and sync locally.</span><span data-lang="ru">Войдите в один и тот же Apple Account на всех устройствах и включите <strong>Синхронизацию iCloud (E2EE)</strong> в разделе <strong>Настройки → Хранение</strong> на основном устройстве. На втором устройстве выберите <strong>У меня уже есть хранилище</strong>, нажмите на найденный сейф в iCloud и введите свой мастер-пароль.</span></p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span data-lang="en">I used a TestFlight beta build — will my vault transfer when I install from the App Store?</span>
+              <span data-lang="ru">Я пользовался TestFlight-сборкой — сохранится ли хранилище при переходе на App Store?</span>
+            </summary>
+            <div class="faq-body">
+              <p><span data-lang="en">Yes. Both TestFlight and the App Store share the exact same Bundle ID, App Group, Keychain group, and <strong>CloudKit Production</strong> database. Installing the App Store version over TestFlight keeps your local vault intact, and iCloud sync continues seamlessly. Only StoreKit test purchases do not carry over because TestFlight uses the StoreKit Sandbox.</span><span data-lang="ru">Да. У TestFlight и App Store совпадают Bundle ID, App Group, группа Keychain и база <strong>CloudKit Production</strong>. Если установить версию из App Store поверх TestFlight (не удаляя приложение), локальный сейф и облачная синхронизация сохранятся полностью. Не переносятся только тестовые покупки подписки, так как TestFlight использует StoreKit Sandbox.</span></p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span data-lang="en">How does Smart Redaction protect my screenshots?</span>
+              <span data-lang="ru">Безопасно ли хранить скриншоты окон входа в сейфе?</span>
+            </summary>
+            <div class="faq-body">
+              <p><span data-lang="en">Before saving, Screenshot Studio runs Apple Vision text recognition 100% locally to highlight emails, passwords, and codes. Masks are permanently burned into the pixels (never stored as removable overlay layers), EXIF/GPS metadata is removed, and the image is compressed to HEIC (~50–90 KB) and encrypted with AES-256-GCM. It is decrypted only in RAM when viewed.</span><span data-lang="ru">Перед сохранением Студия запускает Apple Vision локально на устройстве, находит email, пароли и коды и необратимо запекает маски прямо в пиксели (их нельзя «снять» обратно). EXIF/GPS удаляются, изображение сжимается в HEIC (~50–90 КБ), шифруется AES-256-GCM и расшифровывается только в RAM при просмотре.</span></p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span data-lang="en">Which browsers are supported on macOS, iPhone, and iPad?</span>
+              <span data-lang="ru">Какие браузеры поддерживаются на Mac, iPhone и iPad?</span>
+            </summary>
+            <div class="faq-body">
+              <p><span data-lang="en"><strong>iPhone &amp; iPad:</strong> System AutoFill (passwords, 2FA, Passkeys) works across Safari, Chrome, Brave, Opera, Firefox, and all native apps. Plus, the bundled <strong>Safari Web Extension</strong> brings Open &amp; Fill and in-page login cards directly inside Safari.</span><span data-lang="ru"><strong>iPhone и iPad:</strong> системный AutoFill (пароли, 2FA, Passkeys) работает в Safari, Chrome, Brave, Opera, Firefox и во всех приложениях. Дополнительно встроенное <strong>расширение Safari</strong> добавляет Open &amp; Fill и просмотр снимков прямо на странице.</span></p>
+              <p><span data-lang="en"><strong>macOS:</strong> System AutoFill + bundled Safari Web Extension, plus companion Manifest V3 extension <strong>v1.3.1</strong> on Chrome Web Store (Chrome, Brave, Opera) and Firefox Add-ons (AMO).</span><span data-lang="ru"><strong>macOS:</strong> системный AutoFill + встроенное расширение Safari + расширение Manifest V3 <strong>v1.3.1</strong> в Chrome Web Store (Chrome, Brave, Opera) и Firefox AMO.</span></p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span data-lang="en">How does the optional Have I Been Pwned breach check protect my privacy?</span>
+              <span data-lang="ru">Как устроена проверка паролей на утечки (HIBP)?</span>
+            </summary>
+            <div class="faq-body">
+              <p><span data-lang="en">Breach checks are strictly opt-in and only run when you click the check button. Your device computes a SHA-1 hash locally and sends only the first 5 characters through our zero-log Cloudflare Workers proxy (stripping headers and writing no request logs) with <code>Add-Padding: true</code>. Your password, full hash, username, and domain never leave your device.</span><span data-lang="ru">Проверка запускается только вручную по вашему нажатию. Устройство локально вычисляет SHA-1 и отправляет лишь первые 5 символов через наш stateless-прокси на Cloudflare Workers (без логов и заголовков) с <code>Add-Padding: true</code>. Сам пароль, полный хеш, логин и адрес сайта никогда не покидают устройство.</span></p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span data-lang="en">Do I have to pay separately for Mac, iPhone, and iPad? What about my family?</span>
+              <span data-lang="ru">Нужно ли покупать отдельно для Mac, iPhone и iPad? Работает ли Семейный доступ?</span>
+            </summary>
+            <div class="faq-body">
+              <p><span data-lang="en">No — Password Whisper uses Apple <strong>Universal Purchase</strong>. One Pro subscription or Lifetime purchase unlocks all three platforms on your Apple Account, and supports <strong>Apple Family Sharing</strong> for up to 6 family members (each person keeps their own completely private encrypted vault in their own iCloud).</span><span data-lang="ru">Нет — работает единая покупка Apple (<strong>Universal Purchase</strong>). Одна подписка Pro или покупка Lifetime действует на Mac, iPhone и iPad, а также поддерживается <strong>Семейный доступ Apple</strong> до 6 человек (при этом у каждого члена семьи своё полностью изолированное зашифрованное хранилище в личном iCloud).</span></p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span data-lang="en">Can I import from 1Password, Bitwarden, Chrome, or Apple Passwords — and export anytime?</span>
+              <span data-lang="ru">Можно ли перенести базу из 1Password, Bitwarden, Chrome или Safari — и выгрузить обратно?</span>
+            </summary>
+            <div class="faq-body">
+              <p><span data-lang="en">Yes. Password Whisper automatically detects CSV and JSON exports from 1Password, Bitwarden, Apple Passwords / Safari, Chrome, Firefox, and KeePass. You can also export your entries to CSV or save a full encrypted <code>.whispervault</code> backup folder anytime — even on the Free plan.</span><span data-lang="ru">Да. Поддерживается автоматическое распознавание CSV/JSON из 1Password, Bitwarden, Apple Passwords / Safari, Chrome, Firefox и KeePass. В любой момент вы также можете выгрузить CSV или полную зашифрованную копию папки <code>.whispervault</code> — даже на бесплатном тарифе.</span></p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span data-lang="en">What if Touch ID or Face ID fails or I add a new fingerprint?</span>
+              <span data-lang="ru">Что произойдёт, если изменить отпечаток Touch ID или лицо Face ID?</span>
+            </summary>
+            <div class="faq-body">
+              <p><span data-lang="en">For maximum hardware security, the Keychain unlock key uses <code>.biometryCurrentSet</code> and never falls back to a device PIN. If biometrics are modified or locked out, Password Whisper simply asks for your Master Password and lets you re-enable Touch ID / Face ID right away.</span><span data-lang="ru">Для максимальной аппаратной защиты ключ в Keychain привязан к <code>.biometryCurrentSet</code> и никогда не откатывается на PIN-код устройства. При смене биометрии приложение просто попросит ввести мастер-пароль, после чего можно снова включить Touch ID / Face ID.</span></p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         FINAL CALL TO ACTION
+         ===================================================================== -->
+    <section class="section-block reveal">
+      <div class="container">
+        <div class="cta-banner">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-dot"></span><span>PASSWORD WHISPER 1.3.0 · READY TODAY</span></p>
+            <h2 class="section-title" style="margin-bottom: 8px;">
+              <span data-lang="en">Try Password Whisper free on Mac, iPhone, and iPad</span>
+              <span data-lang="ru">Попробуйте Password Whisper бесплатно на Mac, iPhone и iPad</span>
+            </h2>
+            <p class="section-lead">
+              <span data-lang="en">No account sign-up, zero tracking, 25 entries free forever, and 14-day Pro trial when you're ready for unlimited.</span>
+              <span data-lang="ru">Без регистрации аккаунта, без трекеров, 25 записей бесплатно навсегда и 14-дневный триал Pro при переходе на безлимит.</span>
+            </p>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+            <a class="btn btn--primary btn--lg" href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">
+              <span data-lang="en">App Store (Mac, iPhone, iPad &amp; Safari)</span><span data-lang="ru">App Store (Mac, iPhone, iPad и Safari)</span>
+            </a>
+            <a class="btn btn--soft btn--lg" href="https://chromewebstore.google.com/detail/olagmnnpoogamifoblpkehbofidliled" target="_blank" rel="noopener">
+              <span data-lang="en">Chrome Extension</span><span data-lang="ru">Расширение Chrome</span>
+            </a>
+            <a class="btn btn--soft btn--lg" href="./support/">
+              <span data-lang="en">Setup &amp; Support</span><span data-lang="ru">Инструкции и поддержка</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div style="max-width: 320px;">
+          <a class="brand" href="./" style="margin-bottom: 10px;">
+            <img class="brand-mark" src="./assets/sentinel-iris.svg" alt="" width="28" height="28">
+            <span>Password Whisper</span>
+          </a>
+          <p style="margin: 0; color: var(--ink-muted); font-size: 13.5px;">
+            <span data-lang="en">Visual zero-knowledge password manager for macOS, iOS, and iPadOS. Personal iCloud sync, zero developer servers.</span>
+            <span data-lang="ru">Визуальный zero-knowledge менеджер паролей для macOS, iOS и iPadOS. Личный iCloud, ноль серверов разработчика.</span>
+          </p>
+        </div>
+
+        <div class="footer-cols">
+          <div class="footer-col">
+            <h3><span data-lang="en">Downloads</span><span data-lang="ru">Загрузки</span></h3>
+            <ul>
+              <li><a href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">App Store (iOS &amp; macOS v1.3.0)</a></li>
+              <li><a href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener"><span data-lang="en">Safari Web Extension (bundled in App Store)</span><span data-lang="ru">Расширение Safari (в App Store)</span></a></li>
+              <li><a href="https://chromewebstore.google.com/detail/olagmnnpoogamifoblpkehbofidliled" target="_blank" rel="noopener">Chrome Web Store (v1.3.1)</a></li>
+              <li><a href="https://addons.mozilla.org/en-US/firefox/addon/password-whisper-visual-passwo/" target="_blank" rel="noopener">Firefox Add-ons (v1.3.1)</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h3><span data-lang="en">Documentation</span><span data-lang="ru">Документы</span></h3>
+            <ul>
+              <li><a href="./support/"><span data-lang="en">Support &amp; Troubleshooting</span><span data-lang="ru">Поддержка и инструкции</span></a></li>
+              <li><a href="./privacy/"><span data-lang="en">Privacy Policy</span><span data-lang="ru">Политика конфиденциальности</span></a></li>
+              <li><a href="./terms/"><span data-lang="en">Terms of Use (EULA)</span><span data-lang="ru">Условия использования</span></a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h3><span data-lang="en">Contact</span><span data-lang="ru">Связь</span></h3>
+            <ul>
+              <li><a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a></li>
+              <li><span>Bundle ID: <code>com.dvoineu.passwordwhisper</code></span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Password Whisper · Aliaksandr Dvoineu</span>
+        <span>v1.3.0 (iOS build 11 · macOS build 12) · Extensions v1.3.1</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Native <dialog closedby="any"> Full-Resolution Screenshot Lightbox -->
+  <dialog id="shot-lightbox" class="lightbox-dialog" closedby="any" aria-labelledby="lightbox-title">
+    <div class="lightbox-head">
+      <h2 id="lightbox-title" class="lightbox-title">Screenshot preview</h2>
+      <form method="dialog">
+        <button type="submit" class="btn btn--soft btn--sm">
+          <span data-lang="en">Close (Esc)</span><span data-lang="ru">Закрыть (Esc)</span>
+        </button>
+      </form>
+    </div>
+    <div class="lightbox-stage">
+      <img id="lightbox-img" src="./assets/screenshots/en/macos-01-workspace.webp" alt="">
+    </div>
+    <div class="lightbox-foot">
+      <span id="lightbox-desc"></span>
+      <div style="display: flex; gap: 8px;">
+        <button type="button" id="lightbox-prev" class="btn btn--soft btn--sm" aria-label="Previous screenshot">←</button>
+        <button type="button" id="lightbox-next" class="btn btn--soft btn--sm" aria-label="Next screenshot">→</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Native <dialog closedby="any"> Mobile Navigation Drawer -->
+  <dialog id="mobile-nav-drawer" class="nav-drawer" closedby="any" aria-label="Site navigation">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+      <span class="brand">
+        <img class="brand-mark" src="./assets/sentinel-iris.svg" alt="" width="26" height="26">
+        <span>Password Whisper</span>
+      </span>
+      <form method="dialog">
+        <button type="submit" class="btn btn--ghost btn--sm" aria-label="Close menu">✕</button>
+      </form>
+    </div>
+
+    <div class="drawer-links">
+      <a href="#whats-new"><span data-lang="en">What's New in 1.3</span><span data-lang="ru">Новое в 1.3</span></a>
+      <a href="#visual-context"><span data-lang="en">Visual Studio Demo</span><span data-lang="ru">Снимки входа</span></a>
+      <a href="#screenshots"><span data-lang="en">Screenshots</span><span data-lang="ru">Скриншоты</span></a>
+      <a href="#tutorial"><span data-lang="en">Quick-Start Tutorial</span><span data-lang="ru">Туториал</span></a>
+      <a href="#security"><span data-lang="en">Security Architecture</span><span data-lang="ru">Как устроена защита</span></a>
+      <a href="#pricing"><span data-lang="en">Pricing &amp; Plans</span><span data-lang="ru">Тарифы</span></a>
+      <a href="#faq">FAQ</a>
+      <a href="./support/"><span data-lang="en">Support</span><span data-lang="ru">Поддержка</span></a>
+      <a href="./privacy/"><span data-lang="en">Privacy Policy</span><span data-lang="ru">Политика конфиденциальности</span></a>
+      <a href="./terms/"><span data-lang="en">Terms of Use</span><span data-lang="ru">Условия использования</span></a>
+    </div>
+
+    <a class="btn btn--primary" style="width: 100%;" href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">
+      <span data-lang="en">Download on App Store</span><span data-lang="ru">Скачать в App Store</span>
+    </a>
+  </dialog>
 </body>
 </html>

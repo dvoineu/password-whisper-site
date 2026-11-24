@@ -3,70 +3,129 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <script>
+    try {
+      var t = localStorage.getItem('pw-site-theme');
+      var m = document.querySelector('meta[name="color-scheme"]');
+      if (t === 'night' || t === 'dusk') { m.content = 'dark'; document.documentElement.dataset.sentinelTheme = t; }
+      else if (t === 'day') { m.content = 'light'; document.documentElement.dataset.sentinelTheme = 'day'; }
+    } catch (e) {}
+  </script>
   <title>Privacy Policy — Password Whisper</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/sentinel-iris.svg">
   <link rel="stylesheet" href="../style.css">
+  <script src="../app.js" defer></script>
 </head>
 <body>
-  <div class="wrap">
-    <header>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
       <a class="brand" href="../">
-        <span class="iris-dot" aria-hidden="true"></span>
+        <img class="brand-mark" src="../assets/sentinel-iris.svg" alt="" width="30" height="30">
         <span>Password Whisper</span>
+        <span class="version-pill">v1.3.0</span>
       </a>
-      <nav aria-label="Primary">
-        <a href="../">Overview</a>
-        <a href="../support/">Support</a>
-        <a href="./">Privacy Policy</a>
-        <a href="../terms/">Terms of Use</a>
+
+      <nav aria-label="Primary navigation">
+        <ul class="nav-links">
+          <li><a href="../">Overview</a></li>
+          <li><a href="../support/">Support</a></li>
+          <li><a href="./" aria-current="page">Privacy Policy</a></li>
+          <li><a href="../terms/">Terms of Use</a></li>
+        </ul>
       </nav>
-    </header>
 
-    <main>
-      <section class="hero">
-        <h1>Privacy Policy</h1>
-        <p class="lead">Updated November 23, 2026 • Applies to Password Whisper (macOS, iOS, iPadOS, and browser extensions)</p>
-      </section>
+      <div class="header-controls">
+        <button type="button" class="btn btn--soft theme-popover-btn" popovertarget="theme-popover" aria-label="Appearance theme" title="Theme">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M8 2a6 6 0 0 1 0 12V2Z" fill="currentColor"/>
+          </svg>
+        </button>
 
-      <section class="section">
-        <h2>1. Your Vault and Optional Network Services (English)</h2>
-        <p>Your vault is encrypted on your device. The developer does not receive its contents or operate a user account database. Password Whisper uses no analytics SDKs or advertising trackers. The optional breach check uses the network services described below.</p>
-        <ul>
-          <li><strong>Vault Encryption:</strong> Your passwords, cards, notes, 2FA secrets, and redacted screenshots remain encrypted on your device using Argon2id and authenticated encryption.</li>
-          <li><strong>On-Device Vision Redaction:</strong> Login screenshot OCR and masking run 100% locally via Apple Vision on your Mac, iPhone, or iPad.</li>
-          <li><strong>Personal iCloud Sync:</strong> If enabled, encrypted vault records sync solely through your personal Apple iCloud (CloudKit) account (<code>iCloud.com.dvoineu.passwordwhisper.vault</code>).</li>
-          <li><strong>Breach Check:</strong> When you run the check, Password Whisper sends the first five characters of a password hash over HTTPS without cookies. Your device compares the results locally. Your password, full hash, username, and website are never sent.</li>
-          <li><strong>Browser Extensions:</strong> The bundled Safari extension communicates locally with Password Whisper. The companion extension for Chrome, Brave, Opera, and Firefox uses local Native Messaging on macOS and stores UI preferences in your browser.</li>
-          <li><strong>Purchases:</strong> Subscriptions and Lifetime unlocks are processed by Apple via StoreKit 2; we do not receive billing details.</li>
-        </ul>
-      </section>
+        <button type="button" id="mobile-menu-open" class="btn btn--soft mobile-menu-btn" aria-label="Open menu">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M2.5 4.5h13M2.5 9h13M2.5 13.5h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
 
-      <section class="section">
-        <h2>Optional breach audit: network processing</h2>
-        <p>Version 1.3.0 sends the prefix to a proxy hosted on Cloudflare Workers. Cloudflare receives the connection IP address and request metadata when it handles the request. The proxy constructs a separate query to Have I Been Pwned (HIBP) using the prefix, requests a padded response, and does not copy the app's request headers. The proxy does not write request logs. Cloudflare may process network metadata under its <a href="https://www.cloudflare.com/privacypolicy/">privacy policy</a>.</p>
-        <p>Earlier versions may query HIBP directly. In that case, HIBP and its network providers receive the connection IP address and request metadata, including the app's User-Agent. <a href="https://haveibeenpwned.com/privacy/">HIBP's privacy policy</a> describes operational and security logs that may include IP addresses, headers, and submitted information and may be retained for up to 31 days. The developer does not receive HIBP logs or use this data for advertising.</p>
-        <p>The app only makes these requests when you run a breach check. You can avoid future requests by skipping the check. For privacy questions or deletion requests, contact <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a>.</p>
-      </section>
-
-      <section class="section" lang="ru">
-        <h2>2. Политика конфиденциальности (Русский)</h2>
-        <p><strong>Проверка паролей на утечки:</strong> при запуске проверки Password Whisper передаёт первые пять символов хеша пароля по HTTPS без файлов cookie. Сравнение выполняется на устройстве. Приложение не отправляет пароль, полный хеш, логин или адрес сайта.</p>
-        <p>В версии 1.3.0 префикс передаётся прокси на Cloudflare Workers. Cloudflare получает IP-адрес соединения и метаданные запроса при его обработке. Прокси создаёт отдельный запрос к Have I Been Pwned (HIBP) по этому префиксу, запрашивает ответ с дополнением и не копирует заголовки запроса приложения. Прокси не записывает журналы запросов. Cloudflare может обрабатывать сетевые метаданные согласно своей <a href="https://www.cloudflare.com/privacypolicy/">политике конфиденциальности</a>.</p>
-        <p>Ранние версии могут обращаться к HIBP напрямую. В этом случае HIBP и его сетевые провайдеры получают IP-адрес соединения и метаданные запроса, включая User-Agent приложения. <a href="https://haveibeenpwned.com/privacy/">Политика HIBP</a> описывает служебные журналы и журналы безопасности, которые могут содержать IP-адреса, заголовки и переданную информацию и храниться до 31 дня. Разработчик не получает журналы HIBP и не использует эти данные для рекламы. Чтобы избежать будущих запросов, не запускайте проверку утечек.</p>
-        <p>Сейф <strong>Password Whisper</strong> зашифрован на устройстве. Разработчик не получает содержимое сейфа, историю браузера или телеметрию. У приложения нет базы пользовательских аккаунтов, средств аналитики и рекламных трекеров.</p>
-        <ul>
-          <li><strong>Шифрование на устройстве:</strong> Сейф <code>.whispervault</code> шифруется локально с помощью Argon2id и AEAD. Мастер-пароль и ключи никогда не покидают устройство в пользу разработчика.</li>
-          <li><strong>Локальное маскирование снимков:</strong> Распознавание и скрытие полей на скриншотах входа выполняется полностью на устройстве средствами Apple Vision.</li>
-          <li><strong>Личный iCloud:</strong> Синхронизация зашифрованных данных идёт только через ваш личный аккаунт Apple iCloud (CloudKit).</li>
-          <li><strong>Расширения браузеров:</strong> Встроенное расширение Safari взаимодействует с приложением локально. Расширение для Chrome, Brave, Opera и Firefox взаимодействует с приложением через локальный канал Native Messaging на macOS и хранит настройки интерфейса в браузере.</li>
-        </ul>
-        <p>По вопросам конфиденциальности и удаления данных пишите на <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a>.</p>
-      </section>
-    </main>
-
-    <footer>
-      <span>© 2026 Password Whisper</span>
-      <span><a href="../terms/">Terms of Use</a> • <a href="../support/">Support & FAQ</a></span>
-    </footer>
+  <div id="theme-popover" class="theme-popover" popover>
+    <div class="theme-popover-list" role="group" aria-label="Color theme">
+      <button type="button" class="seg-btn" data-theme-choice="system" aria-pressed="true"><span>Auto (System)</span><span class="theme-swatch" style="background: linear-gradient(135deg, #10131a 50%, #f3efff 50%);"></span></button>
+      <button type="button" class="seg-btn" data-theme-choice="night" aria-pressed="false"><span>Night</span><span class="theme-swatch" style="background: #10131a;"></span></button>
+      <button type="button" class="seg-btn" data-theme-choice="dusk" aria-pressed="false"><span>Dusk</span><span class="theme-swatch" style="background: linear-gradient(160deg, #744a8b, #2f3378);"></span></button>
+      <button type="button" class="seg-btn" data-theme-choice="day" aria-pressed="false"><span>Day · Pearl</span><span class="theme-swatch" style="background: linear-gradient(160deg, #f3efff, #e8f9f5);"></span></button>
+    </div>
   </div>
+
+  <main id="main-content" class="container container--narrow" style="padding-top: 40px;">
+    <section>
+      <p class="eyebrow"><span class="eyebrow-dot"></span><span>PRIVACY POLICY · ENGLISH &amp; RUSSIAN</span></p>
+      <h1 class="section-title">Privacy Policy</h1>
+      <p class="section-lead">Updated November 23, 2026 • Applies to Password Whisper (macOS, iOS, iPadOS, and browser extensions)</p>
+    </section>
+
+    <section class="doc-section">
+      <h2>1. Your Vault and Optional Network Services (English)</h2>
+      <p>Your vault is encrypted on your device. The developer does not receive its contents or operate a user account database. Password Whisper uses no analytics SDKs or advertising trackers. The optional breach check uses the network services described below.</p>
+      <ul>
+        <li><strong>Vault Encryption:</strong> Your passwords, cards, notes, 2FA secrets, and redacted screenshots remain encrypted on your device using Argon2id and authenticated encryption.</li>
+        <li><strong>On-Device Vision Redaction:</strong> Login screenshot OCR and masking run 100% locally via Apple Vision on your Mac, iPhone, or iPad.</li>
+        <li><strong>Personal iCloud Sync:</strong> If enabled, encrypted vault records sync solely through your personal Apple iCloud (CloudKit) account (<code>iCloud.com.dvoineu.passwordwhisper.vault</code>).</li>
+        <li><strong>Breach Check:</strong> When you run the check, Password Whisper sends the first five characters of a password hash over HTTPS without cookies. Your device compares the results locally. Your password, full hash, username, and website are never sent.</li>
+        <li><strong>Browser Extensions:</strong> The bundled Safari extension communicates locally with Password Whisper. The companion extension for Chrome, Brave, Opera, and Firefox uses local Native Messaging on macOS and stores UI preferences in your browser.</li>
+        <li><strong>Purchases:</strong> Subscriptions and Lifetime unlocks are processed by Apple via StoreKit 2; we do not receive billing details.</li>
+      </ul>
+    </section>
+
+    <section class="doc-section">
+      <h2>Optional breach audit: network processing</h2>
+      <p>Version 1.3.0 sends the prefix to a proxy hosted on Cloudflare Workers. Cloudflare receives the connection IP address and request metadata when it handles the request. The proxy constructs a separate query to Have I Been Pwned (HIBP) using the prefix, requests a padded response, and does not copy the app's request headers. The proxy does not write request logs. Cloudflare may process network metadata under its <a href="https://www.cloudflare.com/privacypolicy/">privacy policy</a>.</p>
+      <p>Earlier versions may query HIBP directly. In that case, HIBP and its network providers receive the connection IP address and request metadata, including the app's User-Agent. <a href="https://haveibeenpwned.com/privacy/">HIBP's privacy policy</a> describes operational and security logs that may include IP addresses, headers, and submitted information and may be retained for up to 31 days. The developer does not receive HIBP logs or use this data for advertising.</p>
+      <p>The app only makes these requests when you run a breach check. You can avoid future requests by skipping the check. For privacy questions or deletion requests, contact <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a>.</p>
+    </section>
+
+    <section class="doc-section" lang="ru">
+      <h2>2. Политика конфиденциальности (Русский)</h2>
+      <p><strong>Проверка паролей на утечки:</strong> при запуске проверки Password Whisper передаёт первые пять символов хеша пароля по HTTPS без файлов cookie. Сравнение выполняется на устройстве. Приложение не отправляет пароль, полный хеш, логин или адрес сайта.</p>
+      <p>В версии 1.3.0 префикс передаётся прокси на Cloudflare Workers. Cloudflare получает IP-адрес соединения и метаданные запроса при его обработке. Прокси создаёт отдельный запрос к Have I Been Pwned (HIBP) по этому префиксу, запрашивает ответ с дополнением и не копирует заголовки запроса приложения. Прокси не записывает журналы запросов. Cloudflare может обрабатывать сетевые метаданные согласно своей <a href="https://www.cloudflare.com/privacypolicy/">политике конфиденциальности</a>.</p>
+      <p>Ранние версии могут обращаться к HIBP напрямую. В этом случае HIBP и его сетевые провайдеры получают IP-адрес соединения и метаданные запроса, включая User-Agent приложения. <a href="https://haveibeenpwned.com/privacy/">Политика HIBP</a> описывает служебные журналы и журналы безопасности, которые могут содержать IP-адреса, заголовки и переданную информацию и храниться до 31 дня. Разработчик не получает журналы HIBP и не использует эти данные для рекламы. Чтобы избежать будущих запросов, не запускайте проверку утечек.</p>
+      <p>Сейф <strong>Password Whisper</strong> зашифрован на устройстве. Разработчик не получает содержимое сейфа, историю браузера или телеметрию. У приложения нет базы пользовательских аккаунтов, средств аналитики и рекламных трекеров.</p>
+      <ul>
+        <li><strong>Шифрование на устройстве:</strong> Сейф <code>.whispervault</code> шифруется локально с помощью Argon2id и AEAD. Мастер-пароль и ключи никогда не покидают устройство в пользу разработчика.</li>
+        <li><strong>Локальное маскирование снимков:</strong> Распознавание и скрытие полей на скриншотах входа выполняется полностью на устройстве средствами Apple Vision.</li>
+        <li><strong>Личный iCloud:</strong> Синхронизация зашифрованных данных идёт только через ваш личный аккаунт Apple iCloud (CloudKit).</li>
+        <li><strong>Расширения браузеров:</strong> Встроенное расширение Safari взаимодействует с приложением локально. Расширение для Chrome, Brave, Opera и Firefox взаимодействует с приложением через локальный канал Native Messaging на macOS и хранит настройки интерфейса в браузере.</li>
+      </ul>
+      <p>По вопросам конфиденциальности и удаления данных пишите на <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a>.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="margin-top: 0; border-top: 0; padding-top: 0;">
+        <span>© 2026 Password Whisper · <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a></span>
+        <span><a href="../">Overview</a> · <a href="../terms/">Terms of Use</a> · <a href="../support/">Support &amp; FAQ</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <dialog id="mobile-nav-drawer" class="nav-drawer" closedby="any" aria-label="Site navigation">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+      <span class="brand"><img class="brand-mark" src="../assets/sentinel-iris.svg" alt="" width="26" height="26"><span>Password Whisper</span></span>
+      <form method="dialog"><button type="submit" class="btn btn--ghost btn--sm" aria-label="Close menu">✕</button></form>
+    </div>
+    <div class="drawer-links">
+      <a href="../">Overview</a>
+      <a href="../support/">Support</a>
+      <a href="./">Privacy Policy</a>
+      <a href="../terms/">Terms of Use</a>
+    </div>
+  </dialog>
 </body>
 </html>

@@ -3,58 +3,118 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <script>
+    try {
+      var t = localStorage.getItem('pw-site-theme');
+      var m = document.querySelector('meta[name="color-scheme"]');
+      if (t === 'night' || t === 'dusk') { m.content = 'dark'; document.documentElement.dataset.sentinelTheme = t; }
+      else if (t === 'day') { m.content = 'light'; document.documentElement.dataset.sentinelTheme = 'day'; }
+    } catch (e) {}
+  </script>
   <title>Terms of Use (EULA) — Password Whisper</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/sentinel-iris.svg">
   <link rel="stylesheet" href="../style.css">
+  <script src="../app.js" defer></script>
 </head>
 <body>
-  <div class="wrap">
-    <header>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
       <a class="brand" href="../">
-        <span class="iris-dot" aria-hidden="true"></span>
+        <img class="brand-mark" src="../assets/sentinel-iris.svg" alt="" width="30" height="30">
         <span>Password Whisper</span>
+        <span class="version-pill">v1.3.0</span>
       </a>
-      <nav aria-label="Primary">
-        <a href="../">Overview</a>
-        <a href="../support/">Support</a>
-        <a href="../privacy/">Privacy Policy</a>
-        <a href="./">Terms of Use</a>
+
+      <nav aria-label="Primary navigation">
+        <ul class="nav-links">
+          <li><a href="../">Overview</a></li>
+          <li><a href="../support/">Support</a></li>
+          <li><a href="../privacy/">Privacy Policy</a></li>
+          <li><a href="./" aria-current="page">Terms of Use</a></li>
+        </ul>
       </nav>
-    </header>
 
-    <main>
-      <section class="hero">
-        <h1>Terms of Use &amp; EULA</h1>
-        <p class="lead">Effective Date: November 15, 2026 • Password Whisper (`com.dvoineu.passwordwhisper`)</p>
-      </section>
+      <div class="header-controls">
+        <button type="button" class="btn btn--soft theme-popover-btn" popovertarget="theme-popover" aria-label="Appearance theme" title="Theme">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M8 2a6 6 0 0 1 0 12V2Z" fill="currentColor"/>
+          </svg>
+        </button>
 
-      <section class="section">
-        <h2>1. Terms of Use (English)</h2>
-        <ul>
-          <li><strong>Licensed Application EULA:</strong> Password Whisper is licensed to you under Apple's <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Standard Licensed Application End User License Agreement (EULA)</a> alongside these Terms of Use.</li>
-          <li><strong>Zero-Knowledge Responsibility:</strong> Because Password Whisper does not operate developer servers and cannot reset or recover your Master Password, you are solely responsible for safeguarding your Master Password and printable Recovery Kit PDF.</li>
-          <li><strong>No-Hostage Free Tier:</strong> The Free tier lets you store up to 25 active vault items and 5 encrypted login screenshots. Viewing, copying, AutoFill, editing existing items, and CSV export always remain free without lock-in.</li>
-          <li><strong>Pro Subscriptions &amp; 14-Day Free Trial:</strong> Password Whisper Pro (Monthly and Yearly) unlocks unlimited vault items, login screenshots, cards &amp; documents, and Apple Family Sharing for up to 6 people. Where eligible, Pro Yearly starts with a 14-day free trial. Payment is charged to your Apple Account at confirmation of purchase (or at the end of the free trial). Subscriptions automatically renew unless canceled at least 24 hours before the end of the current billing period. You can manage or cancel subscriptions anytime in your Apple Account Settings.</li>
-          <li><strong>Lifetime License:</strong> Password Whisper Lifetime is a one-time non-consumable purchase that grants permanent access to Pro features on your Apple Account (including Apple Family Sharing where enabled).</li>
-        </ul>
-      </section>
+        <button type="button" id="mobile-menu-open" class="btn btn--soft mobile-menu-btn" aria-label="Open menu">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M2.5 4.5h13M2.5 9h13M2.5 13.5h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
 
-      <section class="section" lang="ru">
-        <h2>2. Условия использования и лицензионное соглашение (Русский)</h2>
-        <ul>
-          <li><strong>Стандартная EULA Apple:</strong> Использование Password Whisper регулируется <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">стандартным лицензионным соглашением Apple (Standard EULA)</a> и настоящими Условиями использования.</li>
-          <li><strong>Ответственность за ключи (Zero-Knowledge):</strong> У разработчика нет доступа к вашему сейфу и технической возможности восстановить забытый мастер-пароль. Сохраняйте мастер-пароль и печатный Recovery Kit PDF в надёжном месте.</li>
-          <li><strong>Гарантия No-Hostage:</strong> Бесплатная версия включает до 25 активных записей и 5 снимков окна входа. Просмотр, копирование, AutoFill, редактирование существующих записей и экспорт CSV всегда остаются бесплатными.</li>
-          <li><strong>Подписки Pro и пробный период:</strong> Подписки Password Whisper Pro (Месяц и Год) снимают ограничения и поддерживают Apple Family Sharing до 6 человек. Для годовой подписки доступен 14-дневный бесплатный пробный период (при соблюдении условий Apple). Оплата списывается со счёта Apple Account при подтверждении покупки (или после завершения триала). Подписка продлевается автоматически, если не отменить её минимум за 24 часа до конца текущего периода; управление доступно в настройках Apple Account.</li>
-          <li><strong>Покупка Lifetime:</strong> Password Whisper Lifetime — разовая нерасходуемая покупка с бессрочным доступом к функциям Pro.</li>
-        </ul>
-        <p>Контакты по вопросам лицензии и возвратов: <a href="mailto:dvoineu@gmail.com">dvoineu@gmail.com</a>.</p>
-      </section>
-    </main>
-
-    <footer>
-      <span>© 2026 Password Whisper</span>
-      <span><a href="../privacy/">Privacy Policy</a> • <a href="../support/">Support &amp; FAQ</a></span>
-    </footer>
+  <div id="theme-popover" class="theme-popover" popover>
+    <div class="theme-popover-list" role="group" aria-label="Color theme">
+      <button type="button" class="seg-btn" data-theme-choice="system" aria-pressed="true"><span>Auto (System)</span><span class="theme-swatch" style="background: linear-gradient(135deg, #10131a 50%, #f3efff 50%);"></span></button>
+      <button type="button" class="seg-btn" data-theme-choice="night" aria-pressed="false"><span>Night</span><span class="theme-swatch" style="background: #10131a;"></span></button>
+      <button type="button" class="seg-btn" data-theme-choice="dusk" aria-pressed="false"><span>Dusk</span><span class="theme-swatch" style="background: linear-gradient(160deg, #744a8b, #2f3378);"></span></button>
+      <button type="button" class="seg-btn" data-theme-choice="day" aria-pressed="false"><span>Day · Pearl</span><span class="theme-swatch" style="background: linear-gradient(160deg, #f3efff, #e8f9f5);"></span></button>
+    </div>
   </div>
+
+  <main id="main-content" class="container container--narrow" style="padding-top: 40px;">
+    <section>
+      <p class="eyebrow"><span class="eyebrow-dot"></span><span>TERMS OF USE &amp; EULA · ENGLISH &amp; RUSSIAN</span></p>
+      <h1 class="section-title">Terms of Use &amp; EULA</h1>
+      <p class="section-lead">Effective Date: November 15, 2026 (Updated November 24, 2026) • Password Whisper (<code>com.dvoineu.passwordwhisper</code>)</p>
+    </section>
+
+    <section class="doc-section">
+      <h2>1. Terms of Use (English)</h2>
+      <ul>
+        <li><strong>Licensed Application EULA:</strong> Password Whisper is licensed to you under Apple's <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Standard Licensed Application End User License Agreement (EULA)</a> alongside these Terms of Use.</li>
+        <li><strong>Zero-Knowledge Responsibility:</strong> Because Password Whisper does not operate developer vault servers and cannot reset or recover your Master Password, you are solely responsible for safeguarding your Master Password and printable Recovery Kit PDF.</li>
+        <li><strong>No-Hostage Free Tier:</strong> The Free tier lets you store up to 25 active vault items and 5 encrypted login screenshots. Viewing, copying, AutoFill, editing existing items, and CSV export always remain free without lock-in.</li>
+        <li><strong>Pro Subscriptions &amp; 14-Day Free Trial:</strong> Password Whisper Pro (Monthly and Yearly) unlocks unlimited vault items, login screenshots, cards &amp; documents, and Apple Family Sharing for up to 6 people. Where eligible, Pro Yearly starts with a 14-day free trial. Payment is charged to your Apple Account at confirmation of purchase (or at the end of the free trial). Subscriptions automatically renew unless canceled at least 24 hours before the end of the current billing period. You can manage or cancel subscriptions anytime in your Apple Account Settings.</li>
+        <li><strong>Lifetime License:</strong> Password Whisper Lifetime is a one-time non-consumable purchase that grants permanent access to Pro features on your Apple Account (including Apple Family Sharing where enabled).</li>
+      </ul>
+      <p>Licensing and billing inquiries: <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a>.</p>
+    </section>
+
+    <section class="doc-section" lang="ru">
+      <h2>2. Условия использования и лицензионное соглашение (Русский)</h2>
+      <ul>
+        <li><strong>Стандартная EULA Apple:</strong> Использование Password Whisper регулируется <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">стандартным лицензионным соглашением Apple (Standard EULA)</a> и настоящими Условиями использования.</li>
+        <li><strong>Ответственность за ключи (Zero-Knowledge):</strong> У разработчика нет доступа к вашему сейфу и технической возможности восстановить забытый мастер-пароль. Сохраняйте мастер-пароль и печатный Recovery Kit PDF в надёжном месте.</li>
+        <li><strong>Гарантия No-Hostage:</strong> Бесплатная версия включает до 25 активных записей и 5 снимков окна входа. Просмотр, копирование, AutoFill, редактирование существующих записей и экспорт CSV всегда остаются бесплатными.</li>
+        <li><strong>Подписки Pro и пробный период:</strong> Подписки Password Whisper Pro (Месяц и Год) снимают ограничения и поддерживают Apple Family Sharing до 6 человек. Для годовой подписки доступен 14-дневный бесплатный пробный период (при соблюдении условий Apple). Оплата списывается со счёта Apple Account при подтверждении покупки (или после завершения триала). Подписка продлевается автоматически, если не отменить её минимум за 24 часа до конца текущего периода; управление доступно в настройках Apple Account.</li>
+        <li><strong>Покупка Lifetime:</strong> Password Whisper Lifetime — разовая нерасходуемая покупка с бессрочным доступом к функциям Pro.</li>
+      </ul>
+      <p>Контакты по вопросам лицензии и возвратов: <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a>.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="margin-top: 0; border-top: 0; padding-top: 0;">
+        <span>© 2026 Password Whisper · <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a></span>
+        <span><a href="../">Overview</a> · <a href="../privacy/">Privacy Policy</a> · <a href="../support/">Support &amp; FAQ</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <dialog id="mobile-nav-drawer" class="nav-drawer" closedby="any" aria-label="Site navigation">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+      <span class="brand"><img class="brand-mark" src="../assets/sentinel-iris.svg" alt="" width="26" height="26"><span>Password Whisper</span></span>
+      <form method="dialog"><button type="submit" class="btn btn--ghost btn--sm" aria-label="Close menu">✕</button></form>
+    </div>
+    <div class="drawer-links">
+      <a href="../">Overview</a>
+      <a href="../support/">Support</a>
+      <a href="../privacy/">Privacy Policy</a>
+      <a href="./">Terms of Use</a>
+    </div>
+  </dialog>
 </body>
 </html>
