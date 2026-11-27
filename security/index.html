@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" data-title-en="Security Architecture &amp; Self-Verification — Password Whisper" data-title-ru="Центр безопасности и самостоятельная проверка — Password Whisper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <script>
+    try {
+      var t = localStorage.getItem('pw-site-theme');
+      var m = document.querySelector('meta[name="color-scheme"]');
+      if (t === 'night' || t === 'dusk') { m.content = 'dark'; document.documentElement.dataset.sentinelTheme = t; }
+      else if (t === 'day') { m.content = 'light'; document.documentElement.dataset.sentinelTheme = 'day'; }
+      var l = localStorage.getItem('pw-site-lang');
+      document.documentElement.dataset.uiLang = (l === 'ru' || l === 'en') ? l : ((navigator.language || '').toLowerCase().startsWith('ru') ? 'ru' : 'en');
+    } catch (e) {}
+  </script>
+  <title>Security Architecture &amp; Self-Verification — Password Whisper</title>
+  <meta name="description" content="Complete 7-layer security architecture of Password Whisper: Argon2id RFC 9106 (32 MiB), AES-256-GCM + AAD, mlock/memset_s, zero data collection, and step-by-step guide to verify security yourself.">
+  <link rel="canonical" href="https://dvoineu.github.io/password-whisper-site/security/">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://dvoineu.github.io/password-whisper-site/security/">
+  <meta property="og:title" content="Security Center &amp; Verify It Yourself — Password Whisper">
+  <meta property="og:description" content="Your data is never stored on our servers and never collected. Inspect all 7 layers of defense and verify Password Whisper yourself in 2 minutes.">
+  <meta property="og:image" content="https://dvoineu.github.io/password-whisper-site/assets/og-card.png">
+  <link rel="icon" type="image/svg+xml" href="../assets/sentinel-iris.svg">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../app.js" defer></script>
+</head>
+<body>
+  <div class="scroll-progress-bar" aria-hidden="true"></div>
+  <a class="skip-link" href="#main-content">
+    <span data-lang="en">Skip to main content</span>
+    <span data-lang="ru">Перейти к основному содержимому</span>
+  </a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../">
+        <img class="brand-mark" src="../assets/sentinel-iris.svg" alt="" width="30" height="30">
+        <span>Password Whisper</span>
+        <span class="version-pill">v1.4.0</span>
+      </a>
+
+      <nav aria-label="Primary navigation">
+        <ul class="nav-links">
+          <li><a href="../"><span data-lang="en">Overview</span><span data-lang="ru">Главная</span></a></li>
+          <li><a href="../#compare"><span data-lang="en">Compare</span><span data-lang="ru">Сравнение</span></a></li>
+          <li><a href="./" aria-current="page"><span data-lang="en">Security &amp; Verify</span><span data-lang="ru">Безопасность</span></a></li>
+          <li><a href="../support/"><span data-lang="en">Support</span><span data-lang="ru">Поддержка</span></a></li>
+          <li><a href="../privacy/"><span data-lang="en">Privacy</span><span data-lang="ru">Политика</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="header-controls">
+        <div class="seg-control" role="group" aria-label="Language">
+          <button type="button" class="seg-btn" data-lang-choice="ru" aria-pressed="false">RU</button>
+          <button type="button" class="seg-btn" data-lang-choice="en" aria-pressed="true">EN</button>
+        </div>
+
+        <button type="button" class="btn btn--soft theme-popover-btn" popovertarget="theme-popover" aria-label="Appearance theme" title="Theme">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M8 2a6 6 0 0 1 0 12V2Z" fill="currentColor"/>
+          </svg>
+        </button>
+
+        <a class="btn btn--primary btn--sm header-cta" href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">App Store</a>
+
+        <button type="button" id="mobile-menu-open" class="btn btn--soft mobile-menu-btn" aria-label="Open menu">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M2.5 4.5h13M2.5 9h13M2.5 13.5h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="theme-popover" class="theme-popover" popover>
+    <div class="theme-popover-list" role="group" aria-label="Color theme">
+      <button type="button" class="seg-btn" data-theme-choice="system" aria-pressed="true"><span><span data-lang="en">Auto (System)</span><span data-lang="ru">Авто (система)</span></span><span class="theme-swatch" style="background: linear-gradient(135deg, #10131a 50%, #f3efff 50%);"></span></button>
+      <button type="button" class="seg-btn" data-theme-choice="night" aria-pressed="false"><span><span data-lang="en">Night</span><span data-lang="ru">Ночь</span></span><span class="theme-swatch" style="background: #10131a;"></span></button>
+      <button type="button" class="seg-btn" data-theme-choice="dusk" aria-pressed="false"><span><span data-lang="en">Dusk</span><span data-lang="ru">Сумерки</span></span><span class="theme-swatch" style="background: linear-gradient(160deg, #744a8b, #2f3378);"></span></button>
+      <button type="button" class="seg-btn" data-theme-choice="day" aria-pressed="false"><span><span data-lang="en">Day · Pearl</span><span data-lang="ru">День · Перламутр</span></span><span class="theme-swatch" style="background: linear-gradient(160deg, #f3efff, #e8f9f5);"></span></button>
+    </div>
+  </div>
+
+  <main id="main-content">
+    <!-- Hero -->
+    <section class="hero-section" style="padding-bottom: var(--space-5);">
+      <div class="container">
+        <p class="eyebrow"><span class="eyebrow-dot"></span><span><span data-lang="en">SECURITY CENTER · ZERO-KNOWLEDGE SPECIFICATION</span><span data-lang="ru">ЦЕНТР БЕЗОПАСНОСТИ · ПРОВЕРЯЕМАЯ АРХИТЕКТУРА</span></span></p>
+        <h1 class="hero-title" style="max-width: 22ch;">
+          <span data-lang="en">How Password Whisper protects you — and how to verify it yourself</span>
+          <span data-lang="ru">Как устроена защита Password Whisper — и как проверить её самому</span>
+        </h1>
+        <p class="hero-subtitle" style="max-width: 68ch;">
+          <span data-lang="en">Security is not a marketing slogan. Below is our Zero Data Collection commitment, the exact 7 cryptographic &amp; OS defense layers shipped in our binary, and a practical hands-on checklist any person can run without trusting our word.</span>
+          <span data-lang="ru">Безопасность — не рекламный лозунг. Ниже собраны наше заявление о нулевом сборе данных, точное описание всех 7 эшелонов криптографической и системной защиты в коде приложения и пошаговый гайд, как обычному человеку лично проверить всё за 2 минуты.</span>
+        </p>
+        <div class="hero-actions" style="margin-bottom: 0;">
+          <a class="btn btn--primary btn--lg" href="#verify-yourself">
+            <span data-lang="en">Jump to 2-Minute Self-Check</span>
+            <span data-lang="ru">Проверить самому за 2 минуты</span>
+          </a>
+          <a class="btn btn--soft btn--lg" href="#seven-layers">
+            <span data-lang="en">7 Layers of Defense</span>
+            <span data-lang="ru">7 уровней защиты</span>
+          </a>
+          <a class="btn btn--ghost btn--lg" href="../privacy/">
+            <span data-lang="en">Privacy Policy</span>
+            <span data-lang="ru">Политика конфиденциальности</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Zero Data Collection Manifesto + Network Perimeter -->
+    <section class="section-block" style="padding-top: var(--space-4);">
+      <div class="container">
+        <div class="zero-manifesto">
+          <div class="zero-manifesto-top">
+            <div>
+              <span class="card-tag"><span data-lang="en">ZERO DATA COLLECTION</span><span data-lang="ru">НУЛЕВОЙ СБОР ДАННЫХ</span></span>
+              <h3>
+                <span data-lang="en">User data is never stored on our servers and never collected.</span>
+                <span data-lang="ru">Данные наших пользователей нигде не хранятся и не собираются.</span>
+              </h3>
+              <p>
+                <span data-lang="en">Password Whisper has no developer vault servers, no user account registry, no telemetry, no crash analytics SDKs, and no advertising identifiers. Everything inside your vault is encrypted locally on your Mac, iPhone, or iPad before a single byte is written to disk.</span>
+                <span data-lang="ru">У Password Whisper нет серверов хранения сейфов, нет базы аккаунтов, нет аналитики, рекламных трекеров и телеметрии сбоев. Любая запись, скриншот и файл шифруются строго локально на вашем Mac, iPhone или iPad ещё до записи на диск.</span>
+              </p>
+            </div>
+            <div class="zero-kpis">
+              <div class="zero-kpi"><strong>0</strong><span><span data-lang="en">Vault servers</span><span data-lang="ru">Серверов сейфа</span></span></div>
+              <div class="zero-kpi"><strong>0</strong><span><span data-lang="en">Tracking SDKs</span><span data-lang="ru">Трекинг-SDK</span></span></div>
+              <div class="zero-kpi"><strong>100%</strong><span><span data-lang="en">On-device crypto</span><span data-lang="ru">Локальная крипто</span></span></div>
+            </div>
+          </div>
+
+          <div class="network-perimeter-grid">
+            <article class="perimeter-card">
+              <span class="chip chip--safe">0 BYTES · OFFLINE</span>
+              <h4><span data-lang="en">1. Local Vault Mode (Default)</span><span data-lang="ru">1. Локальный режим (по умолчанию)</span></h4>
+              <p><span data-lang="en">Zero network connections. Creating items, generating CSPRNG passwords, Vision OCR screenshot masking, AutoFill, and offline audit score work completely without internet.</span><span data-lang="ru">Ноль сетевых соединений. Создание записей, генератор CSPRNG, маскирование Vision OCR, автозаполнение и аудит работают без интернета.</span></p>
+            </article>
+            <article class="perimeter-card">
+              <span class="chip chip--safe">PRIVATE CLOUDKIT</span>
+              <h4><span data-lang="en">2. Personal Apple iCloud Sync (Optional)</span><span data-lang="ru">2. Личный iCloud (включается вручную)</span></h4>
+              <p><span data-lang="en">Only when toggled on for a vault, devices sync directly with your private Apple CloudKit database (<code>iCloud.com.dvoineu.passwordwhisper.vault</code>). Only AES-256-GCM ciphertext is transmitted — never plaintext titles, logins, URLs, or images.</span><span data-lang="ru">Только при включении тумблера устройства обмениваются шифротекстом напрямую через вашу приватную базу CloudKit (<code>iCloud.com.dvoineu.passwordwhisper.vault</code>) — без открытых названий, логинов, URL и картинок.</span></p>
+            </article>
+            <article class="perimeter-card">
+              <span class="chip chip--warn">OPT-IN · ZERO-LOG</span>
+              <h4><span data-lang="en">3. Manual HIBP Breach Check (v1.4 Strict)</span><span data-lang="ru">3. Ручная проверка утечек (v1.4 строгая)</span></h4>
+              <p><span data-lang="en">Only on button tap: sends 5 uppercase hex chars of SHA-1 via an ephemeral cookie-free HTTPS request to our zero-log Cloudflare Worker (Logs, Traces, Issues, and storage bindings OFF; HTTP redirects &amp; direct HIBP fallback strictly disabled).</span><span data-lang="ru">Только по нажатию кнопки: отправляет 5 hex-символов SHA-1 через ephemeral HTTPS без cookie и редиректов на stateless-прокси Cloudflare Workers (логи, трейсы и хранилища отключены; прямой fallback на HIBP удалён).</span></p>
+            </article>
+          </div>
+        </div>
+
+        <!-- Who Sees What Matrix -->
+        <div class="observer-box">
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span><span data-lang="en">DATA VISIBILITY · WHO SEES WHAT</span><span data-lang="ru">МАТРИЦА ДОСТУПА · ЧТО ВИДИТ КАЖДАЯ СТОРОНА</span></span></p>
+          <div class="observer-roles" role="group" aria-label="Select observer perspective">
+            <button type="button" class="observer-role-btn" data-observer-role="you" aria-pressed="false"><span data-lang="en">You (Unlocked)</span><span data-lang="ru">Вы (с паролем)</span></button>
+            <button type="button" class="observer-role-btn" data-observer-role="dev" aria-pressed="true"><span data-lang="en">Developer</span><span data-lang="ru">Разработчик</span></button>
+            <button type="button" class="observer-role-btn" data-observer-role="icloud" aria-pressed="false"><span data-lang="en">Apple iCloud</span><span data-lang="ru">Apple iCloud</span></button>
+            <button type="button" class="observer-role-btn" data-observer-role="network" aria-pressed="false"><span data-lang="en">ISP / Network</span><span data-lang="ru">Сеть / Провайдер</span></button>
+            <button type="button" class="observer-role-btn" data-observer-role="attacker" aria-pressed="false"><span data-lang="en">Thief with .whispervault</span><span data-lang="ru">Вор с файлом сейфа</span></button>
+          </div>
+
+          <div class="observer-stage">
+            <div class="observer-verdict">
+              <span class="chip chip--safe" id="observer-badge">0 BYTES · NO SERVERS</span>
+              <h4 id="observer-title">Password Whisper Developer</h4>
+              <p id="observer-desc"></p>
+            </div>
+            <pre class="observer-dump" id="observer-dump" tabindex="0"></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         HOW TO VERIFY SECURITY YOURSELF — TWO LEVELS (#84)
+         ===================================================================== -->
+    <section id="verify-yourself" class="section-block reveal">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span><span data-lang="en">DON'T TRUST — VERIFY · HANDS-ON AUDIT GUIDE</span><span data-lang="ru">НЕ ВЕРЬТЕ НА СЛОВО — ПРОВЕРЬТЕ САМИ</span></span></p>
+          <h2 class="section-title">
+            <span data-lang="en">How anyone can verify Password Whisper's security</span>
+            <span data-lang="ru">Как обычному человеку проверить приложение на безопасность</span>
+          </h2>
+          <p class="section-lead">
+            <span data-lang="en">You don't need to be a cryptographer. Pick the 2-minute everyday checklist (no extra software) or switch to the macOS Terminal tab for deeper technical inspection.</span>
+            <span data-lang="ru">Для проверки не нужно быть программистом. Пройдите 6 простых проверок за 2 минуты без сторонних программ — или переключитесь на вкладку для специалистов с командами macOS Terminal.</span>
+          </p>
+        </div>
+
+        <div class="tabs-wrapper" data-tabs>
+          <div class="tablist-scroller" role="tablist" focusgroup="tablist nomemory" aria-label="Verification skill level">
+            <button type="button" class="tab-btn" role="tab" id="ver-tab-basic" aria-selected="true" focusgroupstart tabindex="0">
+              <span data-lang="en">Level 1: For Everyone (2 min, no tools)</span>
+              <span data-lang="ru">Уровень 1: Для любого человека (2 мин, без программ)</span>
+            </button>
+            <button type="button" class="tab-btn" role="tab" id="ver-tab-pro" aria-selected="false" tabindex="-1">
+              <span data-lang="en">Level 2: For IT Pros (macOS Terminal)</span>
+              <span data-lang="ru">Уровень 2: Для специалистов (macOS Terminal)</span>
+            </button>
+          </div>
+
+          <div class="tab-panels-stack">
+            <!-- Level 1: Everyday User 6 Checks -->
+            <div role="tabpanel" aria-labelledby="ver-tab-basic">
+              <div class="tab-panel-inner">
+                <div class="verify-progress-wrap">
+                  <strong class="mono-num" id="verify-progress-text" style="font-size: 13px;">Checks completed: 0 of 6 (0%)</strong>
+                  <div class="verify-bar-track" aria-hidden="true"><div class="verify-bar-fill" id="verify-bar-fill"></div></div>
+                  <button type="button" id="verify-reset-btn" class="btn btn--ghost btn--sm">
+                    <span data-lang="en">Reset checklist</span><span data-lang="ru">Сбросить</span>
+                  </button>
+                </div>
+
+                <div class="verify-grid">
+                  <!-- Check 1 -->
+                  <article class="verify-card" data-verify-id="airplane" data-checked="false">
+                    <div class="verify-card-head">
+                      <div>
+                        <span class="defense-num">CHECK 01 · 30 SEC</span>
+                        <h3><span data-lang="en">The Airplane Mode Test</span><span data-lang="ru">Тест «Авиарежим»</span></h3>
+                      </div>
+                      <button type="button" class="verify-check-btn" aria-pressed="false">Mark done</button>
+                    </div>
+                    <div class="verify-trio">
+                      <div><strong><span data-lang="en">What to do</span><span data-lang="ru">Что сделать</span></strong><span data-lang="en">Turn off Wi-Fi and cellular on your iPhone or Mac, then open Password Whisper, add a test entry, inspect a screenshot, and run Security Audit.</span><span data-lang="ru">Выключите Wi-Fi и мобильную сеть на iPhone или Mac. Откройте Password Whisper, создайте тестовую запись, посмотрите скриншот и запустите аудит.</span></div>
+                      <div><strong><span data-lang="en">What you'll see</span><span data-lang="ru">Что вы увидите</span></strong><span data-lang="en">Everything unlocks, saves, masks images, and scores security instantaneously with zero errors.</span><span data-lang="ru">Сейф мгновенно открывается, сохраняет записи, маскирует снимки и считает оценку защиты без единой ошибки.</span></div>
+                      <div class="verify-proof"><strong><span data-lang="en">What this proves</span><span data-lang="ru">Что это доказывает</span></strong><span data-lang="en">Your vault physically lives on your device — not on a remote developer server.</span><span data-lang="ru">Ваши пароли физически хранятся на вашем устройстве, а не на стороннем сервере.</span></div>
+                    </div>
+                  </article>
+
+                  <!-- Check 2 -->
+                  <article class="verify-card" data-verify-id="ios-report" data-checked="false">
+                    <div class="verify-card-head">
+                      <div>
+                        <span class="defense-num">CHECK 02 · BUILT INTO IPHONE</span>
+                        <h3><span data-lang="en">Apple's App Privacy Report (iOS)</span><span data-lang="ru">Отчёт о конфиденциальности приложений (iOS)</span></h3>
+                      </div>
+                      <button type="button" class="verify-check-btn" aria-pressed="false">Mark done</button>
+                    </div>
+                    <div class="verify-trio">
+                      <div><strong><span data-lang="en">What to do</span><span data-lang="ru">Что сделать</span></strong><span data-lang="en">On iPhone/iPad open <em>Settings → Privacy &amp; Security → App Privacy Report</em>, use Password Whisper normally, then inspect its App Network Activity.</span><span data-lang="ru">На iPhone/iPad откройте <em>Настройки → Конфиденциальность и безопасность → Отчёт о конфиденциальности приложений</em> и посмотрите сетевую активность Password Whisper.</span></div>
+                      <div><strong><span data-lang="en">What you'll see</span><span data-lang="ru">Что вы увидите</span></strong><span data-lang="en">Zero contacted domains in local mode; only Apple's own iCloud endpoints if you turned on iCloud sync.</span><span data-lang="ru">В локальном режиме список доменов пуст; при включённом iCloud — только системные адреса Apple.</span></div>
+                      <div class="verify-proof"><strong><span data-lang="en">What this proves</span><span data-lang="ru">Что это доказывает</span></strong><span data-lang="en">Independent OS-level proof that no trackers, analytics, or developer servers are contacted.</span><span data-lang="ru">Независимое доказательство самой iOS: в приложении нет скрытых трекеров, аналитики и «домашних» серверов.</span></div>
+                    </div>
+                  </article>
+
+                  <!-- Check 3 -->
+                  <article class="verify-card" data-verify-id="open-vault" data-checked="false">
+                    <div class="verify-card-head">
+                      <div>
+                        <span class="defense-num">CHECK 03 · SEE WITH YOUR OWN EYES</span>
+                        <h3><span data-lang="en">Open .whispervault in TextEdit</span><span data-lang="ru">Откройте файл .whispervault в TextEdit</span></h3>
+                      </div>
+                      <button type="button" class="verify-check-btn" aria-pressed="false">Mark done</button>
+                    </div>
+                    <div class="verify-trio">
+                      <div><strong><span data-lang="en">What to do</span><span data-lang="ru">Что сделать</span></strong><span data-lang="en">Export an encrypted vault backup on Mac → right-click <code>.whispervault</code> → <em>Show Package Contents</em> → open any file in <code>items/*.item.enc</code> with TextEdit.</span><span data-lang="ru">Сохраните зашифрованную копию сейфа на Mac → правый клик по <code>.whispervault</code> → <em>Показать содержимое пакета</em> → откройте любой файл <code>items/*.item.enc</code> в TextEdit.</span></div>
+                      <div><strong><span data-lang="en">What you'll see</span><span data-lang="ru">Что вы увидите</span></strong><span data-lang="en">Only <code>nonce</code>, unreadable base64 <code>ciphertext</code>, and <code>tag</code> — zero site names, usernames, or passwords.</span><span data-lang="ru">Только <code>nonce</code>, нечитаемый <code>ciphertext</code> и <code>tag</code> — ни одного названия сайта, логина или пароля.</span></div>
+                      <div class="verify-proof"><strong><span data-lang="en">What this proves</span><span data-lang="ru">Что это доказывает</span></strong><span data-lang="en">Every single record and image is genuinely encrypted on disk before sync or backup.</span><span data-lang="ru">Каждая запись и картинка реально зашифрованы на диске, а не просто «спрятаны за экраном входа».</span></div>
+                    </div>
+                  </article>
+
+                  <!-- Check 4 -->
+                  <article class="verify-card" data-verify-id="tamper" data-checked="false">
+                    <div class="verify-card-head">
+                      <div>
+                        <span class="defense-num">CHECK 04 · INTEGRITY PROOF</span>
+                        <h3><span data-lang="en">The 1-Character Tamper Test</span><span data-lang="ru">Тест подмены 1 символа (AEAD)</span></h3>
+                      </div>
+                      <button type="button" class="verify-check-btn" aria-pressed="false">Mark done</button>
+                    </div>
+                    <div class="verify-trio">
+                      <div><strong><span data-lang="en">What to do</span><span data-lang="ru">Что сделать</span></strong><span data-lang="en">Make a disposable <em>copy</em> of your backup <code>.whispervault</code>, change 1 letter inside <code>ciphertext</code> of any <code>.item.enc</code>, and try opening the copy.</span><span data-lang="ru">Сделайте тестовую <em>копию</em> папки <code>.whispervault</code>, измените 1 букву в <code>ciphertext</code> файла <code>.item.enc</code> и попробуйте открыть копию.</span></div>
+                      <div><strong><span data-lang="en">What you'll see</span><span data-lang="ru">Что вы увидите</span></strong><span data-lang="en">Password Whisper immediately flags tampering/corruption and refuses to load the altered item.</span><span data-lang="ru">Приложение мгновенно обнаружит подделку/повреждение и заблокирует загрузку изменённого конверта.</span></div>
+                      <div class="verify-proof"><strong><span data-lang="en">What this proves</span><span data-lang="ru">Что это доказывает</span></strong><span data-lang="en">Authenticated encryption (AES-256-GCM + AAD) prevents silent file tampering or record swapping.</span><span data-lang="ru">Аутентифицированное шифрование AES-256-GCM + AAD исключает незаметную подмену или порчу данных.</span></div>
+                    </div>
+                  </article>
+
+                  <!-- Check 5 -->
+                  <article class="verify-card" data-verify-id="clipboard" data-checked="false">
+                    <div class="verify-card-head">
+                      <div>
+                        <span class="defense-num">CHECK 05 · CLIPBOARD &amp; HANDOFF</span>
+                        <h3><span data-lang="en">Universal Clipboard &amp; 25s Auto-Clear Test</span><span data-lang="ru">Тест буфера обмена и Handoff</span></h3>
+                      </div>
+                      <button type="button" class="verify-check-btn" aria-pressed="false">Mark done</button>
+                    </div>
+                    <div class="verify-trio">
+                      <div><strong><span data-lang="en">What to do</span><span data-lang="ru">Что сделать</span></strong><span data-lang="en">Copy a password on Mac → try pasting on your nearby iPhone (Handoff), check your clipboard history app, and wait 25 seconds before pressing ⌘V again.</span><span data-lang="ru">Скопируйте пароль на Mac → попробуйте вставить на iPhone рядом (Handoff), проверьте менеджер истории буфера и подождите 25 секунд до повторного ⌘V.</span></div>
+                      <div><strong><span data-lang="en">What you'll see</span><span data-lang="ru">Что вы увидите</span></strong><span data-lang="en">It never syncs across Handoff, stays hidden from history tools, and wipes itself cleanly after 25 seconds.</span><span data-lang="ru">Пароль не улетает на iPhone по Handoff, игнорируется историей буфера и сам исчезает через 25 секунд.</span></div>
+                      <div class="verify-proof"><strong><span data-lang="en">What this proves</span><span data-lang="ru">Что это доказывает</span></strong><span data-lang="en"><code>ClipboardGuard</code> enforces <code>.currentHostOnly</code> / <code>.localOnly</code> and <code>ConcealedType</code> markers.</span><span data-lang="ru"><code>ClipboardGuard</code> защищает скопированные секреты на уровне API macOS и iOS.</span></div>
+                    </div>
+                  </article>
+
+                  <!-- Check 6 -->
+                  <article class="verify-card" data-verify-id="biometry" data-checked="false">
+                    <div class="verify-card-head">
+                      <div>
+                        <span class="defense-num">CHECK 06 · NO PIN FALLBACK</span>
+                        <h3><span data-lang="en">Cancel Face ID / Touch ID Test</span><span data-lang="ru">Тест отмены Face ID / Touch ID</span></h3>
+                      </div>
+                      <button type="button" class="verify-check-btn" aria-pressed="false">Mark done</button>
+                    </div>
+                    <div class="verify-trio">
+                      <div><strong><span data-lang="en">What to do</span><span data-lang="ru">Что сделать</span></strong><span data-lang="en">Lock Password Whisper, trigger Touch ID or Face ID, and tap <em>Cancel</em> (or enter a wrong finger).</span><span data-lang="ru">Заблокируйте Password Whisper, вызовите Touch ID / Face ID и нажмите <em>Отмена</em>.</span></div>
+                      <div><strong><span data-lang="en">What you'll see</span><span data-lang="ru">Что вы увидите</span></strong><span data-lang="en">The app asks strictly for your <strong>Master Password</strong> — it never offers to unlock with your iPhone or Mac passcode.</span><span data-lang="ru">Приложение запросит исключительно <strong>мастер-пароль</strong> — оно никогда не предложит войти по PIN-коду телефона или паролю Mac.</span></div>
+                      <div class="verify-proof"><strong><span data-lang="en">What this proves</span><span data-lang="ru">Что это доказывает</span></strong><span data-lang="en">Even someone who learns your device passcode cannot open your Password Whisper vault.</span><span data-lang="ru">Даже человек, подсмотревший код-пароль вашего iPhone, не сможет открыть сейф Password Whisper.</span></div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <!-- Level 2: IT Specialists & Security Researchers (macOS Terminal) -->
+            <div role="tabpanel" aria-labelledby="ver-tab-pro" hidden="until-found">
+              <div class="tab-panel-inner">
+                <div class="defense-layers">
+                  <article class="defense-layer-card">
+                    <span class="defense-num">PRO CHECK 01 · LIVE NETWORK MONITOR</span>
+                    <h3><span data-lang="en">Watch outbound sockets in real time</span><span data-lang="ru">Мониторинг сетевых соединений в реальном времени</span></h3>
+                    <p><span data-lang="en">Use Apple's built-in <code>nettop</code> / <code>lsof</code> (or open-source firewalls like <strong>LuLu</strong> / <strong>Little Snitch</strong>) while unlocking, editing, and autofilling. Expect 0 sockets offline, only Apple CloudKit when iCloud is enabled, and a single 5-char HTTPS GET only when manually clicking Breach Check.</span><span data-lang="ru">Используйте встроенные <code>nettop</code> / <code>lsof</code> (или открытый фаервол <strong>LuLu</strong> / <strong>Little Snitch</strong>): в локальном режиме будет 0 соединений, с iCloud — только серверы Apple, а при ручной проверке утечек — один GET на 5-символьный префикс.</span></p>
+                    <div class="cmd-block">
+                      <pre><code id="cmd-nettop">lsof -i -n -P | grep -i PasswordSentinel</code></pre>
+                      <span class="copy">
+                        <button type="button" class="copy-button" command="--copy" commandfor="cmd-nettop" aria-label="Copy network check command">
+                          <svg class="icon-copy" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="5" width="8" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v7A1.5 1.5 0 0 0 3.5 12H5" stroke="currentColor" stroke-width="1.4"/></svg>
+                          <svg class="icon-check" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <span class="copy-tip" role="status"></span>
+                      </span>
+                    </div>
+                  </article>
+
+                  <article class="defense-layer-card">
+                    <span class="defense-num">PRO CHECK 02 · APP SANDBOX &amp; ENTITLEMENTS</span>
+                    <h3><span data-lang="en">Inspect signed macOS entitlements</span><span data-lang="ru">Проверка App Sandbox и прав бинарника</span></h3>
+                    <p><span data-lang="en">Verify directly from the Apple-signed binary that <code>com.apple.security.app-sandbox</code> is enabled and file access is strictly limited to user-selected files and your private iCloud container.</span><span data-lang="ru">Убедитесь напрямую в подписанном Apple бинарнике, что включена песочница <code>com.apple.security.app-sandbox = true</code>, нет скрытого доступа к диску и указан только ваш контейнер CloudKit.</span></p>
+                    <div class="cmd-block">
+                      <pre><code id="cmd-codesign">codesign -d --entitlements - "/Applications/Password Whisper.app"</code></pre>
+                      <span class="copy">
+                        <button type="button" class="copy-button" command="--copy" commandfor="cmd-codesign" aria-label="Copy codesign entitlements command">
+                          <svg class="icon-copy" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="5" width="8" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v7A1.5 1.5 0 0 0 3.5 12H5" stroke="currentColor" stroke-width="1.4"/></svg>
+                          <svg class="icon-check" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <span class="copy-tip" role="status"></span>
+                      </span>
+                    </div>
+                  </article>
+
+                  <article class="defense-layer-card">
+                    <span class="defense-num">PRO CHECK 03 · PRIVACY MANIFEST &amp; FRAMEWORKS</span>
+                    <h3><span data-lang="en">Verify zero third-party tracking SDKs</span><span data-lang="ru">Проверка PrivacyInfo.xcprivacy и отсутствие сторонних SDK</span></h3>
+                    <p><span data-lang="en">Inspect the bundled frameworks and Apple Privacy Manifest inside the installed app: only our native <code>Sentinel*</code> modules exist, with <code>NSPrivacyTracking = false</code> and empty <code>NSPrivacyCollectedDataTypes</code>.</span><span data-lang="ru">Посмотрите список фреймворков и манифест приватности внутри установленного приложения: только нативные модули <code>Sentinel*</code>, ноль рекламных/аналитических SDK.</span></p>
+                    <div class="cmd-block">
+                      <pre><code id="cmd-privacy">ls "/Applications/Password Whisper.app/Contents/Frameworks" && plutil -p "/Applications/Password Whisper.app/Contents/Resources/PrivacyInfo.xcprivacy"</code></pre>
+                      <span class="copy">
+                        <button type="button" class="copy-button" command="--copy" commandfor="cmd-privacy" aria-label="Copy privacy manifest check command">
+                          <svg class="icon-copy" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="5" width="8" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v7A1.5 1.5 0 0 0 3.5 12H5" stroke="currentColor" stroke-width="1.4"/></svg>
+                          <svg class="icon-check" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <span class="copy-tip" role="status"></span>
+                      </span>
+                    </div>
+                  </article>
+
+                  <article class="defense-layer-card">
+                    <span class="defense-num">PRO CHECK 04 · ZERO-LOG HIBP PROXY CONTRACT</span>
+                    <h3><span data-lang="en">Inspect the k-Anonymity proxy headers</span><span data-lang="ru">Проверка заголовков Zero-Log HIBP прокси</span></h3>
+                    <p><span data-lang="en">Verify the configured proxy URL in <code>Info.plist</code> and check its HTTP behavior: only <code>GET /range/&lt;5-HEX&gt;</code> returns 200 with padded plaintext and <code>Referrer-Policy: no-referrer</code>; any other path returns <code>404</code> and zero cookies.</span><span data-lang="ru">Проверьте URL прокси в <code>Info.plist</code> и его ответы: принимается строго <code>GET /range/&lt;5-HEX&gt;</code> без cookie с <code>Referrer-Policy: no-referrer</code>, а любые другие пути возвращают <code>404</code>.</span></p>
+                    <div class="cmd-block">
+                      <pre><code id="cmd-hibp">defaults read "/Applications/Password Whisper.app/Contents/Info" SentinelHIBPProxyBaseURL</code></pre>
+                      <span class="copy">
+                        <button type="button" class="copy-button" command="--copy" commandfor="cmd-hibp" aria-label="Copy HIBP proxy URL inspection command">
+                          <svg class="icon-copy" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="5" width="8" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v7A1.5 1.5 0 0 0 3.5 12H5" stroke="currentColor" stroke-width="1.4"/></svg>
+                          <svg class="icon-check" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <span class="copy-tip" role="status"></span>
+                      </span>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         7 LAYERS OF DEFENSE + HOW WE TEST & VERIFY SECURITY (#83)
+         ===================================================================== -->
+    <section id="seven-layers" class="section-block reveal">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span><span data-lang="en">DEFENSE IN DEPTH · 7 LAYERS</span><span data-lang="ru">ЭШЕЛОНИРОВАННАЯ ЗАЩИТА · 7 УРОВНЕЙ</span></span></p>
+          <h2 class="section-title">
+            <span data-lang="en">Every layer of cryptographic &amp; platform protection</span>
+            <span data-lang="ru">Как устроена и проверяется безопасность на каждом уровне</span>
+          </h2>
+        </div>
+
+        <div class="defense-layers">
+          <article class="defense-layer-card">
+            <span class="defense-num">LAYER 01 · KEY DERIVATION (KDF)</span>
+            <h3><span data-lang="en">Argon2id (IETF RFC 9106)</span><span data-lang="ru">Argon2id (стандарт IETF RFC 9106)</span></h3>
+            <p><span data-lang="en">Your Master Password is normalized (Unicode NFC) and stretched through memory-hard Argon2id with a random 128-bit salt from <code>SecRandomCopyBytes</code>. Even a specialized GPU cluster manages only ~25,000 guesses/sec — making a 4–5 word passphrase take centuries to crack.</span><span data-lang="ru">Мастер-пароль нормализуется (Unicode NFC) и проходит через памятеёмкий Argon2id со случайной 128-битной солью (<code>SecRandomCopyBytes</code>). Даже специализированный GPU-кластер даёт ~25 000 попыток/с, поэтому фраза из 4–5 слов подбирается столетиями.</span></p>
+            <div class="defense-spec-line">RFC 9106 Argon2id · memoryKiB=32768 (32 MiB) · t=3 · p=4 · 16B salt · Verified vs RFC 9106 §5.3</div>
+          </article>
+
+          <article class="defense-layer-card">
+            <span class="defense-num">LAYER 02 · ENVELOPE ENCRYPTION &amp; HKDF</span>
+            <h3><span data-lang="en">Dual-Slot VaultKey + Domain Separation</span><span data-lang="ru">Конвертное шифрование и разделение ключей</span></h3>
+            <p><span data-lang="en">A random 256-bit <code>VaultKey (DEK)</code> is wrapped separately by your Master KEK and your offline Recovery Key (<code>PS1-XXXX-…</code>). Rotating your Master Password or Recovery Key happens in O(1) with a fresh salt. Subkeys for items, blobs, and drafts are derived via <code>HKDF-SHA256</code>.</span><span data-lang="ru">Случайный 256-битный <code>VaultKey</code> обёрнут независимо мастер-ключом и аварийным ключом восстановления (<code>PS1-XXXX-…</code>). Смена мастер-пароля идёт за O(1) с новой солью, а подключи для записей, файлов и черновиков разделены через <code>HKDF-SHA256</code>.</span></p>
+            <div class="defense-spec-line">MasterPassword → KEK → VaultKey(256b) → HKDF-SHA256 → ItemSubkey / BlobSubkey / DraftSubkey</div>
+          </article>
+
+          <article class="defense-layer-card">
+            <span class="defense-num">LAYER 03 · AUTHENTICATED PER-OBJECT STORAGE</span>
+            <h3><span data-lang="en">Apple CryptoKit AES-256-GCM + Strict AAD</span><span data-lang="ru">По-объектное AES-256-GCM + строгий AAD</span></h3>
+            <p><span data-lang="en">Every login (<code>items/&lt;uuid&gt;.item.enc</code>), redacted screenshot, and <code>.p8</code>/<code>.pem</code> file (<code>blobs/&lt;sha256&gt;.blob.enc</code>) gets a fresh 96-bit nonce and cryptographically binds <code>vaultID</code>, <code>objectID</code> / SHA-256, and revision metadata via AAD.</span><span data-lang="ru">Каждая карточка, скриншот и файл <code>.p8</code>/<code>.pem</code> шифруется уникальным 96-битным nonce, 128-битным auth-тегом и привязкой <code>AAD</code> к <code>vaultID</code>, <code>objectID</code> / SHA-256 и ревизии — подмена или перестановка файла невозможны.</span></p>
+            <div class="defense-spec-line">AES-256-GCM · 96b nonce · 128b tag · AAD("sentinel.item.v1|vaultID|itemID") · SHA-256 verify</div>
+          </article>
+
+          <article class="defense-layer-card">
+            <span class="defense-num">LAYER 04 · RAM, CLIPBOARD &amp; PIXEL BURN-IN</span>
+            <h3><span data-lang="en">Zero Swap Leakage &amp; Protected Clipboard</span><span data-lang="ru">Защита RAM, буфера обмена и изображений</span></h3>
+            <p><span data-lang="en"><code>SecureBytes</code> pins key pages via <code>mlock()</code> and wipes buffers using compiler-safe <code>memset_s()</code>. Screenshots &amp; secret files decrypt strictly in RAM via <code>withDecryptedBlob</code>. <code>ClipboardGuard</code> blocks Universal Clipboard/Handoff and clipboard history tools, clearing secrets after 25s.</span><span data-lang="ru"><code>SecureBytes</code> блокирует выгрузку ключей в swap (<code>mlock</code>) и затирает память через <code>memset_s</code>. Снимки и файлы расшифровываются только в RAM без temp-файлов; <code>ClipboardGuard</code> блокирует Handoff и историю буфера, очищая пароль через 25 с.</span></p>
+            <div class="defense-spec-line">mlock + memset_s · .currentHostOnly / .localOnly · ConcealedType · Pixel Burn-in + 0 EXIF</div>
+          </article>
+
+          <article class="defense-layer-card">
+            <span class="defense-num">LAYER 05 · HARDWARE BIOMETRICS</span>
+            <h3><span data-lang="en">Data Protection Keychain without PIN Fallback</span><span data-lang="ru">Аппаратная биометрия без отката на PIN</span></h3>
+            <p><span data-lang="en">Biometric unlock stores the key exclusively on-device (<code>ThisDeviceOnly</code>) with <code>.biometryCurrentSet</code>. Adding a new fingerprint or face immediately invalidates the stored key, and cancelling biometrics always requires your Master Password — never the OS passcode.</span><span data-lang="ru">Ключ быстрой разблокировки хранится только на этом устройстве (<code>ThisDeviceOnly</code>) с привязкой <code>.biometryCurrentSet</code>. Добавление нового отпечатка или лица аннулирует ключ, а при отказе биометрии всегда нужен мастер-пароль.</span></p>
+            <div class="defense-spec-line">kSecAttrAccessibleWhenUnlockedThisDeviceOnly · .biometryCurrentSet · localizedFallbackTitle=""</div>
+          </article>
+
+          <article class="defense-layer-card">
+            <span class="defense-num">LAYER 06 · ANTI-PHISHING &amp; SANDBOX ISOLATION</span>
+            <h3><span data-lang="en">Strict Domain Matching &amp; Local Browser Bridge</span><span data-lang="ru">Антифишинг, App Sandbox и локальный мост</span></h3>
+            <p><span data-lang="en"><code>URLMatcher</code> enforces Public Suffix List matching, exact port/path context, and refuses to serve HTTPS credentials over plaintext HTTP (except <code>localhost</code>). Desktop extensions talk via sandboxed <code>Native Messaging (stdio)</code> with zero open TCP ports and 20s single-use <code>Open &amp; Fill</code> leases.</span><span data-lang="ru"><code>URLMatcher</code> сверяет домен по Public Suffix List, учитывает порт и путь и запрещает подстановку HTTPS-паролей на HTTP. Браузерные расширения работают по локальному <code>stdio</code> в App Sandbox без открытых сетевых портов.</span></p>
+            <div class="defense-spec-line">App Sandbox = true · PSL + HTTPS strict · Closed Shadow DOM · 20s origin-bound lease</div>
+          </article>
+
+          <article class="defense-layer-card defense-layer-card--full">
+            <span class="defense-num">LAYER 07 · CONTINUOUS ENGINEERING VERIFICATION</span>
+            <h3><span data-lang="en">How security is continuously tested before every release</span><span data-lang="ru">Как мы проверяем безопасность в коде перед каждым релизом</span></h3>
+            <p><span data-lang="en">Every release passes automated unit &amp; integration test suites across all 7 Swift modules: byte-for-byte IETF RFC 9106 Argon2id test vectors, negative tamper tests verifying <code>tamperedOrCorruptedData</code> when a single bit, UUID, AAD, or revision hash is altered, <code>SecureBytes</code> wipe assertions, deterministic offline conflict merge tests, <code>URLProtocol</code> tests proving zero HTTP redirects and zero direct HIBP fallback, 100% Clean-Room Swift 6 without third-party tracking SDKs, plus Apple App Review &amp; App Sandbox signing checks.</span><span data-lang="ru">Каждый релиз проходит автоматизированные тесты по всем 7 Swift-модулям: побайтовая сверка Argon2id с официальным вектором IETF RFC 9106, негативные тесты на подмену 1 бита / UUID / AAD / ревизии (<code>tamperedOrCorruptedData</code>), тесты затирания <code>SecureBytes</code>, тесты детерминированного слияния конфликтов, тесты <code>URLProtocol</code> на отказ от HTTP-редиректов и прямых запросов к HIBP, 100% Clean-Room Swift 6 без сторонних трекинг-SDK и проверка Apple App Review / App Sandbox.</span></p>
+            <div class="defense-spec-line">SentinelCryptoTests (RFC 9106) · SentinelStorageTests · SentinelSyncTests · SentinelSystemTests · Apple App Review</div>
+          </article>
+        </div>
+
+        <!-- Store Privacy Verification Links -->
+        <div class="no-hostage-banner" style="margin-top: var(--space-5);">
+          <div>
+            <h3><span data-lang="en">Independent Store Declarations</span><span data-lang="ru">Проверьте официальные декларации в магазинах</span></h3>
+            <p><span data-lang="en">Inspect our public Privacy Policy and store disclosures directly on Apple App Store and Chrome Web Store.</span><span data-lang="ru">Сверьте нашу политику конфиденциальности и декларации напрямую на страницах Apple App Store и Chrome Web Store.</span></p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;">
+            <a class="btn btn--soft btn--sm" href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">App Store Privacy</a>
+            <a class="btn btn--soft btn--sm" href="https://chromewebstore.google.com/detail/olagmnnpoogamifoblpkehbofidliled" target="_blank" rel="noopener">Chrome Web Store</a>
+            <a class="btn btn--primary btn--sm" href="../privacy/"><span data-lang="en">Read Privacy Policy</span><span data-lang="ru">Политика конфиденциальности</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="margin-top: 0; border-top: 0; padding-top: 0;">
+        <span>© 2026 Password Whisper · <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a></span>
+        <span><a href="../"><span data-lang="en">Overview</span><span data-lang="ru">Главная</span></a> · <a href="../privacy/"><span data-lang="en">Privacy Policy</span><span data-lang="ru">Конфиденциальность</span></a> · <a href="../terms/"><span data-lang="en">Terms</span><span data-lang="ru">Условия</span></a> · <a href="../support/"><span data-lang="en">Support</span><span data-lang="ru">Поддержка</span></a></span>
+      </div>
+    </div>
+  </footer>
+
+  <dialog id="mobile-nav-drawer" class="nav-drawer" closedby="any" aria-label="Site navigation">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+      <span class="brand"><img class="brand-mark" src="../assets/sentinel-iris.svg" alt="" width="26" height="26"><span>Password Whisper</span></span>
+      <form method="dialog"><button type="submit" class="btn btn--ghost btn--sm" aria-label="Close menu">✕</button></form>
+    </div>
+    <div class="drawer-links">
+      <a href="../"><span data-lang="en">Overview</span><span data-lang="ru">Главная</span></a>
+      <a href="#verify-yourself"><span data-lang="en">Verify Security Yourself</span><span data-lang="ru">Проверьте сами</span></a>
+      <a href="#seven-layers"><span data-lang="en">7 Layers of Defense</span><span data-lang="ru">7 уровней защиты</span></a>
+      <a href="../#compare"><span data-lang="en">Compare vs Market</span><span data-lang="ru">Сравнение с рынком</span></a>
+      <a href="../support/"><span data-lang="en">Support</span><span data-lang="ru">Поддержка</span></a>
+      <a href="../privacy/"><span data-lang="en">Privacy Policy</span><span data-lang="ru">Конфиденциальность</span></a>
+      <a href="../terms/"><span data-lang="en">Terms of Use</span><span data-lang="ru">Условия</span></a>
+    </div>
+  </dialog>
+</body>
+</html>

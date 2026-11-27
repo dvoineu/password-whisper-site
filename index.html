@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-title-en="Password Whisper 1.3 — Visual Zero-Knowledge Password Manager" data-title-ru="Password Whisper 1.3 — Визуальный Zero-Knowledge менеджер паролей">
+<html lang="en" data-title-en="Password Whisper 1.4 — Local-First Visual Zero-Knowledge Password Manager" data-title-ru="Password Whisper 1.4 — Локальный визуальный Zero-Knowledge менеджер паролей">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,13 +14,44 @@
       document.documentElement.dataset.uiLang = (l === 'ru' || l === 'en') ? l : ((navigator.language || '').toLowerCase().startsWith('ru') ? 'ru' : 'en');
     } catch (e) {}
   </script>
-  <title>Password Whisper 1.3 — Visual Zero-Knowledge Password Manager</title>
-  <meta name="description" content="Password Whisper v1.3.0 for macOS, iOS, and iPadOS. Visual login context with on-device Vision OCR masking, Passkeys, 2FA QR scanner, Safari/Chrome/Firefox extensions, and personal iCloud E2EE sync with zero developer servers.">
+  <title>Password Whisper 1.4 — Local-First Visual Zero-Knowledge Password Manager</title>
+  <meta name="description" content="Password Whisper v1.4.0 for Mac, iPhone, and iPad. 100% local encrypted .whispervault with personal iCloud sync only — unlike 1Password. Redacted login screenshots, Passkeys, .p8/SSH file attachments, zero developer servers, zero data collection.">
+  <link rel="canonical" href="https://dvoineu.github.io/password-whisper-site/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://dvoineu.github.io/password-whisper-site/">
+  <meta property="og:title" content="Password Whisper — Local-First Visual Zero-Knowledge Password Manager">
+  <meta property="og:description" content="100% local encrypted vault with personal iCloud sync only, on-device Vision OCR login screenshots, Passkeys, .p8/SSH keys, and zero developer servers.">
+  <meta property="og:image" content="https://dvoineu.github.io/password-whisper-site/assets/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Password Whisper — Local-First Visual Zero-Knowledge Vault">
+  <meta name="twitter:description" content="Store passwords locally on Mac, iPhone & iPad. Personal iCloud sync only. Zero developer servers, zero tracking.">
+  <meta name="twitter:image" content="https://dvoineu.github.io/password-whisper-site/assets/og-card.png">
   <link rel="icon" type="image/svg+xml" href="./assets/sentinel-iris.svg">
   <link rel="stylesheet" href="./style.css">
   <script src="./app.js" defer></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Password Whisper",
+    "applicationCategory": "SecurityApplication",
+    "operatingSystem": "macOS 15+, iOS 18+, iPadOS 18+",
+    "softwareVersion": "1.4.0",
+    "url": "https://dvoineu.github.io/password-whisper-site/",
+    "downloadUrl": "https://apps.apple.com/app/id6834912021",
+    "offers": [
+      { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD" },
+      { "@type": "Offer", "name": "Pro Monthly", "price": "1.99", "priceCurrency": "USD" },
+      { "@type": "Offer", "name": "Pro Yearly", "price": "19.99", "priceCurrency": "USD" },
+      { "@type": "Offer", "name": "Lifetime", "price": "59.99", "priceCurrency": "USD" }
+    ]
+  }
+  </script>
 </head>
 <body>
+  <div class="scroll-progress-bar" aria-hidden="true"></div>
   <a class="skip-link" href="#main-content">
     <span data-lang="en">Skip to main content</span>
     <span data-lang="ru">Перейти к основному содержимому</span>
@@ -32,16 +63,16 @@
       <a class="brand" href="./">
         <img class="brand-mark" src="./assets/sentinel-iris.svg" alt="" width="30" height="30">
         <span>Password Whisper</span>
-        <span class="version-pill">v1.3.0</span>
+        <span class="version-pill">v1.4.0</span>
       </a>
 
       <nav aria-label="Primary navigation">
         <ul class="nav-links">
-          <li><a href="#screenshots"><span data-lang="en">Screenshots</span><span data-lang="ru">Скриншоты</span></a></li>
-          <li><a href="#tutorial"><span data-lang="en">Tutorial</span><span data-lang="ru">Как начать</span></a></li>
-          <li><a href="#security"><span data-lang="en">Security</span><span data-lang="ru">Защита</span></a></li>
+          <li><a href="#why-whisper"><span data-lang="en">Why Whisper</span><span data-lang="ru">Преимущества</span></a></li>
+          <li><a href="#compare"><span data-lang="en">Compare</span><span data-lang="ru">Сравнение</span></a></li>
+          <li><a href="./security/"><span data-lang="en">Security &amp; Verify</span><span data-lang="ru">Безопасность</span></a></li>
+          <li><a href="#screenshots"><span data-lang="en">Screens</span><span data-lang="ru">Скриншоты</span></a></li>
           <li><a href="#pricing"><span data-lang="en">Pricing</span><span data-lang="ru">Тарифы</span></a></li>
-          <li><a href="#faq">FAQ</a></li>
           <li><a href="./support/"><span data-lang="en">Support</span><span data-lang="ru">Поддержка</span></a></li>
         </ul>
       </nav>
@@ -60,8 +91,7 @@
         </button>
 
         <a class="btn btn--primary btn--sm header-cta" href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">
-          <span data-lang="en">App Store</span>
-          <span data-lang="ru">App Store</span>
+          <span>App Store</span>
         </a>
 
         <button type="button" id="mobile-menu-open" class="btn btn--soft mobile-menu-btn" aria-label="Open menu">
@@ -96,7 +126,7 @@
 
   <main id="main-content">
     <!-- =====================================================================
-         HERO SECTION + AUTHENTIC 9-BLADE OPTICAL IRIS ANIMATION
+         HERO SECTION + AUTHENTIC 9-BLADE OPTICAL IRIS ANIMATION + TRUST BAR
          ===================================================================== -->
     <section class="hero-section">
       <div class="container">
@@ -104,8 +134,8 @@
           <div>
             <div class="hero-pills">
               <span class="pill pill--accent">
-                <span data-lang="en">v1.3.0 Live · iOS 11 · macOS 12</span>
-                <span data-lang="ru">Версия 1.3.0 · iOS b11 · macOS b12</span>
+                <span data-lang="en">v1.4.0 · Local Vault + Encrypted Files</span>
+                <span data-lang="ru">Версия 1.4.0 · Локальный сейф и файлы</span>
               </span>
               <span class="pill">
                 <span data-lang="en">Extensions v1.3.1 · Safari, Chrome &amp; Firefox</span>
@@ -114,13 +144,13 @@
             </div>
 
             <h1 class="hero-title">
-              <span data-lang="en">Recognize the right login at a glance. Keep every key yours.</span>
-              <span data-lang="ru">Узнавайте нужный вход взглядом. Храните ключи только у себя.</span>
+              <span data-lang="en">Your passwords stay on your device. Recognize every login at a glance.</span>
+              <span data-lang="ru">Пароли хранятся только у вас. Нужный вход узнаётся взглядом.</span>
             </h1>
 
             <p class="hero-subtitle">
-              <span data-lang="en">Password Whisper is a native visual zero-knowledge vault for Mac, iPhone, and iPad. Attach on-device redacted login screenshots, sign in with Passkeys and 2FA codes, and sync solely through your personal Apple iCloud — with zero developer servers.</span>
-              <span data-lang="ru">Нативный визуальный менеджер паролей для Mac, iPhone и iPad. Прикрепляйте замаскированные снимки экранов входа, входите по Passkeys и кодам 2FA и синхронизируйте сейф только через ваш личный Apple iCloud — без серверов разработчика.</span>
+              <span data-lang="en">Password Whisper is a native Swift zero-knowledge vault for Mac, iPhone, and iPad. Everything lives locally in your encrypted vault — personal iCloud is used solely for sync, never our servers. Pair credentials with redacted login screenshots, Passkeys, 2FA, and encrypted .p8/SSH keys.</span>
+              <span data-lang="ru">Нативный Swift-менеджер паролей для Mac, iPhone и iPad. Всё хранится локально в зашифрованном сейфе, а личный Apple iCloud используется только для синхронизации — в отличие от облачных серверов 1Password. С замаскированными снимками входа, Passkeys, 2FA и файлами .p8/SSH.</span>
             </p>
 
             <div class="hero-actions">
@@ -128,9 +158,13 @@
                 <span data-lang="en">Download on the App Store</span>
                 <span data-lang="ru">Скачать в App Store</span>
               </a>
-              <a class="btn btn--soft btn--lg" href="#tutorial">
-                <span data-lang="en">3-Minute Quick Start</span>
-                <span data-lang="ru">Как начать за 3 минуты</span>
+              <a class="btn btn--soft btn--lg" href="./security/#verify-yourself">
+                <span data-lang="en">Verify Security Yourself</span>
+                <span data-lang="ru">Как проверить безопасность</span>
+              </a>
+              <a class="btn btn--ghost btn--lg" href="#compare">
+                <span data-lang="en">Compare vs 1Password</span>
+                <span data-lang="ru">Сравнить с 1Password</span>
               </a>
             </div>
 
@@ -141,23 +175,30 @@
               </span>
               <span>·</span>
               <a href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">
-                <span data-lang="en">Safari Extension (in App Store)</span>
-                <span data-lang="ru">Расширение Safari (в App Store)</span>
+                <span data-lang="en">Safari Extension (App Store)</span>
+                <span data-lang="ru">Safari (в App Store)</span>
               </a>
               <span>·</span>
               <a href="https://chromewebstore.google.com/detail/olagmnnpoogamifoblpkehbofidliled" target="_blank" rel="noopener">
-                <span data-lang="en">Chrome Web Store v1.3.1</span>
-                <span data-lang="ru">Расширение Chrome v1.3.1</span>
+                <span data-lang="en">Chrome Web Store</span>
+                <span data-lang="ru">Chrome Web Store</span>
               </a>
               <span>·</span>
               <a href="https://addons.mozilla.org/en-US/firefox/addon/password-whisper-visual-passwo/" target="_blank" rel="noopener">
-                <span data-lang="en">Firefox AMO v1.3.1</span>
-                <span data-lang="ru">Firefox AMO v1.3.1</span>
+                <span data-lang="en">Firefox AMO</span>
+                <span data-lang="ru">Firefox AMO</span>
               </a>
+            </div>
+
+            <div class="hero-trust-bar" aria-label="Core privacy guarantees">
+              <span class="trust-chip"><span class="trust-chip-dot" aria-hidden="true"></span><span data-lang="en">0 developer vault servers</span><span data-lang="ru">0 серверов хранения</span></span>
+              <span class="trust-chip"><span class="trust-chip-dot" aria-hidden="true"></span><span data-lang="en">Zero data collection</span><span data-lang="ru">Данные не собираются</span></span>
+              <span class="trust-chip"><span class="trust-chip-dot" aria-hidden="true"></span><span data-lang="en">Local vault + personal iCloud</span><span data-lang="ru">Локально + личный iCloud</span></span>
+              <span class="trust-chip"><span class="trust-chip-dot" aria-hidden="true"></span><span data-lang="en">100% Native Swift 6</span><span data-lang="ru">Нативный Swift 6</span></span>
             </div>
           </div>
 
-          <!-- Interactive 9-Blade Optical Diaphragm (ported from SentinelIrisRenderer.swift) -->
+          <!-- Interactive 9-Blade Optical Diaphragm -->
           <div class="iris-stage">
             <div class="iris-canvas-wrap">
               <canvas
@@ -182,11 +223,11 @@
             <div class="iris-readout">
               <div>
                 <div class="iris-readout-stop" id="iris-stop-label">f/8</div>
-                <div class="iris-readout-title" id="iris-stop-title">AutoFill &amp; Passkeys</div>
-                <div class="iris-readout-desc" id="iris-stop-desc">System-wide autofill for passwords, 2FA TOTP codes, and passkeys on iPhone, iPad, and Mac.</div>
+                <div class="iris-readout-title" id="iris-stop-title">Local vault + personal iCloud</div>
+                <div class="iris-readout-desc" id="iris-stop-desc">Data lives locally in .whispervault. Personal iCloud is strictly an optional encrypted sync transport.</div>
               </div>
               <button type="button" id="iris-replay-btn" class="btn btn--ghost btn--sm">
-                <span data-lang="en">Replay intro</span>
+                <span data-lang="en">Replay</span>
                 <span data-lang="ru">Повторить</span>
               </button>
             </div>
@@ -199,16 +240,16 @@
             type="button"
             class="showcase-mac-frame"
             data-lightbox-group="hero"
-            data-title-en="Password Whisper 1.3 for macOS — Visual Login Context & Live 2FA"
-            data-title-ru="Password Whisper 1.3 для macOS — Визуальный контекст входа и коды 2FA"
+            data-title-en="Password Whisper for macOS — Visual Login Context & Live 2FA"
+            data-title-ru="Password Whisper для macOS — Визуальный контекст входа и коды 2FA"
           >
             <img
               src="./assets/screenshots/en/macos-01-workspace.webp"
               data-shot-prefix="./assets/screenshots/"
               data-shot-file="macos-01-workspace.webp"
-              data-alt-en="Password Whisper 1.3 macOS workspace showing encrypted vault sidebar, item list, redacted login screenshot preview, password strength estimate, and live TOTP 2FA code"
-              data-alt-ru="Рабочее пространство Password Whisper 1.3 для macOS: категории сейфа, карточки записей, замаскированный снимок экрана входа и живой код 2FA"
-              alt="Password Whisper 1.3 macOS workspace showing encrypted vault and redacted login screenshot preview"
+              data-alt-en="Password Whisper macOS workspace showing encrypted vault sidebar, item list, redacted login screenshot preview, password strength estimate, and live TOTP 2FA code"
+              data-alt-ru="Рабочее пространство Password Whisper для macOS: категории сейфа, карточки записей, замаскированный снимок экрана входа и живой код 2FA"
+              alt="Password Whisper macOS workspace showing encrypted vault and redacted login screenshot preview"
               width="1440"
               height="900"
               fetchpriority="high"
@@ -219,16 +260,16 @@
             type="button"
             class="showcase-iphone-float"
             data-lightbox-group="hero"
-            data-title-en="Password Whisper 1.3 for iPhone — New Bottom Tab Bar"
-            data-title-ru="Password Whisper 1.3 для iPhone — Новая панель вкладок"
+            data-title-en="Password Whisper for iPhone — Bottom Tab Bar & Visual Cards"
+            data-title-ru="Password Whisper для iPhone — Панель вкладок и визуальные карточки"
           >
             <img
               src="./assets/screenshots/en/iphone-01-vault.webp"
               data-shot-prefix="./assets/screenshots/"
               data-shot-file="iphone-01-vault.webp"
-              data-alt-en="Password Whisper 1.3 iPhone vault with instant search, filter chips, visual thumbnails, and bottom tab bar"
-              data-alt-ru="Сейф Password Whisper 1.3 на iPhone с быстрым поиском, фильтрами, миниатюрами снимков и новой панелью вкладок"
-              alt="Password Whisper 1.3 iPhone vault with bottom tab bar"
+              data-alt-en="Password Whisper iPhone vault with instant search, filter chips, visual thumbnails, and bottom tab bar"
+              data-alt-ru="Сейф Password Whisper на iPhone с быстрым поиском, фильтрами, миниатюрами снимков и панелью вкладок"
+              alt="Password Whisper iPhone vault with bottom tab bar"
               width="660"
               height="1434"
             >
@@ -238,92 +279,257 @@
     </section>
 
     <!-- =====================================================================
-         WHAT'S NEW IN v1.3.0 & EXTENSION v1.3.1
+         CORE STRENGTHS ("WHY PASSWORD WHISPER") — SPOTLIGHT #1: LOCAL + ICLOUD VS 1PASSWORD
+         ===================================================================== -->
+    <section id="why-whisper" class="section-block reveal">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span><span data-lang="en">WHY PASSWORD WHISPER · CORE STRENGTHS</span><span data-lang="ru">ПОЧЕМУ PASSWORD WHISPER · ГЛАВНЫЕ ПРЕИМУЩЕСТВА</span></span></p>
+          <h2 class="section-title">
+            <span data-lang="en">Six architectural strengths that set Password Whisper apart</span>
+            <span data-lang="ru">Шесть сильных сторон, которые отличают Password Whisper</span>
+          </h2>
+          <p class="section-lead">
+            <span data-lang="en">Built from scratch for Apple hardware around local ownership, visual clarity, and verifiable zero-knowledge privacy — without cloud rent or Electron bloat.</span>
+            <span data-lang="ru">Спроектировано с нуля под экосистему Apple вокруг локального владения данными, визуального контекста и проверяемой приватности — без чужих серверов и тяжёлого Electron.</span>
+          </p>
+        </div>
+
+        <div class="strengths-grid">
+          <!-- Flagship Spotlight #1: Local-First + Personal iCloud Sync Only vs 1Password -->
+          <article class="strength-spotlight">
+            <div class="spotlight-head">
+              <div>
+                <span class="card-tag">01 · <span data-lang="en">LOCAL-FIRST OWNERSHIP</span><span data-lang="ru">ГЛАВНОЕ ПРЕИМУЩЕСТВО · ЛОКАЛЬНОЕ ХРАНЕНИЕ</span></span>
+                <h3>
+                  <span data-lang="en">Everything lives locally. Personal iCloud is strictly for sync — unlike 1Password.</span>
+                  <span data-lang="ru">Всё хранится локально. Личный iCloud нужен только для синхронизации — в отличие от 1Password.</span>
+                </h3>
+                <p>
+                  <span data-lang="en">Your vault (.whispervault) resides directly on your Mac, iPhone, and iPad and works 100% offline with zero account registration. Turn on Apple iCloud only if you want your own devices to exchange encrypted ciphertext through your private CloudKit zone.</span>
+                  <span data-lang="ru">Ваш сейф (.whispervault) физически хранится на вашем Mac, iPhone и iPad и работает полностью без интернета и без регистрации аккаунта. Личный Apple iCloud включается по вашему желанию исключительно как зашифрованный канал синхронизации между вашими устройствами.</span>
+                </p>
+              </div>
+              <a class="btn btn--soft btn--sm" href="./security/">
+                <span data-lang="en">Inspect architecture →</span>
+                <span data-lang="ru">Разобрать архитектуру →</span>
+              </a>
+            </div>
+
+            <div class="arch-compare-grid">
+              <div class="arch-box arch-box--pw">
+                <div class="arch-box-header">
+                  <h4>Password Whisper</h4>
+                  <span class="chip chip--safe"><span data-lang="en">LOCAL + YOUR ICLOUD</span><span data-lang="ru">ЛОКАЛЬНО + ВАШ ICLOUD</span></span>
+                </div>
+                <div class="arch-flow arch-flow--animated" aria-label="Password Whisper local-first data flow">
+                  <div class="arch-node arch-node--safe">
+                    <strong>Mac / iPhone / iPad</strong>
+                    <small>.whispervault (AES-256-GCM)</small>
+                  </div>
+                  <span class="arch-arrow" aria-hidden="true">⇄</span>
+                  <div class="arch-node arch-node--safe">
+                    <strong><span data-lang="en">Your Apple iCloud</span><span data-lang="ru">Ваш личный iCloud</span></strong>
+                    <small><span data-lang="en">Optional sync only</span><span data-lang="ru">Опциональный транспорт</span></small>
+                  </div>
+                  <span class="arch-arrow" aria-hidden="true">·</span>
+                  <div class="arch-node">
+                    <strong><span data-lang="en">Developer server</span><span data-lang="ru">Сервер разработчика</span></strong>
+                    <small style="color: var(--safe);"><span data-lang="en">0 bytes · None</span><span data-lang="ru">0 байт · Отсутствует</span></small>
+                  </div>
+                </div>
+                <ul class="arch-points">
+                  <li><span style="color: var(--safe);">✓</span><span><strong data-lang="en">Full offline read &amp; write:</strong><strong data-lang="ru">Полная работа без интернета:</strong> <span data-lang="en">create, edit, autofill, and audit even in Airplane Mode.</span><span data-lang="ru">создание, правка, автозаполнение и аудит работают даже в Авиарежиме.</span></span></li>
+                  <li><span style="color: var(--safe);">✓</span><span><strong data-lang="en">Zero vendor account:</strong><strong data-lang="ru">Без аккаунта у вендора:</strong> <span data-lang="en">no email sign-up, no remote account lockout, no vendor cloud database.</span><span data-lang="ru">нет регистрации на сайте разработчика, нет чужой облачной базы.</span></span></li>
+                  <li><span style="color: var(--safe);">✓</span><span><strong data-lang="en">Portable per-object bundle:</strong><strong data-lang="ru">Переносимый пакет сейфа:</strong> <span data-lang="en">back up `.whispervault` to any drive; offline edits merge without losing history.</span><span data-lang="ru">копируйте `.whispervault` на флешку или Time Machine; правки сливаются без потерь.</span></span></li>
+                </ul>
+              </div>
+
+              <div class="arch-box arch-box--saas">
+                <div class="arch-box-header">
+                  <h4><span data-lang="en">Cloud SaaS (e.g., 1Password 8, Dashlane)</span><span data-lang="ru">Облачные SaaS (1Password 8, Dashlane и др.)</span></h4>
+                  <span class="chip chip--risk"><span data-lang="en">VENDOR CLOUD REQUIRED</span><span data-lang="ru">ОБЯЗАТЕЛЬНОЕ ОБЛАКО</span></span>
+                </div>
+                <div class="arch-flow" aria-label="Cloud SaaS vendor data flow">
+                  <div class="arch-node">
+                    <strong><span data-lang="en">Your Device</span><span data-lang="ru">Устройство</span></strong>
+                    <small><span data-lang="en">Cached client</span><span data-lang="ru">Клиент с кэшем</span></small>
+                  </div>
+                  <span class="arch-arrow" aria-hidden="true">→</span>
+                  <div class="arch-node arch-node--risk">
+                    <strong><span data-lang="en">Vendor Cloud Server</span><span data-lang="ru">Сервер компании</span></strong>
+                    <small><span data-lang="en">Account + vault DB</span><span data-lang="ru">База аккаунтов и сейфов</span></small>
+                  </div>
+                </div>
+                <ul class="arch-points">
+                  <li><span style="color: var(--risk);">✕</span><span><strong data-lang="en">Local vaults removed:</strong><strong data-lang="ru">Локальные сейфы убраны:</strong> <span data-lang="en">1Password 8 dropped standalone local vaults — a vendor cloud account is mandatory.</span><span data-lang="ru">после перехода на 1Password 8 автономные локальные сейфы отключены — нужен облачный аккаунт.</span></span></li>
+                  <li><span style="color: var(--risk);">✕</span><span><strong data-lang="en">Recurring server rent:</strong><strong data-lang="ru">Вечная аренда подписки:</strong> <span data-lang="en">no Free tier and no Lifetime license — you pay every year indefinitely.</span><span data-lang="ru">нет бесплатного плана и нет Lifetime — нужно платить каждый год бесконечно.</span></span></li>
+                  <li><span style="color: var(--risk);">✕</span><span><strong data-lang="en">Single external target:</strong><strong data-lang="ru">Внешняя инфраструктура:</strong> <span data-lang="en">all customer metadata and encrypted vaults sit on centralized vendor servers.</span><span data-lang="ru">учётные записи и базы миллионов пользователей сосредоточены на серверах вендора.</span></span></li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <!-- Strength #2 -->
+          <article class="card strength-card">
+            <span class="card-tag card-tag--amber">02 · VISUAL CONTEXT FIRST</span>
+            <h3>
+              <span data-lang="en">Visual login previews with on-device Vision OCR</span>
+              <span data-lang="ru">Визуальные снимки входа с локальным Apple Vision</span>
+            </h3>
+            <p>
+              <span data-lang="en">Attach up to 5 redacted login window screenshots per item. Apple Vision masks emails, passwords, and tokens locally via irreversible Pixel Burn-in so you spot prod vs staging instantly in the browser popup and HUD.</span>
+              <span data-lang="ru">До 5 замаскированных скриншотов окна входа на запись. Apple Vision локально находит email, пароли и коды и необратимо запекает маски в пиксели — вы отличаете prod от staging взглядом прямо в браузере и HUD.</span>
+            </p>
+            <div class="strength-stat"><span data-lang="en">~50–90 KB HEIC · EXIF stripped · RAM-only</span><span data-lang="ru">~50–90 КБ HEIC · Без EXIF · Только в RAM</span></div>
+          </article>
+
+          <!-- Strength #3 -->
+          <article class="card strength-card">
+            <span class="card-tag">03 · NATIVE APPLE SWIFT 6</span>
+            <h3>
+              <span data-lang="en">True native SwiftUI — not a heavy Electron wrapper</span>
+              <span data-lang="ru">Настоящий нативный Swift 6 вместо тяжёлого Electron</span>
+            </h3>
+            <p>
+              <span data-lang="en">Instant launch, low RAM footprint, embedded Touch ID without modal popups, Menu Bar .window + ⌥⌘P HUD, iPad Stage Manager, and foldable iPhone Duo adaptation in three Sentinel themes.</span>
+              <span data-lang="ru">Мгновенный запуск, минимум RAM, встроенный Touch ID без всплывающих окон, панель меню + HUD ⌥⌘P, Stage Manager на iPad и адаптация под iPhone Duo в 3 темах «Диафрагмы».</span>
+            </p>
+            <div class="strength-stat"><span data-lang="en">Zero Electron · Zero 3rd-party SDKs · Clean-Room Swift</span><span data-lang="ru">Без Electron · 0 сторонних SDK · Clean-Room Swift</span></div>
+          </article>
+
+          <!-- Strength #4 -->
+          <article class="card strength-card">
+            <span class="card-tag">04 · ALL BROWSERS &amp; PASSKEYS</span>
+            <h3>
+              <span data-lang="en">Safari, Chrome, Brave, Opera, Firefox + Passkeys &amp; 2FA</span>
+              <span data-lang="ru">Все браузеры Apple-пользователя + Passkeys и 2FA</span>
+            </h3>
+            <p>
+              <span data-lang="en">System AutoFill across every iOS/macOS app, bundled Safari Web Extension (iOS &amp; Mac), and local Manifest V3 Native Messaging (stdio) for Chrome, Brave, Opera, and Firefox with exact port/path anti-phishing.</span>
+              <span data-lang="ru">Системный AutoFill во всех приложениях, встроенное расширение Safari (iOS и Mac) и локальный мост Native Messaging для Chrome, Brave, Opera и Firefox с проверкой домена, порта и HTTPS.</span>
+            </p>
+            <div class="strength-stat"><span data-lang="en">Local stdio bridge · HTTPS strict · Passkeys + QR TOTP</span><span data-lang="ru">Локальный stdio-мост · Строгий HTTPS · Passkeys + QR</span></div>
+          </article>
+
+          <!-- Strength #5 -->
+          <article class="card strength-card strength-card--wide">
+            <span class="card-tag card-tag--amber">05 · NEW IN v1.4.0 · DEVELOPER &amp; PRO SECRETS</span>
+            <h3>
+              <span data-lang="en">Encrypted .p8, .p12, .pem, .mobileprovision &amp; SSH file vault</span>
+              <span data-lang="ru">Зашифрованные файлы .p8, .p12, .cer, .pem, .mobileprovision и SSH</span>
+            </h3>
+            <p>
+              <span data-lang="en">Store App Store Connect / APNs signing keys, certificates, SSH configs, and JSON secrets encrypted with AES-256-GCM + private CloudKit CKAsset sync. Automatic Key ID &amp; expiration detection warns you before certificates expire, with 1-click protected PEM/Base64/SSH copy and smart category presets.</span>
+              <span data-lang="ru">Храните ключи App Store Connect / APNs, сертификаты, профили и SSH-конфиги под шифрованием AES-256-GCM с синхронизацией через личный iCloud. Автоопределение Key ID и сроков действия предупредит об истечении в аудите, а умные категории (DevOps, SSH, Облако, Банки) подставляют нужные поля и SSH-команду в 1 клик.</span>
+            </p>
+            <div class="strength-stat"><span data-lang="en">AES-256-GCM blobs · Auto Key ID &amp; expiry audit · RAM wiped via memset_s</span><span data-lang="ru">Блобы AES-256-GCM · Автопарсинг Key ID и сроков · Затирание RAM memset_s</span></div>
+          </article>
+
+          <!-- Strength #6 -->
+          <article class="card strength-card strength-card--wide">
+            <span class="card-tag">06 · HONEST ECONOMICS &amp; NO-HOSTAGE</span>
+            <h3>
+              <span data-lang="en">Universal Purchase, Family Sharing (up to 6), Lifetime &amp; zero lock-in</span>
+              <span data-lang="ru">Единая покупка, Семья до 6 человек, Lifetime и гарантия No-Hostage</span>
+            </h3>
+            <p>
+              <span data-lang="en">Start free forever with 25 items, 5 screenshots, 2FA, Passkeys, iCloud sync, and Security Audit. Need unlimited? Pay $19.99/yr (nearly half the price of 1Password) or $59.99 once forever — covering Mac, iPhone, iPad, and up to 6 family members. Your data is never locked behind a paywall.</span>
+              <span data-lang="ru">Бесплатный Free навсегда (25 записей, 5 снимков, 2FA, Passkeys, iCloud и аудит). Безлимит — $19.99/год (почти в 2× дешевле 1Password) или $59.99 один раз навсегда на Mac, iPhone, iPad и до 6 членов семьи. Чтение, AutoFill и экспорт не блокируются никогда.</span>
+            </p>
+            <div class="strength-stat"><span data-lang="en">$0 Free forever · $19.99/yr Pro · $59.99 Lifetime · CSV/vault export always open</span><span data-lang="ru">$0 Free навсегда · $19.99/год Pro · $59.99 Lifetime · Свободный экспорт всегда</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         WHAT'S NEW IN v1.4.0
          ===================================================================== -->
     <section id="whats-new" class="section-block reveal">
       <div class="container">
         <div class="section-header">
-          <p class="eyebrow"><span class="eyebrow-dot"></span><span>RELEASE 1.3.0 · EXTENSION 1.3.1 · NOVEMBER 2026</span></p>
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span>RELEASE 1.4.0 · EXTENSION 1.3.1 · NOVEMBER 2026</span></p>
           <h2 class="section-title">
-            <span data-lang="en">What's new in Password Whisper 1.3</span>
-            <span data-lang="ru">Что нового в Password Whisper 1.3</span>
+            <span data-lang="en">What's new in Password Whisper 1.4</span>
+            <span data-lang="ru">Что нового в Password Whisper 1.4</span>
           </h2>
           <p class="section-lead">
-            <span data-lang="en">Published across the App Store (iOS build 11, macOS build 12), Chrome Web Store (v1.3.1), and Firefox Add-ons (v1.3.1).</span>
-            <span data-lang="ru">Уже доступно в App Store (iOS build 11, macOS build 12), Chrome Web Store (v1.3.1) и каталоге дополнений Firefox (v1.3.1).</span>
+            <span data-lang="en">Building on v1.3 (Passkeys, Safari Extension, 2FA QR scanner, and iCloud E2EE restore), release 1.4 adds encrypted developer files, smart categories, clear plan visibility, and stricter zero-log breach privacy.</span>
+            <span data-lang="ru">Развитие релиза 1.3 (Passkeys, расширение Safari, сканер QR 2FA и восстановление iCloud): в 1.4 появились зашифрованные файлы, умные категории, плашка тарифа и усиленная приватность проверки утечек.</span>
           </p>
         </div>
 
         <div class="release-strip">
           <article class="card">
-            <span class="card-tag">Passkeys</span>
+            <span class="card-tag card-tag--amber">v1.4 · Secure Files</span>
             <h3>
-              <span data-lang="en">Create &amp; sign in with Passkeys</span>
-              <span data-lang="ru">Создание и вход по Passkeys</span>
+              <span data-lang="en">Encrypted .p8, .p12, .pem, .mobileprovision &amp; SSH</span>
+              <span data-lang="ru">Зашифрованные файловые вложения</span>
             </h3>
             <p>
-              <span data-lang="en">Register and authenticate passwordless passkeys natively inside Password Whisper AutoFill across iPhone, iPad, and Mac — stored encrypted inside your vault.</span>
-              <span data-lang="ru">Создавайте и используйте ключи доступа Passkeys прямо через системное автозаполнение Password Whisper на iPhone, iPad и Mac — ключи шифруются внутри вашего сейфа.</span>
+              <span data-lang="en">Attach signing keys, certificates, and JSON configs up to 10 MB with AES-256-GCM, automatic Key ID &amp; expiry parsing, private iCloud sync, and protected PEM/Base64 clipboard copy.</span>
+              <span data-lang="ru">Храните ключи .p8, сертификаты .p12/.cer/.pem, профили и SSH-ключи с AES-256-GCM, автоопределением Key ID и сроков действия и защищённым копированием PEM/Base64.</span>
             </p>
           </article>
 
           <article class="card">
-            <span class="card-tag">Safari Extension</span>
+            <span class="card-tag">v1.4 · Smart Categories</span>
             <h3>
-              <span data-lang="en">Bundled Safari Web Extension (iOS &amp; Mac)</span>
-              <span data-lang="ru">Встроенное расширение для Safari</span>
+              <span data-lang="en">Context-aware creation &amp; specialized presets</span>
+              <span data-lang="ru">Умные категории и быстрые пресеты</span>
             </h3>
             <p>
-              <span data-lang="en">Open &amp; Fill straight from the page with an in-field icon, visual login card preview, and a touch-friendly bottom sheet on iPhone that never interrupts typing. Included inside the <a href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">App Store app</a>.</span>
-              <span data-lang="ru">Открывайте и заполняйте логины прямо со страницы, просматривайте снимок входа в окне расширения и пользуйтесь удобной нижней панелью в Safari на iPhone. Встроено в <a href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">приложение из App Store</a>.</span>
+              <span data-lang="en">New Item inherits your active category automatically, with tailored fields for DevOps/API/Git, Server/SSH (1-click SSH command copy), Cloud/Admin, Banking, and expiring-key alerts in Audit.</span>
+              <span data-lang="ru">«Новая запись» сразу подставляет выбранную категорию; профильные поля и пресеты для DevOps/API, Сервер/SSH (копирование SSH-команды), Облако, Банки и контроль сроков ключей.</span>
             </p>
           </article>
 
           <article class="card">
-            <span class="card-tag">2FA QR Scanner</span>
+            <span class="card-tag">v1.4 · Strict Zero-Log HIBP</span>
             <h3>
-              <span data-lang="en">Scan 2FA QR codes in one tap</span>
-              <span data-lang="ru">Сканер QR-кодов 2FA / TOTP</span>
+              <span data-lang="en">Strict proxy-only breach checks, zero redirects</span>
+              <span data-lang="ru">Строгий zero-log прокси без HTTP-редиректов</span>
             </h3>
             <p>
-              <span data-lang="en">Point your camera locally to attach TOTP verification codes to any account. Live 6-digit codes appear right in AutoFill and your item inspector.</span>
-              <span data-lang="ru">Наведите камеру, чтобы прикрепить коды двухфакторной аутентификации к записи. Живые 6-значные коды сразу доступны в инспекторе и системном автозаполнении.</span>
+              <span data-lang="en">Direct HIBP fallback and HTTP redirects are strictly disabled in code. Optional 5-char prefix checks run exclusively through our zero-log Cloudflare Workers proxy (observability &amp; logs verified OFF).</span>
+              <span data-lang="ru">Прямые запросы к HIBP и HTTP-редиректы жёстко запрещены в коде. Опциональная проверка 5-символьного префикса идёт только через stateless-прокси без журналов запросов.</span>
             </p>
           </article>
 
           <article class="card">
-            <span class="card-tag card-tag--amber">UX Upgrade</span>
+            <span class="card-tag">v1.4 · Plan Clarity</span>
             <h3>
-              <span data-lang="en">iPhone Tab Bar &amp; Embedded macOS Touch ID</span>
-              <span data-lang="ru">Панель вкладок iPhone и встроенный Touch ID</span>
+              <span data-lang="en">Instant plan badge &amp; native StoreKit 2 upgrades</span>
+              <span data-lang="ru">Видимость тарифа и улучшения StoreKit 2</span>
             </h3>
             <p>
-              <span data-lang="en">Switch instantly between Vault, Overview, Generator, and Settings on iPhone. On Mac, unlock via embedded Touch ID without an extra modal popup.</span>
-              <span data-lang="ru">Мгновенно переключайтесь между Сейфом, Обзором, Генератором и Настройками на iPhone. На Mac разблокировка по Touch ID встроена прямо в экран входа.</span>
+              <span data-lang="en">See your status (Pro, Pro · Trial, Lifetime, or Free) on unlock, Overview, sidebar, menu bar, and Settings — switch plans directly and manage subscriptions natively on iOS.</span>
+              <span data-lang="ru">Статус тарифа виден на экране входа, в Обзоре, сайдбаре, панели меню и Настройках; добавлены смена тарифа и нативное управление подпиской на iOS.</span>
             </p>
           </article>
 
           <article class="card">
-            <span class="card-tag">iCloud E2EE</span>
+            <span class="card-tag">Passkeys &amp; 2FA QR</span>
             <h3>
-              <span data-lang="en">Per-vault iCloud sync &amp; seamless restore</span>
-              <span data-lang="ru">По-сейфовый iCloud и быстрое восстановление</span>
+              <span data-lang="en">Passwordless Passkeys &amp; 1-tap QR TOTP</span>
+              <span data-lang="ru">Passkeys и сканер QR-кодов 2FA</span>
             </h3>
             <p>
-              <span data-lang="en">Turn encrypted CloudKit sync on or off per vault, and restore any synced vault on a new device using your master password or Recovery Key.</span>
-              <span data-lang="ru">Включайте сквозную синхронизацию CloudKit для отдельных сейфов и восстанавливайте их на новом устройстве с помощью мастер-пароля или Recovery Key.</span>
+              <span data-lang="en">Create and sign in with Passkeys natively through Password Whisper AutoFill on iPhone, iPad, and Mac, and scan 2FA QR codes offline with your camera.</span>
+              <span data-lang="ru">Создавайте и используйте ключи доступа Passkeys через системный AutoFill на iPhone, iPad и Mac, а 2FA-коды добавляйте сканированием QR-кода без ручного ввода.</span>
             </p>
           </article>
 
           <article class="card">
-            <span class="card-tag card-tag--warn">Zero-Log Proxy</span>
+            <span class="card-tag">Browsers v1.3.1</span>
             <h3>
-              <span data-lang="en">Privacy-preserving HIBP breach check &amp; Extension 1.3.1</span>
-              <span data-lang="ru">Zero-Log прокси утечек и расширение 1.3.1</span>
+              <span data-lang="en">Safari (iOS/Mac) + Chrome, Brave, Opera &amp; Firefox</span>
+              <span data-lang="ru">Встроенный Safari + Chrome, Brave, Opera и Firefox</span>
             </h3>
             <p>
-              <span data-lang="en">Optional breach checks now route 5-char hash prefixes through a stateless zero-log Cloudflare Workers proxy. Desktop extension 1.3.1 only offers password generation on new-password fields.</span>
-              <span data-lang="ru">Проверка утечек идёт через stateless-прокси без журналов запросов. Настольное расширение 1.3.1 предлагает генерацию только в полях нового пароля, не мешая обычному входу.</span>
+              <span data-lang="en">In-page login cards and Open &amp; Fill in Safari (included in App Store), plus desktop Manifest V3 extension v1.3.1 over local Native Messaging.</span>
+              <span data-lang="ru">Карточки входа и Open &amp; Fill прямо в Safari (встроено в приложение) плюс расширение v1.3.1 для настольных Chrome, Brave, Opera и Firefox через локальный Native Messaging.</span>
             </p>
           </article>
         </div>
@@ -331,7 +537,545 @@
     </section>
 
     <!-- =====================================================================
-         VISUAL CONTEXT FIRST + INTERACTIVE SMART REDACTION STUDIO DEMO
+         DEEP SECURITY SECTION + ZERO DATA COLLECTION MANIFESTO + LIVE CRYPTO LAB (#83 & #86)
+         ===================================================================== -->
+    <section id="security" class="section-block reveal">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span><span data-lang="en">ZERO-KNOWLEDGE SECURITY · VERIFIABLE PRIVACY</span><span data-lang="ru">БЕЗОПАСНОСТЬ И ПРИВАТНОСТЬ · ГЛАВНЫЙ ПРИОРИТЕТ</span></span></p>
+          <h2 class="section-title">
+            <span data-lang="en">Nothing goes to our servers. We don't have any.</span>
+            <span data-lang="ru">Ничего не уходит на наши серверы. У нас их нет.</span>
+          </h2>
+          <p class="section-lead">
+            <span data-lang="en">Your security should never rely on blind promises. Inspect the exact cryptography, test live in-browser encryption, and see how anyone can verify Password Whisper themselves in 2 minutes.</span>
+            <span data-lang="ru">Безопасность не должна строиться на вере в слова. Изучите точную криптографию, проверьте шифрование вживую и убедитесь, как любой человек может лично проверить приложение за 2 минуты.</span>
+          </p>
+        </div>
+
+        <!-- Zero Data Collection Manifesto Banner -->
+        <div class="zero-manifesto">
+          <div class="zero-manifesto-top">
+            <div>
+              <span class="card-tag"><span data-lang="en">ZERO DATA COLLECTION MANIFESTO</span><span data-lang="ru">ЗАЯВЛЕНИЕ О НУЛЕВОМ СБОРЕ ДАННЫХ</span></span>
+              <h3>
+                <span data-lang="en">Your data is never stored on our servers and never collected.</span>
+                <span data-lang="ru">Данные пользователей нигде у нас не хранятся и не собираются.</span>
+              </h3>
+              <p>
+                <span data-lang="en">We do not run a user account database, vault storage servers, usage analytics, advertising trackers, or crash telemetry. Our Apple Privacy Manifest declares zero tracking and zero collected data types (<code>NSPrivacyTracking = false</code>, <code>NSPrivacyCollectedDataTypes = []</code>).</span>
+                <span data-lang="ru">У разработчика нет базы аккаунтов, нет серверов хранения паролей, нет аналитики, рекламных трекеров и телеметрии сбоев. Манифест приватности <code>PrivacyInfo.xcprivacy</code> во всех модулях пуст (<code>NSPrivacyTracking = false</code>, <code>NSPrivacyCollectedDataTypes = []</code>).</span>
+              </p>
+            </div>
+            <div class="zero-kpis" aria-label="Privacy metrics">
+              <div class="zero-kpi"><strong>0</strong><span><span data-lang="en">Vault servers</span><span data-lang="ru">Серверов сейфа</span></span></div>
+              <div class="zero-kpi"><strong>0</strong><span><span data-lang="en">Analytics / Ads</span><span data-lang="ru">Трекеров / SDK</span></span></div>
+              <div class="zero-kpi"><strong>0 B</strong><span><span data-lang="en">Offline traffic</span><span data-lang="ru">Трафика офлайн</span></span></div>
+            </div>
+          </div>
+
+          <div class="network-perimeter-grid">
+            <article class="perimeter-card">
+              <span class="chip chip--safe">MODE 1 · DEFAULT</span>
+              <h4><span data-lang="en">Local Offline Mode: 0 bytes sent</span><span data-lang="ru">Локальный режим: 0 байт в сеть</span></h4>
+              <p><span data-lang="en">Your <code>.whispervault</code> lives purely on your device. Password generation, Vision OCR masking, AutoFill, and Security Audit run 100% offline.</span><span data-lang="ru">Сейф <code>.whispervault</code> живёт только на устройстве. Генерация, Vision OCR, AutoFill и аудит стойкости работают на 100% офлайн.</span></p>
+            </article>
+            <article class="perimeter-card">
+              <span class="chip chip--safe">MODE 2 · OPTIONAL SYNC</span>
+              <h4><span data-lang="en">Personal Apple iCloud (Ciphertext Only)</span><span data-lang="ru">Личный Apple iCloud (только шифротекст)</span></h4>
+              <p><span data-lang="en">When enabled per vault, devices talk directly to your private CloudKit zone. Only AES-256-GCM envelopes and blobs sync — developer access is technically impossible.</span><span data-lang="ru">При включении устройства общаются напрямую с вашей приватной зоной CloudKit. Передаются только конверты AES-256-GCM — доступ разработчика невозможен.</span></p>
+            </article>
+            <article class="perimeter-card">
+              <span class="chip chip--warn">MODE 3 · OPT-IN ONLY</span>
+              <h4><span data-lang="en">Manual Breach Check (Zero-Log Proxy)</span><span data-lang="ru">Ручная проверка утечек (Zero-Log прокси)</span></h4>
+              <p><span data-lang="en">Runs only when you click Check. Sends only the first 5 SHA-1 hex chars without cookies or redirects via a stateless zero-log Cloudflare Worker. Skip it for zero external requests.</span><span data-lang="ru">Запускается только по вашему клику. Отправляет лишь 5 символов SHA-1 без cookie и редиректов через stateless-прокси без логов. Не нажимаете — 0 внешних запросов.</span></p>
+            </article>
+          </div>
+        </div>
+
+        <!-- Interactive 5-Stage E2EE Pipeline (Verified 32 MiB RFC 9106) -->
+        <div class="pipeline-rail" role="group" aria-label="Encryption pipeline stages">
+          <button type="button" class="pipeline-node" aria-pressed="true">
+            <span class="pipeline-step-id">01 · INPUT</span>
+            <strong><span data-lang="en">Master Password</span><span data-lang="ru">Мастер-пароль</span></strong>
+            <span><span data-lang="en">RAM-only · mlock</span><span data-lang="ru">Только RAM · mlock</span></span>
+          </button>
+          <button type="button" class="pipeline-node" aria-pressed="false">
+            <span class="pipeline-step-id">02 · KDF</span>
+            <strong>Argon2id</strong>
+            <span><span data-lang="en">RFC 9106 · 32 MiB</span><span data-lang="ru">RFC 9106 · 32 МиБ</span></span>
+          </button>
+          <button type="button" class="pipeline-node" aria-pressed="false">
+            <span class="pipeline-step-id">03 · AEAD</span>
+            <strong>AES-256-GCM</strong>
+            <span><span data-lang="en">HKDF + strict AAD</span><span data-lang="ru">HKDF + строгий AAD</span></span>
+          </button>
+          <button type="button" class="pipeline-node" aria-pressed="false">
+            <span class="pipeline-step-id">04 · VAULT</span>
+            <strong>.whispervault</strong>
+            <span><span data-lang="en">Local per-object files</span><span data-lang="ru">Локальный пакет</span></span>
+          </button>
+          <button type="button" class="pipeline-node" aria-pressed="false">
+            <span class="pipeline-step-id">05 · SYNC</span>
+            <strong>Apple CloudKit</strong>
+            <span><span data-lang="en">Private DB ciphertext</span><span data-lang="ru">Приватный iCloud</span></span>
+          </button>
+        </div>
+
+        <div class="pipeline-detail">
+          <div>
+            <span class="card-tag" id="pipeline-detail-badge">RAM ONLY · MLOCK + MEMSET_S</span>
+            <h3 id="pipeline-detail-title" style="margin: 0 0 8px; font-size: 1.2rem;">1. Your Master Password stays only in your memory</h3>
+            <p id="pipeline-detail-body" style="margin: 0; color: var(--ink-muted);">It is never written to disk or sent over the network. Key buffers are pinned against swap via mlock() and guaranteed zeroed in RAM via memset_s() (SecureBytes).</p>
+          </div>
+          <div style="background: var(--surface-field); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 16px;">
+            <div class="eyebrow" style="margin-bottom: 6px;">VERIFIED CRYPTOGRAPHIC SPEC</div>
+            <code id="pipeline-detail-code" style="display: block; white-space: pre-wrap; border: 0; background: transparent; padding: 0; font-size: 12.5px; color: var(--safe);">masterPassword -&gt; RAM only (mlock + memset_s on lock)</code>
+          </div>
+        </div>
+
+        <dl class="spec-list">
+          <div class="spec-item">
+            <dt><span data-lang="en">Key Derivation (RFC 9106)</span><span data-lang="ru">Вывод ключа (RFC 9106)</span></dt>
+            <dd>Argon2id (32 MiB, t=3, p=4, 128b salt)</dd>
+          </div>
+          <div class="spec-item">
+            <dt><span data-lang="en">Cipher &amp; Subkeys</span><span data-lang="ru">Шифрование и подключи</span></dt>
+            <dd>CryptoKit AES-256-GCM + AAD · HKDF-SHA256</dd>
+          </div>
+          <div class="spec-item">
+            <dt><span data-lang="en">Memory &amp; Biometrics</span><span data-lang="ru">Память и биометрия</span></dt>
+            <dd>mlock + memset_s · .biometryCurrentSet</dd>
+          </div>
+          <div class="spec-item">
+            <dt><span data-lang="en">Breach Audit (Opt-in)</span><span data-lang="ru">Аудит утечек (вручную)</span></dt>
+            <dd>5-char SHA-1 · Zero-Log Proxy · No Redirects</dd>
+          </div>
+        </dl>
+
+        <!-- Interactive "Who Sees What" Observer Matrix (#83) -->
+        <div class="observer-box">
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span><span data-lang="en">INTERACTIVE PRIVACY INSPECTOR · WHO SEES WHAT</span><span data-lang="ru">ИНТЕРАКТИВНЫЙ ИНСПЕКТОР · КТО И ЧТО ВИДИТ</span></span></p>
+          <div class="observer-roles" role="group" aria-label="Select observer perspective">
+            <button type="button" class="observer-role-btn" data-observer-role="you" aria-pressed="false"><span data-lang="en">You (Unlocked)</span><span data-lang="ru">Вы (с паролем)</span></button>
+            <button type="button" class="observer-role-btn" data-observer-role="dev" aria-pressed="true"><span data-lang="en">Developer</span><span data-lang="ru">Разработчик</span></button>
+            <button type="button" class="observer-role-btn" data-observer-role="icloud" aria-pressed="false"><span data-lang="en">Apple iCloud</span><span data-lang="ru">Apple iCloud</span></button>
+            <button type="button" class="observer-role-btn" data-observer-role="network" aria-pressed="false"><span data-lang="en">ISP / Network</span><span data-lang="ru">Сеть / Провайдер</span></button>
+            <button type="button" class="observer-role-btn" data-observer-role="attacker" aria-pressed="false"><span data-lang="en">Thief with .whispervault</span><span data-lang="ru">Вор с файлом сейфа</span></button>
+          </div>
+
+          <div class="observer-stage">
+            <div class="observer-verdict">
+              <span class="chip chip--safe" id="observer-badge">0 BYTES · NO SERVERS</span>
+              <h4 id="observer-title">Password Whisper Developer</h4>
+              <p id="observer-desc">Zero bytes. We run no user account database, no vault storage servers, no analytics, no ad SDKs, and no crash telemetry.</p>
+            </div>
+            <pre class="observer-dump" id="observer-dump" tabindex="0"></pre>
+          </div>
+        </div>
+
+        <!-- Live Zero-Knowledge Web Crypto Visualizer (#86) -->
+        <div class="crypto-lab" style="margin-top: var(--space-5);">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-dot"></span><span><span data-lang="en">LIVE IN-BROWSER ENCRYPTION · 0 NETWORK REQUESTS</span><span data-lang="ru">ЖИВОЕ ШИФРОВАНИЕ В БРАУЗЕРЕ · 0 ЗАПРОСОВ В СЕТЬ</span></span></p>
+            <h3 style="margin: 0 0 8px; font-family: var(--font-display); font-size: 1.2rem;">
+              <span data-lang="en">See your data turn into an AES-256-GCM envelope in real time</span>
+              <span data-lang="ru">Посмотрите вживую, во что превращается запись на диске и в iCloud</span>
+            </h3>
+            <p style="margin: 0 0 16px; font-size: 14px; color: var(--ink-muted);">
+              <span data-lang="en">Type any made-up credentials below. Your browser's built-in Web Crypto API encrypts them locally right now — notice how changing a single character changes every byte of ciphertext, and how HIBP k-Anonymity exposes only 5 hash characters.</span>
+              <span data-lang="ru">Введите любые выдуманные данные ниже. Встроенный Web Crypto API вашего браузера зашифрует их прямо сейчас на месте — обратите внимание, как меняется весь шифротекст от одного символа и что при проверке утечек наружу выходят только 5 символов SHA-1.</span>
+            </p>
+            <div class="crypto-field-group">
+              <label class="crypto-label">
+                <span><span data-lang="en">Website (sample)</span><span data-lang="ru">Сайт (для примера)</span></span>
+                <input id="lab-site" class="crypto-input" type="text" value="console.aws.amazon.com" autocomplete="off">
+              </label>
+              <label class="crypto-label">
+                <span><span data-lang="en">Username (sample)</span><span data-lang="ru">Логин (для примера)</span></span>
+                <input id="lab-user" class="crypto-input" type="text" value="ops@northstar.dev" autocomplete="off">
+              </label>
+              <label class="crypto-label">
+                <span><span data-lang="en">Password (sample)</span><span data-lang="ru">Пароль (для примера)</span></span>
+                <input id="lab-pass" class="crypto-input" type="text" value="amber-prism-cedar-42" autocomplete="off">
+              </label>
+              <div>
+                <button type="button" id="lab-gen-btn" class="btn btn--soft btn--sm">
+                  <span data-lang="en">Generate random passphrase</span>
+                  <span data-lang="ru">Сгенерировать новую фразу</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: grid; gap: 14px; align-content: start;">
+            <div>
+              <div class="eyebrow" style="margin-bottom: 6px;"><span data-lang="en">SEALED .ITEM.ENC ON DISK &amp; ICLOUD (AES-256-GCM + AAD)</span><span data-lang="ru">ФАЙЛ .ITEM.ENC НА ДИСКЕ И В ICLOUD (AES-256-GCM + AAD)</span></div>
+              <pre class="observer-dump" id="lab-envelope-out" style="max-height: 215px;" tabindex="0"></pre>
+            </div>
+            <div>
+              <div class="eyebrow" style="margin-bottom: 6px;"><span data-lang="en">OPT-IN HIBP K-ANONYMITY SHA-1 SPLIT</span><span data-lang="ru">РАЗДЕЛЕНИЕ SHA-1 ПРИ РУЧНОЙ ПРОВЕРКЕ УТЕЧЕК (K-ANONYMITY)</span></div>
+              <div class="hibp-hash-box">
+                <span class="hibp-prefix" id="lab-sha1-prefix">5BAA6</span><span class="hibp-suffix" id="lab-sha1-suffix">1E4C9B93F3F0682250B6CF8331B7EE68FD8</span>
+                <div style="margin-top: 8px; font-size: 11.5px; color: var(--ink-muted); font-family: var(--font-text);">
+                  <span data-lang="en"><strong style="color: var(--safe);">Green (5 chars):</strong> queried anonymously via zero-log proxy · <strong>Crossed out (35 chars):</strong> never leaves your device.</span>
+                  <span data-lang="ru"><strong style="color: var(--safe);">Зелёные (5 симв.):</strong> анонимный запрос через zero-log прокси · <strong>Зачёркнутые (35 симв.):</strong> никогда не покидают устройство.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prominent Banner to Dedicated Security & Verify Yourself Center (#83 & #84) -->
+        <div class="no-hostage-banner" style="margin-top: var(--space-5);">
+          <div>
+            <h3>
+              <span data-lang="en">Don't trust — verify Password Whisper yourself in 2 minutes</span>
+              <span data-lang="ru">Не верьте на слово — проверьте безопасность Password Whisper сами за 2 минуты</span>
+            </h3>
+            <p>
+              <span data-lang="en">Read our complete 7-layer Security Architecture and follow 6 everyday no-code checks (Airplane Mode, iOS App Privacy Report, opening .whispervault in TextEdit, 1-byte tamper test, Handoff check) plus macOS Terminal verification commands.</span>
+              <span data-lang="ru">Откройте подробный Центр безопасности: все 7 эшелонов защиты, 6 простых проверок для обычного человека (Авиарежим, «Отчёт о конфиденциальности» iOS, просмотр .whispervault в TextEdit, тест подмены 1 байта, тест буфера) и команды терминала для специалистов.</span>
+            </p>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <a class="btn btn--primary" href="./security/#verify-yourself">
+              <span data-lang="en">Self-Verification Guide →</span>
+              <span data-lang="ru">Гайд по проверке →</span>
+            </a>
+            <a class="btn btn--soft" href="./security/">
+              <span data-lang="en">Full Security Center</span>
+              <span data-lang="ru">Все 7 уровней защиты</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         MARKET COMPARISON: 1-ON-1 DUEL, FILTERABLE RESPONSIVE TABLE & TCO (#85)
+         ===================================================================== -->
+    <section id="compare" class="section-block reveal">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span><span data-lang="en">MARKET COMPARISON · 2026 BENCHMARK</span><span data-lang="ru">СРАВНЕНИЕ С ЛИДЕРАМИ РЫНКА · 2026</span></span></p>
+          <h2 class="section-title">
+            <span data-lang="en">How Password Whisper compares to the best password managers</span>
+            <span data-lang="ru">Чем Password Whisper лучше лучших менеджеров на рынке</span>
+          </h2>
+          <p class="section-lead">
+            <span data-lang="en">Honest side-by-side breakdown against 1Password, Apple Passwords, Bitwarden, Proton Pass, Strongbox, and Enpass — highlighting where Password Whisper leads and where others fit better.</span>
+            <span data-lang="ru">Честное сравнение с 1Password, Apple Passwords («Пароли»), Bitwarden, Proton Pass, Strongbox и Enpass — с выделением наших реальных преимуществ и расчётом экономии за 1, 3 и 5 лет.</span>
+          </p>
+        </div>
+
+        <!-- 1-on-1 Duel Tabs -->
+        <div class="tabs-wrapper" data-tabs>
+          <div class="tablist-scroller" role="tablist" focusgroup="tablist nomemory" aria-label="Compare Password Whisper 1-on-1">
+            <button type="button" class="tab-btn" role="tab" id="duel-tab-1p" aria-selected="true" focusgroupstart tabindex="0">vs 1Password</button>
+            <button type="button" class="tab-btn" role="tab" id="duel-tab-ap" aria-selected="false" tabindex="-1">vs Apple Passwords</button>
+            <button type="button" class="tab-btn" role="tab" id="duel-tab-bw" aria-selected="false" tabindex="-1">vs Bitwarden</button>
+            <button type="button" class="tab-btn" role="tab" id="duel-tab-pp" aria-selected="false" tabindex="-1">vs Proton Pass</button>
+            <button type="button" class="tab-btn" role="tab" id="duel-tab-sb" aria-selected="false" tabindex="-1">vs Strongbox / Enpass</button>
+          </div>
+
+          <div class="tab-panels-stack">
+            <!-- vs 1Password -->
+            <div role="tabpanel" aria-labelledby="duel-tab-1p">
+              <div class="tab-panel-inner">
+                <div class="duel-panel-grid">
+                  <div class="duel-card duel-card--wins">
+                    <span class="card-tag"><span data-lang="en">WHERE PASSWORD WHISPER WINS</span><span data-lang="ru">В ЧЁМ PASSWORD WHISPER ЛУЧШЕ 1PASSWORD</span></span>
+                    <h3><span data-lang="en">Local ownership, native Swift speed, visual logins, and half the price</span><span data-lang="ru">Локальный сейф, нативный Swift, снимки входа и цена почти в 2× ниже</span></h3>
+                    <ul class="duel-list">
+                      <li><span style="color:var(--safe);">✓</span><span><strong data-lang="en">100% local vault + optional personal iCloud:</strong><strong data-lang="ru">Локальное хранение + личный iCloud:</strong> <span data-lang="en">1Password 8 removed local vaults and forces a vendor cloud account. Password Whisper stores everything locally and syncs only via your own iCloud.</span><span data-lang="ru">в 1Password 8 убрали локальные сейфы — обязательны облако и аккаунт компании. У нас всё хранится локально, а iCloud служит только транспортом.</span></span></li>
+                      <li><span style="color:var(--safe);">✓</span><span><strong data-lang="en">Native Swift 6 vs Electron:</strong><strong data-lang="ru">Нативный Swift 6 вместо Electron:</strong> <span data-lang="en">crisp macOS ergonomics, Menu Bar .window, embedded Touch ID, and a fraction of Electron's RAM usage.</span><span data-lang="ru">мгновенный отклик macOS, минимум RAM, встроенный Touch ID и дизайн-система «Диафрагма».</span></span></li>
+                      <li><span style="color:var(--safe);">✓</span><span><strong data-lang="en">Visual Context with Vision OCR:</strong><strong data-lang="ru">Визуальные снимки входа:</strong> <span data-lang="en">1Password lists text rows; Password Whisper shows redacted login screenshots right in the browser popup and HUD.</span><span data-lang="ru">узнавайте нужный из 5 похожих кабинетов по замаскированному скриншоту окна входа ещё до клика.</span></span></li>
+                      <li><span style="color:var(--safe);">✓</span><span><strong data-lang="en">Free tier + Lifetime ($59.99) + $19.99/yr Pro:</strong><strong data-lang="ru">Есть Free, Lifetime ($59.99) и Pro вдвое дешевле:</strong> <span data-lang="en">1Password has no Free tier, no Lifetime, and charges $35.88/yr (Individual) or $53.88/yr (Family).</span><span data-lang="ru">у 1Password нет бесплатного плана и Lifetime, а подписка стоит $35.88/год или $53.88/год на семью.</span></span></li>
+                    </ul>
+                  </div>
+                  <div class="duel-card">
+                    <span class="card-tag card-tag--warn"><span data-lang="en">HONEST NOTE</span><span data-lang="ru">КОГДА ВЫБРАТЬ 1PASSWORD</span></span>
+                    <h3><span data-lang="en">When 1Password still fits better</span><span data-lang="ru">Сильные стороны 1Password</span></h3>
+                    <p style="font-size:14px; color:var(--ink-muted); margin:0;"><span data-lang="en">If you need Windows/Linux/Android apps today or enterprise SSO/team administration for 50+ employees, 1Password's cross-platform B2B suite is built for that. For Apple-ecosystem individuals, developers, and families, Password Whisper delivers superior privacy, native polish, and value.</span><span data-lang="ru">Если вам критичны приложения на Windows/Linux/Android прямо сейчас или корпоративное управление командой на 50+ сотрудников с SSO — у 1Password сильная B2B-платформа. Для пользователей Mac, iPhone, iPad и семей Password Whisper даёт лучшую приватность, нативность и цену.</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- vs Apple Passwords -->
+            <div role="tabpanel" aria-labelledby="duel-tab-ap" hidden="until-found">
+              <div class="tab-panel-inner">
+                <div class="duel-panel-grid">
+                  <div class="duel-card duel-card--wins">
+                    <span class="card-tag"><span data-lang="en">WHERE PASSWORD WHISPER WINS</span><span data-lang="ru">В ЧЁМ PASSWORD WHISPER ЛУЧШЕ APPLE PASSWORDS</span></span>
+                    <h3><span data-lang="en">Independent Master Password, screenshots, .p8/SSH files, and Chrome/Firefox</span><span data-lang="ru">Отдельный мастер-пароль, снимки, файлы .p8/SSH и все браузеры на Mac</span></h3>
+                    <ul class="duel-list">
+                      <li><span style="color:var(--safe);">✓</span><span><strong data-lang="en">Separate Argon2id Master Password (not your iPhone PIN):</strong><strong data-lang="ru">Отдельный мастер-пароль (не PIN от iPhone):</strong> <span data-lang="en">anyone who shoulder-surfs your device passcode can unlock Apple Passwords. Password Whisper requires your Master Password or biometrics with zero PIN fallback.</span><span data-lang="ru">подсмотрев код-пароль экрана iPhone, можно открыть системные «Пароли». Password Whisper никогда не откатывается на PIN устройства.</span></span></li>
+                      <li><span style="color:var(--safe);">✓</span><span><strong data-lang="en">Redacted screenshots, .p8/.pem/SSH files, cards &amp; docs:</strong><strong data-lang="ru">Скриншоты входа, файлы .p8/SSH, карты и документы:</strong> <span data-lang="en">Apple Passwords stores only basic login/Wi-Fi/passkey rows — no attachments, no visual context, no custom fields.</span><span data-lang="ru">в «Паролях» Apple нет ни снимков входа, ни секретных файлов и ключей, ни карт с документами, ни кастомных полей.</span></span></li>
+                      <li><span style="color:var(--safe);">✓</span><span><strong data-lang="en">Chrome, Brave, Opera &amp; Firefox on Mac:</strong><strong data-lang="ru">Полноценная работа в Chrome, Brave, Opera и Firefox на Mac:</strong> <span data-lang="en">native Manifest V3 bridge with visual previews and exact port/path matching.</span><span data-lang="ru">локальный мост Manifest V3 с превью, автосохранением и учётом порта/пути URL.</span></span></li>
+                      <li><span style="color:var(--safe);">✓</span><span><strong data-lang="en">Portable .whispervault backup:</strong><strong data-lang="ru">Переносимый сейф .whispervault:</strong> <span data-lang="en">keep offline encrypted backups independent of Apple ID lock-in.</span><span data-lang="ru">храните зашифрованную копию на любом диске без жёсткой привязки к связке Apple ID.</span></span></li>
+                    </ul>
+                  </div>
+                  <div class="duel-card">
+                    <span class="card-tag card-tag--warn"><span data-lang="en">HONEST NOTE</span><span data-lang="ru">КОГДА ХВАТИТ APPLE PASSWORDS</span></span>
+                    <h3><span data-lang="en">Great baseline, clear ceiling</span><span data-lang="ru">Базовый стандарт OS</span></h3>
+                    <p style="font-size:14px; color:var(--ink-muted); margin:0;"><span data-lang="en">Apple Passwords is free and preinstalled for simple Safari logins. Password Whisper is what you upgrade to when you want an independent cryptographic vault, multi-account visual context, developer files, and full Chrome/Firefox support.</span><span data-lang="ru">«Пароли» Apple бесплатны и удобны для простых логинов в Safari. Password Whisper — следующий уровень, когда нужен независимый сейф с мастер-паролем, визуальными снимками, файлами и браузерами на Mac.</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- vs Bitwarden -->
+            <div role="tabpanel" aria-labelledby="duel-tab-bw" hidden="until-found">
+              <div class="tab-panel-inner">
+                <div class="duel-panel-grid">
+                  <div class="duel-card duel-card--wins">
+                    <span class="card-tag"><span data-lang="en">WHERE PASSWORD WHISPER WINS</span><span data-lang="ru">В ЧЁМ PASSWORD WHISPER ЛУЧШЕ BITWARDEN</span></span>
+                    <h3><span data-lang="en">Native Apple UX, free 2FA TOTP &amp; screenshots, zero server maintenance, Lifetime</span><span data-lang="ru">Нативный UI Apple, бесплатные TOTP и аудит в Free, без серверов и с Lifetime</span></h3>
+                    <ul class="duel-list">
+                      <li><span style="color:var(--safe);">✓</span><span><strong data-lang="en">TOTP 2FA, Security Audit &amp; 5 visual screenshots included in Free:</strong><strong data-lang="ru">2FA TOTP, аудит и 5 снимков уже в Free:</strong> <span data-lang="en">Bitwarden locks built-in TOTP, vault health reports, and file attachments behind Premium ($19.80/yr).</span><span data-lang="ru">в Bitwarden Free закрыты встроенный генератор TOTP, отчёты здоровья и вложения — они требуют платный Premium ($19.80/год).</span></span></li>
+                      <li><span style="color:var(--safe);">✓</span><span><strong data-lang="en">Zero server admin vs self-hosting:</strong><strong data-lang="ru">Никакого self-host администрирования:</strong> <span data-lang="en">get true private storage via local .whispervault + personal iCloud without deploying Docker or maintaining SSL certificates.</span><span data-lang="ru">полная приватность локального сейфа и вашего iCloud без поднятия собственного сервера Vaultwarden и обновления SSL.</span></span></li>
+                      <li><span style="color:var(--safe);">✓</span><span><strong data-lang="en">Native SwiftUI polish + Lifetime ($59.99):</strong><strong data-lang="ru">Нативный интерфейс Apple + Lifetime ($59.99):</strong> <span data-lang="en">Bitwarden desktop is Electron-based and offers no one-time purchase; Bitwarden Families costs $47.88/yr while Password Whisper includes Apple Family Sharing for up to 6.</span><span data-lang="ru">вместо тяжёлого десктопа на Electron — нативный SwiftUI, а семейный доступ до 6 человек уже включён в Pro и Lifetime.</span></span></li>
+                    </ul>
+                  </div>
+                  <div class="duel-card">
+                    <span class="card-tag card-tag--warn"><span data-lang="en">HONEST NOTE</span><span data-lang="ru">СИЛЬНЫЕ СТОРОНЫ BITWARDEN</span></span>
+                    <h3><span data-lang="en">Open-source cross-platform leader</span><span data-lang="ru">Кроссплатформенный Open Source</span></h3>
+                    <p style="font-size:14px; color:var(--ink-muted); margin:0;"><span data-lang="en">Bitwarden shines for cross-OS Windows/Linux/Android teams and self-hosters. Password Whisper wins on native macOS/iOS speed, visual login context, zero-server simplicity, and Apple Family Sharing value.</span><span data-lang="ru">Bitwarden силён открытым кодом и работой на Windows/Linux/Android. Password Whisper выигрывает в нативном Apple UX, визуальном контексте, отсутствии серверов и экономии для семьи.</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- vs Proton Pass -->
+            <div role="tabpanel" aria-labelledby="duel-tab-pp" hidden="until-found">
+              <div class="tab-panel-inner">
+                <div class="duel-panel-grid">
+                  <div class="duel-card duel-card--wins">
+                    <span class="card-tag"><span data-lang="en">WHERE PASSWORD WHISPER WINS</span><span data-lang="ru">В ЧЁМ PASSWORD WHISPER ЛУЧШЕ PROTON PASS</span></span>
+                    <h3><span data-lang="en">True Zero-Account isolation — no single provider point of failure</span><span data-lang="ru">Истинная независимость без единого аккаунта провайдера</span></h3>
+                    <ul class="duel-list">
+                      <li><span style="color:var(--safe);">✓</span><span><strong data-lang="en">No provider account lock-in:</strong><strong data-lang="ru">Нет единой точки отказа:</strong> <span data-lang="en">Proton Pass ties your vault to your Proton account (Mail + VPN + Drive). Password Whisper requires zero external account — your keys never touch our servers.</span><span data-lang="ru">в Proton Pass сейф жёстко привязан к общему аккаунту почты и VPN. В Password Whisper нет аккаунта у разработчика вообще.</span></span></li>
+                      <li><span style="color:var(--safe);">✓</span><span><strong data-lang="en">100% offline local vaults + native Swift macOS:</strong><strong data-lang="ru">Локальный сейф и нативный macOS:</strong> <span data-lang="en">Proton Pass desktop is an Electron wrapper requiring Proton cloud servers; Password Whisper runs natively on Apple Silicon.</span><span data-lang="ru">нативное приложение Swift 6 без Electron и полная работа офлайн.</span></span></li>
+                      <li><span style="color:var(--safe);">✓</span><span><strong data-lang="en">Free TOTP 2FA + Lifetime ($59.99):</strong><strong data-lang="ru">Бесплатный 2FA TOTP и покупка Lifetime:</strong> <span data-lang="en">Proton Pass Free hides built-in 2FA and Proton Pass Family runs ~$59.88/yr; Password Whisper offers both $19.99/yr and $59.99 Lifetime with Apple Family Sharing.</span><span data-lang="ru">в Proton Pass Free встроенный 2FA закрыт, а семейный план стоит ~$60/год против нашего Lifetime за $59.99 навсегда.</span></span></li>
+                    </ul>
+                  </div>
+                  <div class="duel-card">
+                    <span class="card-tag card-tag--warn"><span data-lang="en">HONEST NOTE</span><span data-lang="ru">СИЛЬНЫЕ СТОРОНЫ PROTON PASS</span></span>
+                    <h3><span data-lang="en">Built-in SimpleLogin email aliases</span><span data-lang="ru">Почтовые алиасы SimpleLogin</span></h3>
+                    <p style="font-size:14px; color:var(--ink-muted); margin:0;"><span data-lang="en">If disposable email aliases inside your mail provider are your top priority, Proton Pass integrates SimpleLogin natively. On Apple devices, you can pair iCloud+ Hide My Email with Password Whisper's local-first visual vault.</span><span data-lang="ru">Proton Pass удобен встроенными email-алиасами SimpleLogin. В экосистеме Apple эту задачу закрывает iCloud+ «Скрыть e-mail», а Password Whisper даёт локальный визуальный сейф без чужого облака.</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- vs Strongbox / Enpass -->
+            <div role="tabpanel" aria-labelledby="duel-tab-sb" hidden="until-found">
+              <div class="tab-panel-inner">
+                <div class="duel-panel-grid">
+                  <div class="duel-card duel-card--wins">
+                    <span class="card-tag"><span data-lang="en">WHERE PASSWORD WHISPER WINS</span><span data-lang="ru">В ЧЁМ PASSWORD WHISPER ЛУЧШЕ STRONGBOX И ENPASS</span></span>
+                    <h3><span data-lang="en">Conflict-free per-object sync, modern UX, Chrome/Firefox bridge &amp; fairer Lifetime</span><span data-lang="ru">Слияние без конфликтов, современный UX, мост для браузеров и доступный Lifetime</span></h3>
+                    <ul class="duel-list">
+                      <li><span style="color:var(--safe);">✓</span><span><strong data-lang="en">Per-object storage vs monolithic database conflicts:</strong><strong data-lang="ru">По-объектный сейф вместо конфликтов одного файла:</strong> <span data-lang="en">Strongbox (.kdbx) and Enpass (SQLite) sync a single monolithic file, risking overwrite conflicts offline. Password Whisper encrypts every item separately and merges offline edits deterministically.</span><span data-lang="ru">Strongbox (.kdbx) и Enpass (SQLite) синхронизируют один монолитный файл. У нас каждая запись зашифрована отдельно — офлайн-правки на Mac и iPhone сливаются без потерь.</span></span></li>
+                      <li><span style="color:var(--safe);">✓</span><span><strong data-lang="en">Modern Visual UX + Chrome/Firefox MV3 bridge:</strong><strong data-lang="ru">Визуальный UX + мост для Chrome/Firefox:</strong> <span data-lang="en">no intimidating KeePass configuration (Strongbox) or dated Qt UI (Enpass), plus a full native Manifest V3 bridge for Chrome, Brave, Opera, and Firefox on Mac.</span><span data-lang="ru">без перегруженного наследия KeePass и устаревшего Qt, с нативным расширением для всех браузеров Mac и визуальными снимками входа.</span></span></li>
+                      <li><span style="color:var(--safe);">✓</span><span><strong data-lang="en">Lifetime at $59.99 vs $99.99–$124.99:</strong><strong data-lang="ru">Lifetime $59.99 против $99.99–$124.99:</strong> <span data-lang="en">nearly half the one-time cost of Strongbox ($124.99) and Enpass ($99.99), with Apple Family Sharing included.</span><span data-lang="ru">почти вдвое выгоднее разовых лицензий Strongbox ($124.99) и Enpass ($99.99), с включённым Family Sharing.</span></span></li>
+                    </ul>
+                  </div>
+                  <div class="duel-card">
+                    <span class="card-tag card-tag--warn"><span data-lang="en">HONEST NOTE</span><span data-lang="ru">КОГДА ВЫБРАТЬ STRONGBOX / ENPASS</span></span>
+                    <h3><span data-lang="en">Legacy KDBX &amp; WebDAV workflows</span><span data-lang="ru">Формат KeePass и WebDAV</span></h3>
+                    <p style="font-size:14px; color:var(--ink-muted); margin:0;"><span data-lang="en">If you strictly require reading a legacy KeePass .kdbx database over SFTP/WebDAV or need Windows/Android apps (Enpass), those tools serve that niche. For modern Apple-first security, Password Whisper is cleaner, faster, and visually smarter.</span><span data-lang="ru">Если вам строго нужен старый формат KeePass .kdbx по WebDAV/SFTP или клиент под Windows/Android (Enpass), они закрывают эту нишу. Для пользователей Apple Password Whisper быстрее, нагляднее и выгоднее.</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category Filters for Responsive Comparison Table -->
+        <div class="matrix-filters" role="group" aria-label="Filter comparison criteria">
+          <button type="button" class="filter-pill-btn" data-matrix-filter="all" aria-pressed="true"><span data-lang="en">All criteria (12)</span><span data-lang="ru">Все критерии (12)</span></button>
+          <button type="button" class="filter-pill-btn" data-matrix-filter="storage" aria-pressed="false"><span data-lang="en">Local &amp; Privacy</span><span data-lang="ru">Хранение и приватность</span></button>
+          <button type="button" class="filter-pill-btn" data-matrix-filter="ux" aria-pressed="false"><span data-lang="en">Visual &amp; Native UX</span><span data-lang="ru">Визуальный контекст и UX</span></button>
+          <button type="button" class="filter-pill-btn" data-matrix-filter="security" aria-pressed="false"><span data-lang="en">Security &amp; Files</span><span data-lang="ru">Защита и файлы</span></button>
+          <button type="button" class="filter-pill-btn" data-matrix-filter="pricing" aria-pressed="false"><span data-lang="en">Pricing &amp; Ownership</span><span data-lang="ru">Цена и владение</span></button>
+        </div>
+
+        <!-- Responsive Data Table (`responsive-table` modern-web-guidance) -->
+        <div tabindex="0" role="region" aria-labelledby="compare-table-caption" class="table-wrapper">
+          <table class="compare-table">
+            <caption id="compare-table-caption">
+              <span data-lang="en">2026 Feature &amp; Privacy Matrix · Scroll horizontally or view stacked cards on mobile</span>
+              <span data-lang="ru">Сравнительная матрица 2026 · Горизонтальная прокрутка на десктопе, карточки на мобильных</span>
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col"><span data-lang="en">Criterion</span><span data-lang="ru">Критерий</span></th>
+                <th scope="col" class="col-pw">Password Whisper</th>
+                <th scope="col">1Password</th>
+                <th scope="col">Apple Passwords</th>
+                <th scope="col">Bitwarden</th>
+                <th scope="col">Proton Pass</th>
+                <th scope="col">Strongbox / Enpass</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-cat="storage">
+                <th scope="row"><span data-lang="en">100% local vault (no vendor servers)</span><span data-lang="ru">100% локальный сейф (0 серверов вендора)</span></th>
+                <td class="col-pw"><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">Yes (.whispervault)</span><span data-lang="ru">Да (.whispervault)</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">Removed in v8</span><span data-lang="ru">Убрано в v8</span></span></td>
+                <td><span class="cmp-badge cmp-badge--mid">◐ <span data-lang="en">Apple ID tied</span><span data-lang="ru">Привязан к Apple ID</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">Server required</span><span data-lang="ru">Нужен сервер</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">Proton cloud</span><span data-lang="ru">Облако Proton</span></span></td>
+                <td><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">Yes (BYO-Cloud)</span><span data-lang="ru">Да (BYO-Cloud)</span></span></td>
+              </tr>
+              <tr data-cat="storage">
+                <th scope="row"><span data-lang="en">Zero-Account (no registration)</span><span data-lang="ru">Без регистрации аккаунта</span></th>
+                <td class="col-pw"><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">Zero accounts</span><span data-lang="ru">Без аккаунта</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">Required</span><span data-lang="ru">Обязателен</span></span></td>
+                <td><span class="cmp-badge cmp-badge--mid">◐ Apple ID</span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">Required</span><span data-lang="ru">Обязателен</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">Proton Account</span><span data-lang="ru">Аккаунт Proton</span></span></td>
+                <td><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">Yes</span><span data-lang="ru">Да</span></span></td>
+              </tr>
+              <tr data-cat="storage">
+                <th scope="row"><span data-lang="en">Personal iCloud sync + lossless offline merge</span><span data-lang="ru">Личный iCloud + слияние офлайн-правок</span></th>
+                <td class="col-pw"><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">Per-object CKSync</span><span data-lang="ru">По-объектный merge</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">1P Cloud only</span><span data-lang="ru">Только 1P Cloud</span></span></td>
+                <td><span class="cmp-badge cmp-badge--yes">✓ iCloud</span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">BW Server</span><span data-lang="ru">Сервер BW</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">Proton Server</span><span data-lang="ru">Сервер Proton</span></span></td>
+                <td><span class="cmp-badge cmp-badge--mid">◐ <span data-lang="en">Monolithic file</span><span data-lang="ru">Монолитный файл</span></span></td>
+              </tr>
+              <tr data-cat="ux">
+                <th scope="row"><span data-lang="en">Redacted login screenshots + Vision OCR</span><span data-lang="ru">Снимки входа + локальный Vision OCR</span></th>
+                <td class="col-pw"><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">Built-in + Burn-in</span><span data-lang="ru">Встроено + Burn-in</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">Raw file only</span><span data-lang="ru">Только обычный файл</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">None</span><span data-lang="ru">Нет</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">Paid file only</span><span data-lang="ru">Платный файл</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">Paid file only</span><span data-lang="ru">Платный файл</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">No Vision OCR</span><span data-lang="ru">Нет Vision OCR</span></span></td>
+              </tr>
+              <tr data-cat="ux">
+                <th scope="row"><span data-lang="en">True native macOS SwiftUI (no Electron)</span><span data-lang="ru">Нативный macOS Swift (без Electron)</span></th>
+                <td class="col-pw"><span class="cmp-badge cmp-badge--yes">✓ Swift 6</span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ Electron</span></td>
+                <td><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">Native OS</span><span data-lang="ru">Нативный OS</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ Electron</span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ Electron</span></td>
+                <td><span class="cmp-badge cmp-badge--mid">◐ Swift / Qt</span></td>
+              </tr>
+              <tr data-cat="ux">
+                <th scope="row"><span data-lang="en">Safari + Chrome / Brave / Opera / Firefox on Mac</span><span data-lang="ru">Safari + Chrome / Brave / Opera / Firefox на Mac</span></th>
+                <td class="col-pw"><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">All (Safari + MV3)</span><span data-lang="ru">Все (Safari + MV3)</span></span></td>
+                <td><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">All</span><span data-lang="ru">Все</span></span></td>
+                <td><span class="cmp-badge cmp-badge--mid">◐ <span data-lang="en">Safari-first</span><span data-lang="ru">В основном Safari</span></span></td>
+                <td><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">All</span><span data-lang="ru">Все</span></span></td>
+                <td><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">All</span><span data-lang="ru">Все</span></span></td>
+                <td><span class="cmp-badge cmp-badge--mid">◐ <span data-lang="en">Enpass only / No SB bridge</span><span data-lang="ru">У Strongbox нет моста</span></span></td>
+              </tr>
+              <tr data-cat="security">
+                <th scope="row"><span data-lang="en">Master Password independent of iPhone PIN</span><span data-lang="ru">Мастер-пароль, независимый от PIN iPhone</span></th>
+                <td class="col-pw"><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">No PIN fallback</span><span data-lang="ru">Без отката на PIN</span></span></td>
+                <td><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">Yes</span><span data-lang="ru">Да</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">Uses device PIN</span><span data-lang="ru">Открывается PIN-кодом</span></span></td>
+                <td><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">Yes</span><span data-lang="ru">Да</span></span></td>
+                <td><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">Yes</span><span data-lang="ru">Да</span></span></td>
+                <td><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">Yes</span><span data-lang="ru">Да</span></span></td>
+              </tr>
+              <tr data-cat="security">
+                <th scope="row"><span data-lang="en">Encrypted .p8 / .pem / SSH files + expiry audit</span><span data-lang="ru">Файлы .p8 / .pem / SSH + контроль сроков</span></th>
+                <td class="col-pw"><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">v1.4.0 built-in</span><span data-lang="ru">Встроено в v1.4.0</span></span></td>
+                <td><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">Files + SSH</span><span data-lang="ru">Файлы + SSH</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">None</span><span data-lang="ru">Нет</span></span></td>
+                <td><span class="cmp-badge cmp-badge--mid">◐ <span data-lang="en">Paid generic file</span><span data-lang="ru">Платный файл</span></span></td>
+                <td><span class="cmp-badge cmp-badge--mid">◐ <span data-lang="en">Paid generic file</span><span data-lang="ru">Платный файл</span></span></td>
+                <td><span class="cmp-badge cmp-badge--mid">◐ <span data-lang="en">Generic file</span><span data-lang="ru">Обычный файл</span></span></td>
+              </tr>
+              <tr data-cat="security">
+                <th scope="row"><span data-lang="en">Passkeys + built-in 2FA TOTP in Free tier</span><span data-lang="ru">Passkeys + встроенный 2FA TOTP в Free</span></th>
+                <td class="col-pw"><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">Free + QR scan</span><span data-lang="ru">В Free + QR-сканер</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">No Free tier</span><span data-lang="ru">Нет Free</span></span></td>
+                <td><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">Free</span><span data-lang="ru">Бесплатно</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">TOTP is Paid</span><span data-lang="ru">TOTP платный</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">2FA is Paid</span><span data-lang="ru">2FA платный</span></span></td>
+                <td><span class="cmp-badge cmp-badge--mid">◐ <span data-lang="en">Passkeys Paid</span><span data-lang="ru">Passkeys платно</span></span></td>
+              </tr>
+              <tr data-cat="pricing">
+                <th scope="row"><span data-lang="en">Free tier forever (all Apple devices)</span><span data-lang="ru">Бесплатный Free навсегда (все устройства)</span></th>
+                <td class="col-pw"><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">25 items + 5 shots</span><span data-lang="ru">25 записей + 5 снимков</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">None</span><span data-lang="ru">Нет</span></span></td>
+                <td><span class="cmp-badge cmp-badge--yes">✓ $0</span></td>
+                <td><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">Basic Free</span><span data-lang="ru">Базовый Free</span></span></td>
+                <td><span class="cmp-badge cmp-badge--yes">✓ <span data-lang="en">2 vaults</span><span data-lang="ru">2 сейфа</span></span></td>
+                <td><span class="cmp-badge cmp-badge--mid">◐ <span data-lang="en">Limited Free</span><span data-lang="ru">Ограниченный Free</span></span></td>
+              </tr>
+              <tr data-cat="pricing">
+                <th scope="row"><span data-lang="en">Annual Pro (Individual / Family up to 6)</span><span data-lang="ru">Годовая подписка (1 чел. / Семья до 6)</span></th>
+                <td class="col-pw"><span class="cmp-badge cmp-badge--yes">$19.99 / $19.99*</span></td>
+                <td>$35.88 / $53.88</td>
+                <td>$0</td>
+                <td>$19.80 / $47.88</td>
+                <td>~$35.88 / ~$59.88</td>
+                <td>$24.99 / $47.99</td>
+              </tr>
+              <tr data-cat="pricing">
+                <th scope="row"><span data-lang="en">One-time Lifetime purchase</span><span data-lang="ru">Разовая покупка навсегда (Lifetime)</span></th>
+                <td class="col-pw"><span class="cmp-badge cmp-badge--yes">✓ $59.99</span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">None</span><span data-lang="ru">Нет</span></span></td>
+                <td>—</td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">None</span><span data-lang="ru">Нет</span></span></td>
+                <td><span class="cmp-badge cmp-badge--no">✕ <span data-lang="en">Not standard</span><span data-lang="ru">Нет в сетке</span></span></td>
+                <td>$99.99 – $124.99</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin: 10px 0 0; font-size: 12.5px; color: var(--ink-dim);">
+          <span data-lang="en">* Password Whisper Pro &amp; Lifetime support Apple Family Sharing for up to 6 family members at no extra fee (each person keeps their own private vault in their own iCloud). Competitor pricing reflects public USD retail plans as of November 2026.</span>
+          <span data-lang="ru">* В Password Whisper Pro и Lifetime включён Семейный доступ Apple до 6 человек без доплат (у каждого свой изолированный сейф в личном iCloud). Цены конкурентов указаны по открытым розничным тарифам в USD на ноябрь 2026.</span>
+        </p>
+
+        <!-- Interactive TCO Calculator -->
+        <div class="tco-box">
+          <div class="tco-header">
+            <div>
+              <p class="eyebrow" style="margin-bottom: 6px;"><span class="eyebrow-dot"></span><span><span data-lang="en">INTERACTIVE TCO CALCULATOR</span><span data-lang="ru">КАЛЬКУЛЯТОР СТОИМОСТИ ВЛАДЕНИЯ (TCO)</span></span></p>
+              <h3 style="margin: 0; font-family: var(--font-display); font-size: 1.25rem;">
+                <span data-lang="en">See how much you save over 1, 3, or 5 years</span>
+                <span data-lang="ru">Сколько вы экономите за 1, 3 или 5 лет</span>
+              </h3>
+            </div>
+            <div class="tco-controls">
+              <div class="seg-control" role="group" aria-label="User plan type">
+                <button type="button" class="seg-btn" data-tco-mode="individual" aria-pressed="true"><span data-lang="en">1 Person</span><span data-lang="ru">1 человек</span></button>
+                <button type="button" class="seg-btn" data-tco-mode="family" aria-pressed="false"><span data-lang="en">Family (up to 6)</span><span data-lang="ru">Семья (до 6)</span></button>
+              </div>
+              <div class="seg-control" role="group" aria-label="Time horizon">
+                <button type="button" class="seg-btn" data-tco-years="1" aria-pressed="false"><span data-lang="en">1 yr</span><span data-lang="ru">1 год</span></button>
+                <button type="button" class="seg-btn" data-tco-years="3" aria-pressed="true"><span data-lang="en">3 yrs</span><span data-lang="ru">3 года</span></button>
+                <button type="button" class="seg-btn" data-tco-years="5" aria-pressed="false"><span data-lang="en">5 yrs</span><span data-lang="ru">5 лет</span></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="tco-bars" id="tco-bars"></div>
+
+          <div class="tco-savings-callout">
+            <strong id="tco-savings-text">Over 3 years, Password Whisper saves up to $48 compared to 1Password.</strong>
+            <a class="btn btn--primary btn--sm" href="#pricing">
+              <span data-lang="en">View Plans</span>
+              <span data-lang="ru">Смотреть тарифы</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         VISUAL CONTEXT FIRST + STUDIO DEMO + BEFORE/AFTER COMPARISON SLIDER (#86)
          ===================================================================== -->
     <section id="visual-context" class="section-block reveal">
       <div class="container">
@@ -425,11 +1169,97 @@
             </div>
           </div>
         </div>
+
+        <!-- Before / After Comparison Slider (#86) -->
+        <div class="compare-slider-wrap">
+          <div class="compare-slider-bar">
+            <div>
+              <span class="eyebrow" style="margin: 0;"><span class="eyebrow-dot"></span><span><span data-lang="en">BEFORE / AFTER · DRAG SLIDER TO COMPARE</span><span data-lang="ru">ДО И ПОСЛЕ · ПОТЯНИТЕ ПОЛЗУНОК ДЛЯ СРАВНЕНИЯ</span></span></span>
+            </div>
+            <div class="seg-control" role="group" aria-label="Visual comparison case">
+              <button type="button" class="seg-btn" data-visual-case="cloud" aria-pressed="true">Cloudflare / AWS</button>
+              <button type="button" class="seg-btn" data-visual-case="routers" aria-pressed="false"><span data-lang="en">Routers / SSH</span><span data-lang="ru">Роутеры / SSH</span></button>
+              <button type="button" class="seg-btn" data-visual-case="banks" aria-pressed="false"><span data-lang="en">Banks</span><span data-lang="ru">Банки</span></button>
+            </div>
+          </div>
+
+          <div class="compare-slider-stage" id="compare-slider-stage">
+            <div class="compare-pane compare-pane--after">
+              <div style="display:flex;justify-content:space-between;align-items:center;max-width:560px;margin:0 auto 12px;">
+                <span class="chip chip--safe">PASSWORD WHISPER · VISUAL CONTEXT</span>
+                <span class="mono-num" style="font-size:11px;color:var(--ink-dim);">⌥⌘P HUD / POPUP</span>
+              </div>
+              <div class="mock-popup-list" id="compare-after-list"></div>
+            </div>
+
+            <div class="compare-pane compare-pane--before" aria-hidden="true">
+              <div style="display:flex;justify-content:space-between;align-items:center;max-width:560px;margin:0 auto 12px;">
+                <span class="chip chip--warn"><span data-lang="en">ORDINARY TEXT MANAGER</span><span data-lang="ru">ОБЫЧНЫЙ ТЕКСТОВЫЙ МЕНЕДЖЕР</span></span>
+                <span class="mono-num" style="font-size:11px;color:var(--ink-dim);">TEXT ONLY</span>
+              </div>
+              <div class="mock-popup-list" id="compare-before-list"></div>
+            </div>
+
+            <input
+              type="range"
+              id="compare-slider-range"
+              class="compare-range"
+              min="5"
+              max="95"
+              value="44"
+              aria-label="Compare ordinary text list with Password Whisper visual context"
+            >
+            <div class="compare-divider" aria-hidden="true">
+              <div class="compare-handle">↔</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- =====================================================================
-         MULTI-PLATFORM REAL v1.3.0 SCREENSHOT GALLERY (ACCESSIBLE TABS + LIGHTBOX)
+         INTERACTIVE 5-SLIDE PRODUCT PRESENTATION STORYBOARD (#86)
+         ===================================================================== -->
+    <section id="presentation" class="section-block reveal">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span><span data-lang="en">INTERACTIVE PRODUCT PRESENTATION</span><span data-lang="ru">ИНТЕРАКТИВНАЯ ПРЕЗЕНТАЦИЯ СЦЕНАРИЕВ</span></span></p>
+          <h2 class="section-title">
+            <span data-lang="en">Five workflows in 30 seconds</span>
+            <span data-lang="ru">Пять главных сценариев за 30 секунд</span>
+          </h2>
+        </div>
+
+        <div class="storyboard" id="product-storyboard">
+          <div class="storyboard-top">
+            <div class="storyboard-pills" role="group" aria-label="Presentation slides">
+              <button type="button" class="storyboard-pill" aria-current="step">01 · Vision OCR</button>
+              <button type="button" class="storyboard-pill">02 · AutoFill &amp; HUD</button>
+              <button type="button" class="storyboard-pill">03 · Local + iCloud</button>
+              <button type="button" class="storyboard-pill">04 · .p8 &amp; SSH (v1.4)</button>
+              <button type="button" class="storyboard-pill">05 · Recovery &amp; Merge</button>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button type="button" id="sb-prev" class="btn btn--soft btn--sm" aria-label="Previous slide">←</button>
+              <button type="button" id="sb-next" class="btn btn--soft btn--sm" aria-label="Next slide">→</button>
+              <button type="button" id="sb-play-toggle" class="btn btn--ghost btn--sm">Pause</button>
+            </div>
+          </div>
+
+          <div class="storyboard-stage">
+            <div>
+              <span class="card-tag" id="sb-tag">01 · VISUAL CONTEXT</span>
+              <h3 id="sb-title" style="margin:0 0 10px;font-family:var(--font-display);font-size:1.3rem;">Login Window Snapshot + Apple Vision Smart Redaction</h3>
+              <p id="sb-body" style="margin:0;color:var(--ink-muted);font-size:14.5px;"></p>
+            </div>
+            <pre class="storyboard-visual" id="sb-visual" style="margin:0;white-space:pre-wrap;"></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         MULTI-PLATFORM REAL SCREENSHOT GALLERY (ACCESSIBLE TABS + LIGHTBOX)
          ===================================================================== -->
     <section id="screenshots" class="section-block reveal">
       <div class="container">
@@ -440,21 +1270,21 @@
             <span data-lang="ru">Нативный интерфейс на каждом экране и в браузерах</span>
           </h2>
           <p class="section-lead">
-            <span data-lang="en">Explore real Password Whisper v1.3.0 screens. Click any image to open the full-resolution viewer — and switch RU/EN at the top to see localized screenshots.</span>
-            <span data-lang="ru">Реальные экраны Password Whisper v1.3.0. Нажмите на любой снимок, чтобы открыть его в полном размере — при переключении языка RU/EN скриншоты тоже меняются.</span>
+            <span data-lang="en">Explore real Password Whisper screens. Click any image to open the full-resolution viewer — and switch RU/EN at the top to see localized screenshots.</span>
+            <span data-lang="ru">Реальные экраны Password Whisper. Нажмите на любой снимок, чтобы открыть его в полном размере — при переключении языка RU/EN скриншоты тоже меняются.</span>
           </p>
         </div>
 
         <div class="tabs-wrapper" data-tabs>
           <div class="tablist-scroller" role="tablist" focusgroup="tablist nomemory" aria-label="Platform screenshots">
             <button type="button" class="tab-btn" role="tab" id="gal-tab-mac" aria-selected="true" focusgroupstart tabindex="0">
-              <span>macOS</span><span class="version-pill">1.3.0</span>
+              <span>macOS</span><span class="version-pill">1.4</span>
             </button>
             <button type="button" class="tab-btn" role="tab" id="gal-tab-iphone" aria-selected="false" tabindex="-1">
-              <span>iPhone</span><span class="version-pill">1.3.0</span>
+              <span>iPhone</span><span class="version-pill">1.4</span>
             </button>
             <button type="button" class="tab-btn" role="tab" id="gal-tab-ipad" aria-selected="false" tabindex="-1">
-              <span>iPad</span><span class="version-pill">1.3.0</span>
+              <span>iPad</span><span class="version-pill">1.4</span>
             </button>
             <button type="button" class="tab-btn" role="tab" id="gal-tab-browser" aria-selected="false" tabindex="-1">
               <span data-lang="en">Browsers</span><span data-lang="ru">Браузеры</span><span class="version-pill">1.3.1</span>
@@ -492,7 +1322,7 @@
                     </button>
                     <div class="shot-caption">
                       <h3><span data-lang="en">Security Audit &amp; Zero-Log HIBP Check</span><span data-lang="ru">Аудит защиты и проверка утечек</span></h3>
-                      <p><span data-lang="en">Clear score ring, reused/weak password detection, and opt-in k-Anonymity breach scanning.</span><span data-lang="ru">Наглядная оценка, поиск дубликатов и слабых паролей, опциональная проверка утечек через прокси.</span></p>
+                      <p><span data-lang="en">Clear score ring, reused/weak password detection, expiring .p8/cert alerts, and opt-in k-Anonymity scan.</span><span data-lang="ru">Наглядная оценка, поиск дубликатов, предупреждения об истекающих ключах и опциональная проверка утечек.</span></p>
                     </div>
                   </article>
 
@@ -515,7 +1345,7 @@
                 <div class="gallery-grid gallery-grid--phone">
                   <article class="shot-card">
                     <button type="button" class="shot-trigger" data-lightbox-group="gallery-iphone">
-                      <img src="./assets/screenshots/en/iphone-01-vault.webp" data-shot-prefix="./assets/screenshots/" data-shot-file="iphone-01-vault.webp" data-alt-en="iPhone vault list with new bottom tab bar" data-alt-ru="Список записей сейфа на iPhone с новой панелью вкладок" alt="iPhone vault" width="660" height="1434" loading="lazy" fetchpriority="low">
+                      <img src="./assets/screenshots/en/iphone-01-vault.webp" data-shot-prefix="./assets/screenshots/" data-shot-file="iphone-01-vault.webp" data-alt-en="iPhone vault list with bottom tab bar" data-alt-ru="Список записей сейфа на iPhone с панелью вкладок" alt="iPhone vault" width="660" height="1434" loading="lazy" fetchpriority="low">
                     </button>
                     <div class="shot-caption">
                       <h3><span data-lang="en">iPhone Vault &amp; Tab Bar</span><span data-lang="ru">Сейф и вкладки iPhone</span></h3>
@@ -659,7 +1489,6 @@
         </div>
 
         <div class="bento-grid">
-          <!-- Interactive Security Score Card -->
           <article class="card bento-span-8">
             <span class="card-tag">INTERACTIVE AUDIT · TRY IT</span>
             <div class="audit-demo">
@@ -676,12 +1505,12 @@
 
               <div>
                 <h3>
-                  <span data-lang="en">Live Security Audit &amp; Breach Check</span>
-                  <span data-lang="ru">Оценка стойкости и проверка утечек</span>
+                  <span data-lang="en">Live Security Audit &amp; Expiring Key Alerts</span>
+                  <span data-lang="ru">Оценка стойкости, сроки ключей и проверка утечек</span>
                 </h3>
                 <p>
-                  <span data-lang="en">Instantly flags reused passwords, weak entropy, missing 2FA, and exposed hashes via our zero-log HIBP proxy.</span>
-                  <span data-lang="ru">Сразу находит повторяющиеся и слабые пароли, записи без 2FA и проверяет утечки через zero-log HIBP прокси.</span>
+                  <span data-lang="en">Instantly flags reused passwords, weak entropy, expiring .p8/certificates, missing 2FA, and exposed hashes via our strict zero-log HIBP proxy.</span>
+                  <span data-lang="ru">За &lt; 50 мс находит повторяющиеся и слабые пароли, истекающие ключи .p8/сертификаты, записи без 2FA и проверяет утечки через zero-log HIBP прокси.</span>
                 </p>
 
                 <div class="audit-findings">
@@ -690,7 +1519,7 @@
                     <span class="chip chip--risk">HIGH</span>
                   </div>
                   <div class="audit-row" id="audit-row-2">
-                    <span class="audit-row-text">1 entry missing login screenshot &amp; 2FA</span>
+                    <span class="audit-row-text">1 entry missing login screenshot · 1 .p8 key expiring soon</span>
                     <span class="chip chip--warn">TIP</span>
                   </div>
                 </div>
@@ -701,14 +1530,14 @@
           </article>
 
           <article class="card bento-span-4">
-            <span class="card-tag card-tag--amber">CARDS &amp; DOCS</span>
+            <span class="card-tag card-tag--amber">CARDS, DOCS &amp; FILES</span>
             <h3>
-              <span data-lang="en">Payment cards, IDs &amp; custom fields</span>
-              <span data-lang="ru">Карты, документы и свои поля</span>
+              <span data-lang="en">Cards, IDs, .p8 keys &amp; custom fields</span>
+              <span data-lang="ru">Карты, документы, ключи и свои поля</span>
             </h3>
             <p>
-              <span data-lang="en">Automatic card brand detection and Luhn validation, structured passport/ID templates, unlimited custom fields, and secure notes — all encrypted per item.</span>
-              <span data-lang="ru">Автоопределение платёжной системы и проверка Luhn, шаблоны паспортов и документов, любые кастомные поля и защищённые заметки.</span>
+              <span data-lang="en">Luhn-validated payment cards, passport/ID templates, encrypted .p8/.p12/.pem/SSH file attachments, and unlimited custom fields — encrypted per item.</span>
+              <span data-lang="ru">Карты с проверкой Luhn, шаблоны паспортов, зашифрованные файлы .p8/.p12/.pem/SSH и любые кастомные поля — всё шифруется по-объектно.</span>
             </p>
           </article>
 
@@ -719,8 +1548,8 @@
               <span data-lang="ru">Быстрый доступ (<kbd class="kbd">⌥⌘P</kbd>) и защита буфера</span>
             </h3>
             <p>
-              <span data-lang="en">Context-aware Menu Bar panel ranks credentials for the active app or browser tab. Copied secrets are marked concealed &amp; local-only and clear automatically after your chosen timer.</span>
-              <span data-lang="ru">Панель в строке меню сразу поднимает записи для открытого сайта или программы. Скопированный пароль помечается как скрытый (без Universal Clipboard) и сам очищается по таймеру.</span>
+              <span data-lang="en">Context-aware Menu Bar panel ranks credentials for the active app or browser tab. Copied secrets are marked concealed &amp; local-only and clear automatically after 25s.</span>
+              <span data-lang="ru">Панель в строке меню сразу поднимает записи для открытого сайта или программы. Скопированный пароль скрыт от Universal Clipboard и истории буфера и очищается через 25 с.</span>
             </p>
           </article>
 
@@ -739,14 +1568,73 @@
           <article class="card bento-span-4">
             <span class="card-tag">MIGRATION</span>
             <h3>
-              <span data-lang="en">1-minute CSV &amp; JSON import</span>
-              <span data-lang="ru">Перенос из других менеджеров за минуту</span>
+              <span data-lang="en">2-minute CSV &amp; JSON import</span>
+              <span data-lang="ru">Перенос из других менеджеров за 2 минуты</span>
             </h3>
             <p>
               <span data-lang="en">Import cleanly from 1Password, Bitwarden, Apple Passwords / Safari, Chrome, Firefox, and KeePass — and export your full vault anytime with zero lock-in.</span>
               <span data-lang="ru">Импорт из 1Password, Bitwarden, Apple Passwords / Safari, Chrome, Firefox и KeePass — и свободный экспорт в CSV или зашифрованную копию в любой момент.</span>
             </p>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ROLE-BASED USE CASES + 2-MINUTE MIGRATION WIZARD (#87)
+         ===================================================================== -->
+    <section id="use-cases" class="section-block reveal">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow"><span class="eyebrow-dot"></span><span><span data-lang="en">BUILT FOR REAL WORKFLOWS</span><span data-lang="ru">ДЛЯ КОГО СОЗДАН PASSWORD WHISPER</span></span></p>
+          <h2 class="section-title">
+            <span data-lang="en">Who gets the most out of Password Whisper</span>
+            <span data-lang="ru">Кому Password Whisper экономит часы каждую неделю</span>
+          </h2>
+        </div>
+
+        <div class="persona-grid">
+          <article class="persona-card">
+            <span class="card-tag card-tag--amber">DEVOPS · DEVELOPERS</span>
+            <h3 style="margin:0 0 8px;font-family:var(--font-display);font-size:1.12rem;"><span data-lang="en">iOS, macOS &amp; Infrastructure Engineers</span><span data-lang="ru">Разработчики и DevOps-инженеры</span></h3>
+            <p style="margin:0;font-size:14px;color:var(--ink-muted);"><span data-lang="en">Keep App Store Connect <code>.p8</code> keys, <code>.mobileprovision</code> profiles, <code>.pem</code> certificates, and SSH hosts (1-click SSH command copy) encrypted alongside prod/staging login screenshots — with automatic Key ID &amp; expiry warnings.</span><span data-lang="ru">Храните ключи <code>.p8</code> (App Store Connect / APNs), профили <code>.mobileprovision</code>, сертификаты <code>.pem</code> и SSH-серверы (копирование SSH-команды в 1 клик) вместе со снимками prod/staging — с контролем сроков действия.</span></p>
+          </article>
+
+          <article class="persona-card">
+            <span class="card-tag">FOUNDERS · MULTI-ACCOUNT</span>
+            <h3 style="margin:0 0 8px;font-family:var(--font-display);font-size:1.12rem;"><span data-lang="en">Founders, Admins &amp; Multi-Account Pros</span><span data-lang="ru">Предприниматели и владельцы нескольких кабинетов</span></h3>
+            <p style="margin:0;font-size:14px;color:var(--ink-muted);"><span data-lang="en">Manage multiple client dashboards, ad accounts, routers, and business banking logins on identical domains without guessing — every entry carries its own redacted login preview.</span><span data-lang="ru">Десятки клиентских панелей, банков, рекламных кабинетов и роутеров на похожих адресах больше не путаются: у каждого свой замаскированный снимок экрана входа.</span></p>
+          </article>
+
+          <article class="persona-card">
+            <span class="card-tag">PRIVACY · APPLE FAMILIES</span>
+            <h3 style="margin:0 0 8px;font-family:var(--font-display);font-size:1.12rem;"><span data-lang="en">Privacy-First Apple Users &amp; Families</span><span data-lang="ru">Сторонники приватности и семьи в экосистеме Apple</span></h3>
+            <p style="margin:0;font-size:14px;color:var(--ink-muted);"><span data-lang="en">Own your vault locally on Mac, iPhone, and iPad, sync only through your personal iCloud, and cover up to 6 family members with one Apple Family Sharing purchase — each with a private vault.</span><span data-lang="ru">Полный контроль над локальным сейфом на Mac, iPhone и iPad, синхронизация только через личный iCloud и одна покупка на семью до 6 человек с изолированными сейфами.</span></p>
+          </article>
+
+          <article class="persona-card">
+            <span class="card-tag card-tag--warn">SWITCHERS</span>
+            <h3 style="margin:0 0 8px;font-family:var(--font-display);font-size:1.12rem;"><span data-lang="en">Moving away from 1Password or Apple Passwords</span><span data-lang="ru">Переезд с 1Password, Chrome или «Паролей» Apple</span></h3>
+            <p style="margin:0;font-size:14px;color:var(--ink-muted);"><span data-lang="en">Tired of rising cloud subscriptions, Electron apps, or PIN-only protection? Import your entire vault with automatic deduplication in under 2 minutes below.</span><span data-lang="ru">Устали от растущих облачных подписок, Electron или зависимости от PIN-кода телефона? Перенесите базу с авто-дедупликацией меньше чем за 2 минуты.</span></p>
+          </article>
+        </div>
+
+        <!-- 2-Minute Migration Wizard -->
+        <div class="migration-box">
+          <p class="eyebrow" style="margin-bottom:6px;"><span class="eyebrow-dot"></span><span><span data-lang="en">2-MINUTE MIGRATION WIZARD</span><span data-lang="ru">МАСТЕР ПЕРЕЕЗДА ЗА 2 МИНУТЫ</span></span></p>
+          <h3 style="margin:0 0 4px;font-family:var(--font-display);font-size:1.25rem;">
+            <span data-lang="en">Choose where you're moving from</span>
+            <span data-lang="ru">Выберите, откуда переносите пароли</span>
+          </h3>
+          <div class="monogram-row" role="group" aria-label="Select password manager source">
+            <button type="button" class="monogram-btn" data-mig-source="1p" aria-pressed="true"><span class="monogram-badge">1P</span><span>1Password</span></button>
+            <button type="button" class="monogram-btn" data-mig-source="ap" aria-pressed="false"><span class="monogram-badge">Sa</span><span>Apple Passwords / Safari</span></button>
+            <button type="button" class="monogram-btn" data-mig-source="bw" aria-pressed="false"><span class="monogram-badge">Bw</span><span>Bitwarden</span></button>
+            <button type="button" class="monogram-btn" data-mig-source="ch" aria-pressed="false"><span class="monogram-badge">Ch</span><span>Chrome / Brave / Opera</span></button>
+            <button type="button" class="monogram-btn" data-mig-source="ff" aria-pressed="false"><span class="monogram-badge">Ff</span><span>Firefox</span></button>
+            <button type="button" class="monogram-btn" data-mig-source="kp" aria-pressed="false"><span class="monogram-badge">Kp</span><span>KeePass / Strongbox</span></button>
+          </div>
+          <div class="tutorial-steps" id="migration-steps-out"></div>
         </div>
       </div>
     </section>
@@ -902,84 +1790,6 @@
     </section>
 
     <!-- =====================================================================
-         HOW SECURITY WORKS (INTERACTIVE E2EE PIPELINE + SPECS)
-         ===================================================================== -->
-    <section id="security" class="section-block reveal">
-      <div class="container">
-        <div class="section-header">
-          <p class="eyebrow"><span class="eyebrow-dot"></span><span>ZERO-KNOWLEDGE ARCHITECTURE</span></p>
-          <h2 class="section-title">
-            <span data-lang="en">Nothing goes to our servers. We don't have any.</span>
-            <span data-lang="ru">Ничего не уходит на наши серверы. У нас их нет.</span>
-          </h2>
-          <p class="section-lead">
-            <span data-lang="en">Click any stage in the pipeline to see exactly how your vault is derived, sealed, stored, and synced.</span>
-            <span data-lang="ru">Нажмите на любой этап цепочки, чтобы увидеть, как создаётся ключ, шифруются записи и работает синхронизация.</span>
-          </p>
-        </div>
-
-        <div class="pipeline-rail" role="group" aria-label="Encryption pipeline stages">
-          <button type="button" class="pipeline-node" aria-pressed="true">
-            <span class="pipeline-step-id">01 · INPUT</span>
-            <strong><span data-lang="en">Master Password</span><span data-lang="ru">Мастер-пароль</span></strong>
-            <span><span data-lang="en">RAM-only, never stored</span><span data-lang="ru">Только в RAM</span></span>
-          </button>
-          <button type="button" class="pipeline-node" aria-pressed="false">
-            <span class="pipeline-step-id">02 · KDF</span>
-            <strong>Argon2id</strong>
-            <span><span data-lang="en">RFC 9106 · 64 MiB</span><span data-lang="ru">RFC 9106 · 64 МиБ</span></span>
-          </button>
-          <button type="button" class="pipeline-node" aria-pressed="false">
-            <span class="pipeline-step-id">03 · AEAD</span>
-            <strong>AES-256-GCM</strong>
-            <span><span data-lang="en">Per-item + AAD</span><span data-lang="ru">По-объектно + AAD</span></span>
-          </button>
-          <button type="button" class="pipeline-node" aria-pressed="false">
-            <span class="pipeline-step-id">04 · VAULT</span>
-            <strong>.whispervault</strong>
-            <span><span data-lang="en">Local package on disk</span><span data-lang="ru">Локальный пакет</span></span>
-          </button>
-          <button type="button" class="pipeline-node" aria-pressed="false">
-            <span class="pipeline-step-id">05 · SYNC</span>
-            <strong>Apple CloudKit</strong>
-            <span><span data-lang="en">Private DB ciphertext</span><span data-lang="ru">Приватный iCloud</span></span>
-          </button>
-        </div>
-
-        <div class="pipeline-detail">
-          <div>
-            <span class="card-tag" id="pipeline-detail-badge">ON DEVICE ONLY</span>
-            <h3 id="pipeline-detail-title" style="margin: 0 0 8px; font-size: 1.2rem;">1. Your Master Password stays only in your memory</h3>
-            <p id="pipeline-detail-body" style="margin: 0; color: var(--ink-muted);">It is never written to disk or sent over the network. When you lock the vault, secrets are zeroed out in RAM via SecureBytes.</p>
-          </div>
-          <div style="background: var(--surface-field); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 16px;">
-            <div class="eyebrow" style="margin-bottom: 6px;">CRYPTOGRAPHIC SPEC</div>
-            <code id="pipeline-detail-code" style="display: block; white-space: pre-wrap; border: 0; background: transparent; padding: 0; font-size: 12.5px; color: var(--safe);">masterPassword -&gt; memory only (zero disk writes)</code>
-          </div>
-        </div>
-
-        <dl class="spec-list">
-          <div class="spec-item">
-            <dt><span data-lang="en">Key Derivation</span><span data-lang="ru">Вывод ключа</span></dt>
-            <dd>Argon2id (RFC 9106, 64 MiB)</dd>
-          </div>
-          <div class="spec-item">
-            <dt><span data-lang="en">Cipher &amp; Integrity</span><span data-lang="ru">Шифрование и целостность</span></dt>
-            <dd>Apple CryptoKit AES-256-GCM + AAD</dd>
-          </div>
-          <div class="spec-item">
-            <dt><span data-lang="en">Biometric Keychain</span><span data-lang="ru">Биометрия Keychain</span></dt>
-            <dd>ThisDeviceOnly · .biometryCurrentSet</dd>
-          </div>
-          <div class="spec-item">
-            <dt><span data-lang="en">Breach Audit (Opt-in)</span><span data-lang="ru">Аудит утечек (по запросу)</span></dt>
-            <dd>5-char SHA-1 · Zero-Log Proxy</dd>
-          </div>
-        </dl>
-      </div>
-    </section>
-
-    <!-- =====================================================================
          HONEST PRICING + NO-HOSTAGE GUARANTEE
          ===================================================================== -->
     <section id="pricing" class="section-block reveal">
@@ -1019,7 +1829,7 @@
             <div class="price-amount mono-num">$1.99</div>
             <p class="price-period"><span data-lang="en">per month · Cancel anytime</span><span data-lang="ru">в месяц · Отмена в любой момент</span></p>
             <ul class="price-list">
-              <li><span data-lang="en">Unlimited entries, cards &amp; documents</span><span data-lang="ru">Безлимитные записи, карты и документы</span></li>
+              <li><span data-lang="en">Unlimited entries, files, cards &amp; docs</span><span data-lang="ru">Безлимитные записи, файлы и карты</span></li>
               <li><span data-lang="en">Unlimited redacted screenshots</span><span data-lang="ru">Безлимитные снимки экранов входа</span></li>
               <li><span data-lang="en">Mac, iPhone &amp; iPad included</span><span data-lang="ru">Mac, iPhone и iPad в одной подписке</span></li>
               <li><span data-lang="en">Apple Family Sharing (up to 6)</span><span data-lang="ru">Семейный доступ Apple до 6 человек</span></li>
@@ -1036,7 +1846,7 @@
             <p class="price-period"><span data-lang="en">per year after 14-day free trial</span><span data-lang="ru">в год после 14 дней бесплатно</span></p>
             <ul class="price-list">
               <li><span data-lang="en">14 days free for eligible subscribers</span><span data-lang="ru">14 дней бесплатного пробного периода</span></li>
-              <li><span data-lang="en">Unlimited items &amp; login screenshots</span><span data-lang="ru">Безлимитные записи и снимки входа</span></li>
+              <li><span data-lang="en">Unlimited items, .p8/SSH files &amp; shots</span><span data-lang="ru">Безлимит записей, файлов и снимков</span></li>
               <li><span data-lang="en">Mac, iPhone &amp; iPad Universal</span><span data-lang="ru">Единый доступ на Mac, iPhone и iPad</span></li>
               <li><span data-lang="en">Apple Family Sharing (up to 6)</span><span data-lang="ru">Семейный доступ Apple до 6 человек</span></li>
             </ul>
@@ -1052,7 +1862,7 @@
             <p class="price-period"><span data-lang="en">Pay once · No recurring bills</span><span data-lang="ru">Один платёж навсегда без подписок</span></p>
             <ul class="price-list">
               <li><span data-lang="en">Permanent Pro unlock forever</span><span data-lang="ru">Бессрочный доступ ко всем функциям Pro</span></li>
-              <li><span data-lang="en">Unlimited items &amp; screenshots</span><span data-lang="ru">Безлимитные записи и снимки входа</span></li>
+              <li><span data-lang="en">Unlimited items, files &amp; screenshots</span><span data-lang="ru">Безлимитные записи, файлы и снимки</span></li>
               <li><span data-lang="en">Mac, iPhone &amp; iPad Universal</span><span data-lang="ru">Mac, iPhone и iPad включены</span></li>
               <li><span data-lang="en">Apple Family Sharing (up to 6)</span><span data-lang="ru">Семейный доступ Apple до 6 человек</span></li>
             </ul>
@@ -1113,11 +1923,21 @@
         <div class="faq-list">
           <details class="faq-item">
             <summary>
-              <span data-lang="en">Where are my passwords and screenshots stored? Can the developer read them?</span>
-              <span data-lang="ru">Где хранятся мои пароли и скриншоты? Может ли разработчик их прочитать?</span>
+              <span data-lang="en">Where are my passwords and screenshots stored? Can the developer read or collect them?</span>
+              <span data-lang="ru">Где хранятся мои пароли и скриншоты? Собирает ли разработчик мои данные?</span>
             </summary>
             <div class="faq-body">
-              <p><span data-lang="en">Everything is stored locally on your device inside an encrypted <code>.whispervault</code> bundle (Argon2id + AES-256-GCM). If you enable iCloud sync, only encrypted ciphertext is synced through your personal Apple iCloud (CloudKit) account. We operate zero vault servers and have no technical way to access or decrypt your vault.</span><span data-lang="ru">Все данные хранятся локально на вашем устройстве в зашифрованном пакете <code>.whispervault</code> (Argon2id + AES-256-GCM). Если включить синхронизацию iCloud, через ваш личный Apple iCloud (CloudKit) передаётся исключительно шифротекст. У нас нет серверов хранения и нет технической возможности прочитать ваш сейф.</span></p>
+              <p><span data-lang="en">Everything is stored locally on your device inside an encrypted <code>.whispervault</code> bundle (Argon2id 32 MiB + AES-256-GCM + AAD). If you enable iCloud sync, only encrypted ciphertext travels through your personal Apple iCloud (CloudKit) account. We operate zero vault servers, zero analytics, and zero trackers — and you can <a href="./security/#verify-yourself">verify this yourself in 2 minutes</a>.</span><span data-lang="ru">Все данные хранятся локально на вашем устройстве в зашифрованном пакете <code>.whispervault</code> (Argon2id 32 МиБ + AES-256-GCM + AAD). Если включить iCloud, через ваш личный Apple iCloud передаётся исключительно шифротекст. У нас нет серверов хранения, аналитики и трекеров — и вы можете <a href="./security/#verify-yourself">проверить это лично за 2 минуты</a>.</span></p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span data-lang="en">How is Password Whisper different from 1Password?</span>
+              <span data-lang="ru">Чем Password Whisper отличается от 1Password?</span>
+            </summary>
+            <div class="faq-body">
+              <p><span data-lang="en">Unlike 1Password 8 (which removed local vaults, requires a vendor cloud account, uses Electron on macOS, and has no Free or Lifetime plan), Password Whisper stores everything locally on your device, uses your personal iCloud strictly for optional sync, is 100% native Swift 6, adds on-device redacted login screenshots, and costs $19.99/yr or $59.99 Lifetime with Apple Family Sharing included.</span><span data-lang="ru">В отличие от 1Password 8 (где убрали локальные сейфы, обязательны облако и аккаунт вендора, десктоп написан на Electron, нет Free и Lifetime), Password Whisper хранит всё локально на вашем устройстве, использует личный iCloud только для синхронизации, написан на чистом Swift 6, добавляет визуальные снимки входа и стоит $19.99/год или $59.99 навсегда с Family Sharing.</span></p>
             </div>
           </details>
 
@@ -1133,52 +1953,11 @@
 
           <details class="faq-item">
             <summary>
-              <span data-lang="en">How do I sync between my Mac, iPhone, and iPad?</span>
-              <span data-lang="ru">Как синхронизировать хранилище между Mac, iPhone и iPad?</span>
-            </summary>
-            <div class="faq-body">
-              <p><span data-lang="en">Sign into the same Apple Account on all devices and turn on <strong>iCloud Sync (E2EE)</strong> in <strong>Settings → Storage</strong> on the device where your vault lives. On your second device, tap <strong>I already have a vault</strong>, pick the discovered iCloud vault, and enter your Master Password to decrypt and sync locally.</span><span data-lang="ru">Войдите в один и тот же Apple Account на всех устройствах и включите <strong>Синхронизацию iCloud (E2EE)</strong> в разделе <strong>Настройки → Хранение</strong> на основном устройстве. На втором устройстве выберите <strong>У меня уже есть хранилище</strong>, нажмите на найденный сейф в iCloud и введите свой мастер-пароль.</span></p>
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary>
-              <span data-lang="en">I used a TestFlight beta build — will my vault transfer when I install from the App Store?</span>
-              <span data-lang="ru">Я пользовался TestFlight-сборкой — сохранится ли хранилище при переходе на App Store?</span>
-            </summary>
-            <div class="faq-body">
-              <p><span data-lang="en">Yes. Both TestFlight and the App Store share the exact same Bundle ID, App Group, Keychain group, and <strong>CloudKit Production</strong> database. Installing the App Store version over TestFlight keeps your local vault intact, and iCloud sync continues seamlessly. Only StoreKit test purchases do not carry over because TestFlight uses the StoreKit Sandbox.</span><span data-lang="ru">Да. У TestFlight и App Store совпадают Bundle ID, App Group, группа Keychain и база <strong>CloudKit Production</strong>. Если установить версию из App Store поверх TestFlight (не удаляя приложение), локальный сейф и облачная синхронизация сохранятся полностью. Не переносятся только тестовые покупки подписки, так как TestFlight использует StoreKit Sandbox.</span></p>
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary>
-              <span data-lang="en">How does Smart Redaction protect my screenshots?</span>
-              <span data-lang="ru">Безопасно ли хранить скриншоты окон входа в сейфе?</span>
-            </summary>
-            <div class="faq-body">
-              <p><span data-lang="en">Before saving, Screenshot Studio runs Apple Vision text recognition 100% locally to highlight emails, passwords, and codes. Masks are permanently burned into the pixels (never stored as removable overlay layers), EXIF/GPS metadata is removed, and the image is compressed to HEIC (~50–90 KB) and encrypted with AES-256-GCM. It is decrypted only in RAM when viewed.</span><span data-lang="ru">Перед сохранением Студия запускает Apple Vision локально на устройстве, находит email, пароли и коды и необратимо запекает маски прямо в пиксели (их нельзя «снять» обратно). EXIF/GPS удаляются, изображение сжимается в HEIC (~50–90 КБ), шифруется AES-256-GCM и расшифровывается только в RAM при просмотре.</span></p>
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary>
-              <span data-lang="en">Which browsers are supported on macOS, iPhone, and iPad?</span>
-              <span data-lang="ru">Какие браузеры поддерживаются на Mac, iPhone и iPad?</span>
-            </summary>
-            <div class="faq-body">
-              <p><span data-lang="en"><strong>iPhone &amp; iPad:</strong> System AutoFill (passwords, 2FA, Passkeys) works across Safari, Chrome, Brave, Opera, Firefox, and all native apps. Plus, the bundled <strong>Safari Web Extension</strong> brings Open &amp; Fill and in-page login cards directly inside Safari.</span><span data-lang="ru"><strong>iPhone и iPad:</strong> системный AutoFill (пароли, 2FA, Passkeys) работает в Safari, Chrome, Brave, Opera, Firefox и во всех приложениях. Дополнительно встроенное <strong>расширение Safari</strong> добавляет Open &amp; Fill и просмотр снимков прямо на странице.</span></p>
-              <p><span data-lang="en"><strong>macOS:</strong> System AutoFill + bundled Safari Web Extension, plus companion Manifest V3 extension <strong>v1.3.1</strong> on Chrome Web Store (Chrome, Brave, Opera) and Firefox Add-ons (AMO).</span><span data-lang="ru"><strong>macOS:</strong> системный AutoFill + встроенное расширение Safari + расширение Manifest V3 <strong>v1.3.1</strong> в Chrome Web Store (Chrome, Brave, Opera) и Firefox AMO.</span></p>
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary>
               <span data-lang="en">How does the optional Have I Been Pwned breach check protect my privacy?</span>
               <span data-lang="ru">Как устроена проверка паролей на утечки (HIBP)?</span>
             </summary>
             <div class="faq-body">
-              <p><span data-lang="en">Breach checks are strictly opt-in and only run when you click the check button. Your device computes a SHA-1 hash locally and sends only the first 5 characters through our zero-log Cloudflare Workers proxy (stripping headers and writing no request logs) with <code>Add-Padding: true</code>. Your password, full hash, username, and domain never leave your device.</span><span data-lang="ru">Проверка запускается только вручную по вашему нажатию. Устройство локально вычисляет SHA-1 и отправляет лишь первые 5 символов через наш stateless-прокси на Cloudflare Workers (без логов и заголовков) с <code>Add-Padding: true</code>. Сам пароль, полный хеш, логин и адрес сайта никогда не покидают устройство.</span></p>
+              <p><span data-lang="en">Breach checks are strictly opt-in and only run when you click the check button. Your device computes a SHA-1 hash locally and sends only the first 5 characters through our zero-log Cloudflare Workers proxy (stripping headers, refusing HTTP redirects, and writing zero request logs) with <code>Add-Padding: true</code>. Your password, full hash, username, and domain never leave your device.</span><span data-lang="ru">Проверка запускается только вручную по вашему нажатию. Устройство локально вычисляет SHA-1 и отправляет лишь первые 5 символов через наш stateless-прокси на Cloudflare Workers (без логов, заголовков и HTTP-редиректов) с <code>Add-Padding: true</code>. Сам пароль, полный хеш, логин и адрес сайта никогда не покидают устройство.</span></p>
             </div>
           </details>
 
@@ -1189,16 +1968,6 @@
             </summary>
             <div class="faq-body">
               <p><span data-lang="en">No — Password Whisper uses Apple <strong>Universal Purchase</strong>. One Pro subscription or Lifetime purchase unlocks all three platforms on your Apple Account, and supports <strong>Apple Family Sharing</strong> for up to 6 family members (each person keeps their own completely private encrypted vault in their own iCloud).</span><span data-lang="ru">Нет — работает единая покупка Apple (<strong>Universal Purchase</strong>). Одна подписка Pro или покупка Lifetime действует на Mac, iPhone и iPad, а также поддерживается <strong>Семейный доступ Apple</strong> до 6 человек (при этом у каждого члена семьи своё полностью изолированное зашифрованное хранилище в личном iCloud).</span></p>
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary>
-              <span data-lang="en">Can I import from 1Password, Bitwarden, Chrome, or Apple Passwords — and export anytime?</span>
-              <span data-lang="ru">Можно ли перенести базу из 1Password, Bitwarden, Chrome или Safari — и выгрузить обратно?</span>
-            </summary>
-            <div class="faq-body">
-              <p><span data-lang="en">Yes. Password Whisper automatically detects CSV and JSON exports from 1Password, Bitwarden, Apple Passwords / Safari, Chrome, Firefox, and KeePass. You can also export your entries to CSV or save a full encrypted <code>.whispervault</code> backup folder anytime — even on the Free plan.</span><span data-lang="ru">Да. Поддерживается автоматическое распознавание CSV/JSON из 1Password, Bitwarden, Apple Passwords / Safari, Chrome, Firefox и KeePass. В любой момент вы также можете выгрузить CSV или полную зашифрованную копию папки <code>.whispervault</code> — даже на бесплатном тарифе.</span></p>
             </div>
           </details>
 
@@ -1222,10 +1991,10 @@
       <div class="container">
         <div class="cta-banner">
           <div>
-            <p class="eyebrow"><span class="eyebrow-dot"></span><span>PASSWORD WHISPER 1.3.0 · READY TODAY</span></p>
+            <p class="eyebrow"><span class="eyebrow-dot"></span><span>PASSWORD WHISPER 1.4.0 · LOCAL-FIRST &amp; ZERO-KNOWLEDGE</span></p>
             <h2 class="section-title" style="margin-bottom: 8px;">
-              <span data-lang="en">Try Password Whisper free on Mac, iPhone, and iPad</span>
-              <span data-lang="ru">Попробуйте Password Whisper бесплатно на Mac, iPhone и iPad</span>
+              <span data-lang="en">Own your passwords on Mac, iPhone, and iPad</span>
+              <span data-lang="ru">Храните пароли только у себя на Mac, iPhone и iPad</span>
             </h2>
             <p class="section-lead">
               <span data-lang="en">No account sign-up, zero tracking, 25 entries free forever, and 14-day Pro trial when you're ready for unlimited.</span>
@@ -1235,10 +2004,10 @@
 
           <div style="display: flex; flex-wrap: wrap; gap: 12px;">
             <a class="btn btn--primary btn--lg" href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">
-              <span data-lang="en">App Store (Mac, iPhone, iPad &amp; Safari)</span><span data-lang="ru">App Store (Mac, iPhone, iPad и Safari)</span>
+              <span data-lang="en">App Store (Mac, iPhone &amp; iPad)</span><span data-lang="ru">App Store (Mac, iPhone и iPad)</span>
             </a>
-            <a class="btn btn--soft btn--lg" href="https://chromewebstore.google.com/detail/olagmnnpoogamifoblpkehbofidliled" target="_blank" rel="noopener">
-              <span data-lang="en">Chrome Extension</span><span data-lang="ru">Расширение Chrome</span>
+            <a class="btn btn--soft btn--lg" href="./security/#verify-yourself">
+              <span data-lang="en">Verify Security</span><span data-lang="ru">Проверить безопасность</span>
             </a>
             <a class="btn btn--soft btn--lg" href="./support/">
               <span data-lang="en">Setup &amp; Support</span><span data-lang="ru">Инструкции и поддержка</span>
@@ -1259,8 +2028,8 @@
             <span>Password Whisper</span>
           </a>
           <p style="margin: 0; color: var(--ink-muted); font-size: 13.5px;">
-            <span data-lang="en">Visual zero-knowledge password manager for macOS, iOS, and iPadOS. Personal iCloud sync, zero developer servers.</span>
-            <span data-lang="ru">Визуальный zero-knowledge менеджер паролей для macOS, iOS и iPadOS. Личный iCloud, ноль серверов разработчика.</span>
+            <span data-lang="en">Local-first visual zero-knowledge password manager for macOS, iOS, and iPadOS. Personal iCloud sync only, zero developer servers.</span>
+            <span data-lang="ru">Локальный визуальный zero-knowledge менеджер паролей для macOS, iOS и iPadOS. Личный iCloud только для синхронизации, ноль серверов разработчика.</span>
           </p>
         </div>
 
@@ -1268,16 +2037,18 @@
           <div class="footer-col">
             <h3><span data-lang="en">Downloads</span><span data-lang="ru">Загрузки</span></h3>
             <ul>
-              <li><a href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">App Store (iOS &amp; macOS v1.3.0)</a></li>
-              <li><a href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener"><span data-lang="en">Safari Web Extension (bundled in App Store)</span><span data-lang="ru">Расширение Safari (в App Store)</span></a></li>
+              <li><a href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">App Store (iOS &amp; macOS)</a></li>
+              <li><a href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener"><span data-lang="en">Safari Web Extension (in App Store)</span><span data-lang="ru">Расширение Safari (в App Store)</span></a></li>
               <li><a href="https://chromewebstore.google.com/detail/olagmnnpoogamifoblpkehbofidliled" target="_blank" rel="noopener">Chrome Web Store (v1.3.1)</a></li>
               <li><a href="https://addons.mozilla.org/en-US/firefox/addon/password-whisper-visual-passwo/" target="_blank" rel="noopener">Firefox Add-ons (v1.3.1)</a></li>
             </ul>
           </div>
 
           <div class="footer-col">
-            <h3><span data-lang="en">Documentation</span><span data-lang="ru">Документы</span></h3>
+            <h3><span data-lang="en">Trust &amp; Docs</span><span data-lang="ru">Безопасность и документы</span></h3>
             <ul>
+              <li><a href="./security/"><span data-lang="en">Security Center &amp; 7 Layers</span><span data-lang="ru">Центр безопасности</span></a></li>
+              <li><a href="./security/#verify-yourself"><span data-lang="en">Verify Security Yourself</span><span data-lang="ru">Проверьте безопасность сами</span></a></li>
               <li><a href="./support/"><span data-lang="en">Support &amp; Troubleshooting</span><span data-lang="ru">Поддержка и инструкции</span></a></li>
               <li><a href="./privacy/"><span data-lang="en">Privacy Policy</span><span data-lang="ru">Политика конфиденциальности</span></a></li>
               <li><a href="./terms/"><span data-lang="en">Terms of Use (EULA)</span><span data-lang="ru">Условия использования</span></a></li>
@@ -1296,7 +2067,7 @@
 
       <div class="footer-bottom">
         <span>© 2026 Password Whisper · Aliaksandr Dvoineu</span>
-        <span>v1.3.0 (iOS build 11 · macOS build 12) · Extensions v1.3.1</span>
+        <span>v1.4.0 (iOS b12 · macOS b13) · Extensions v1.3.1</span>
       </div>
     </div>
   </footer>
@@ -1336,16 +2107,15 @@
     </div>
 
     <div class="drawer-links">
-      <a href="#whats-new"><span data-lang="en">What's New in 1.3</span><span data-lang="ru">Новое в 1.3</span></a>
+      <a href="#why-whisper"><span data-lang="en">Why Password Whisper</span><span data-lang="ru">Сильные стороны</span></a>
+      <a href="#compare"><span data-lang="en">Compare vs Market</span><span data-lang="ru">Сравнение с рынком</span></a>
+      <a href="./security/"><span data-lang="en">Security Center</span><span data-lang="ru">Центр безопасности</span></a>
+      <a href="./security/#verify-yourself"><span data-lang="en">Verify Security Yourself</span><span data-lang="ru">Проверьте безопасность сами</span></a>
       <a href="#visual-context"><span data-lang="en">Visual Studio Demo</span><span data-lang="ru">Снимки входа</span></a>
       <a href="#screenshots"><span data-lang="en">Screenshots</span><span data-lang="ru">Скриншоты</span></a>
-      <a href="#tutorial"><span data-lang="en">Quick-Start Tutorial</span><span data-lang="ru">Туториал</span></a>
-      <a href="#security"><span data-lang="en">Security Architecture</span><span data-lang="ru">Как устроена защита</span></a>
       <a href="#pricing"><span data-lang="en">Pricing &amp; Plans</span><span data-lang="ru">Тарифы</span></a>
-      <a href="#faq">FAQ</a>
       <a href="./support/"><span data-lang="en">Support</span><span data-lang="ru">Поддержка</span></a>
       <a href="./privacy/"><span data-lang="en">Privacy Policy</span><span data-lang="ru">Политика конфиденциальности</span></a>
-      <a href="./terms/"><span data-lang="en">Terms of Use</span><span data-lang="ru">Условия использования</span></a>
     </div>
 
     <a class="btn btn--primary" style="width: 100%;" href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">

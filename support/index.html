@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-title-en="Support &amp; Troubleshooting — Password Whisper 1.3" data-title-ru="Поддержка и инструкции — Password Whisper 1.3">
+<html lang="en" data-title-en="Support &amp; Troubleshooting — Password Whisper 1.4" data-title-ru="Поддержка и инструкции — Password Whisper 1.4">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,12 +14,14 @@
       document.documentElement.dataset.uiLang = (l === 'ru' || l === 'en') ? l : ((navigator.language || '').toLowerCase().startsWith('ru') ? 'ru' : 'en');
     } catch (e) {}
   </script>
-  <title>Support &amp; Troubleshooting — Password Whisper 1.3</title>
+  <title>Support &amp; Troubleshooting — Password Whisper 1.4</title>
+  <link rel="canonical" href="https://dvoineu.github.io/password-whisper-site/support/">
   <link rel="icon" type="image/svg+xml" href="../assets/sentinel-iris.svg">
   <link rel="stylesheet" href="../style.css">
   <script src="../app.js" defer></script>
 </head>
 <body>
+  <div class="scroll-progress-bar" aria-hidden="true"></div>
   <a class="skip-link" href="#main-content">
     <span data-lang="en">Skip to main content</span>
     <span data-lang="ru">Перейти к основному содержимому</span>
@@ -30,13 +32,13 @@
       <a class="brand" href="../">
         <img class="brand-mark" src="../assets/sentinel-iris.svg" alt="" width="30" height="30">
         <span>Password Whisper</span>
-        <span class="version-pill">v1.3.0</span>
+        <span class="version-pill">v1.4.0</span>
       </a>
 
       <nav aria-label="Primary navigation">
         <ul class="nav-links">
           <li><a href="../"><span data-lang="en">Overview</span><span data-lang="ru">Обзор</span></a></li>
-          <li><a href="../#tutorial"><span data-lang="en">Tutorial</span><span data-lang="ru">Туториал</span></a></li>
+          <li><a href="../security/"><span data-lang="en">Security &amp; Verify</span><span data-lang="ru">Безопасность</span></a></li>
           <li><a href="./" aria-current="page"><span data-lang="en">Support</span><span data-lang="ru">Поддержка</span></a></li>
           <li><a href="../privacy/"><span data-lang="en">Privacy Policy</span><span data-lang="ru">Конфиденциальность</span></a></li>
           <li><a href="../terms/"><span data-lang="en">Terms of Use</span><span data-lang="ru">Условия</span></a></li>
@@ -88,21 +90,21 @@
 
   <main id="main-content" class="container container--narrow" style="padding-top: 40px;">
     <section>
-      <p class="eyebrow"><span class="eyebrow-dot"></span><span>SUPPORT &amp; TROUBLESHOOTING · v1.3.0 / EXT 1.3.1</span></p>
+      <p class="eyebrow"><span class="eyebrow-dot"></span><span>SUPPORT &amp; TROUBLESHOOTING · v1.4.0 / EXT 1.3.1</span></p>
       <h1 class="section-title">
         <span data-lang="en">Help Center &amp; Setup Guides</span>
         <span data-lang="ru">Центр поддержки и решение вопросов</span>
       </h1>
       <p class="section-lead">
-        <span data-lang="en">Need personal help with macOS, iOS, iPadOS, Safari, Chrome/Firefox extensions, iCloud sync, or Pro subscriptions? Email <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a>.</span>
-        <span data-lang="ru">По любым вопросам работы Password Whisper на Mac, iPhone, iPad, в Safari, Chrome, Firefox, по синхронизации iCloud и покупкам пишите на <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a>.</span>
+        <span data-lang="en">Need personal help with macOS, iOS, iPadOS, Safari, Chrome/Firefox extensions, encrypted files, iCloud sync, or Pro subscriptions? Email <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a>.</span>
+        <span data-lang="ru">По любым вопросам работы Password Whisper на Mac, iPhone, iPad, в Safari, Chrome, Firefox, по зашифрованным файлам, iCloud и покупкам пишите на <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a>.</span>
       </p>
     </section>
 
     <section class="doc-section">
       <h2>
-        <span data-lang="en">Current Published Releases</span>
-        <span data-lang="ru">Актуальные опубликованные версии</span>
+        <span data-lang="en">Current Releases</span>
+        <span data-lang="ru">Актуальные версии</span>
       </h2>
       <div class="release-table-wrap">
         <table class="release-table">
@@ -116,17 +118,17 @@
           <tbody>
             <tr>
               <td>iOS / iPadOS (18.0+)</td>
-              <td><code>1.3.0</code> (Build 11)</td>
+              <td><code>1.4.0</code> (Build 12)</td>
               <td><a href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">App Store</a></td>
             </tr>
             <tr>
               <td>macOS (15.0+)</td>
-              <td><code>1.3.0</code> (Build 12)</td>
+              <td><code>1.4.0</code> (Build 13)</td>
               <td><a href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">Mac App Store</a></td>
             </tr>
             <tr>
               <td><span data-lang="en">Safari Web Extension (Mac, iPhone &amp; iPad)</span><span data-lang="ru">Расширение Safari (Mac, iPhone и iPad)</span></td>
-              <td><code>1.3.0</code> (<span data-lang="en">bundled</span><span data-lang="ru">встроено</span>)</td>
+              <td><code>1.4.0</code> (<span data-lang="en">bundled</span><span data-lang="ru">встроено</span>)</td>
               <td><a href="https://apps.apple.com/app/id6834912021" target="_blank" rel="noopener">App Store</a></td>
             </tr>
             <tr>
@@ -170,6 +172,16 @@
 
         <details class="faq-item">
           <summary>
+            <span data-lang="en">Store &amp; copy encrypted .p8, .p12, .pem, .mobileprovision, and SSH files (v1.4.0)</span>
+            <span data-lang="ru">Как хранить и копировать зашифрованные файлы .p8, .p12, .pem и SSH (v1.4.0)</span>
+          </summary>
+          <div class="faq-body">
+            <p><span data-lang="en">Select any category (such as <strong>DevOps / API / Git</strong> or <strong>Server / Router / SSH</strong>) and click <strong>+</strong>. In the Attachments section, add any file up to 10 MB. Password Whisper automatically detects Apple Key IDs and certificate expiration dates, encrypts the file with AES-256-GCM, and wipes RAM buffers via <code>memset_s</code> after protected PEM/Base64 copy or export.</span><span data-lang="ru">Выберите нужную категорию (например, <strong>DevOps / API / Git</strong> или <strong>Сервер / Роутер / SSH</strong>) и нажмите <strong>+</strong>. В блоке вложений добавьте файл до 10 МБ — приложение автоматически определит Key ID и срок действия сертификата, зашифрует файл AES-256-GCM и затрёт память через <code>memset_s</code> после защищённого копирования PEM/Base64.</span></p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
             <span data-lang="en">Enable the bundled Safari Web Extension (Open &amp; Fill + in-page snapshots)</span>
             <span data-lang="ru">Как включить встроенное расширение Safari (Open &amp; Fill и снимки входа)</span>
           </summary>
@@ -198,7 +210,7 @@
           </summary>
           <div class="faq-body">
             <p><span data-lang="en">1. Confirm both devices are signed into the <strong>same Apple Account</strong> and have iCloud enabled in System Settings.</span><span data-lang="ru">1. Убедитесь, что на обоих устройствах выполнен вход в <strong>один и тот же Apple Account</strong> и включён iCloud.</span></p>
-            <p><span data-lang="en">2. On the original device (updated to <strong>v1.3.0+</strong>), open <strong>Settings → Storage</strong>, ensure <strong>iCloud Sync (E2EE)</strong> is toggled on, and tap <strong>Sync Vault Now</strong>.</span><span data-lang="ru">2. На первом устройстве (версии <strong>1.3.0+</strong>) откройте <strong>Настройки → Хранение</strong>, убедитесь, что <strong>Синхронизация iCloud (E2EE)</strong> включена, и нажмите <strong>Синхронизировать сейф сейчас</strong>.</span></p>
+            <p><span data-lang="en">2. On the original device, open <strong>Settings → Storage</strong>, ensure <strong>iCloud Sync (E2EE)</strong> is toggled on, and tap <strong>Sync Vault Now</strong>.</span><span data-lang="ru">2. На первом устройстве откройте <strong>Настройки → Хранение</strong>, убедитесь, что <strong>Синхронизация iCloud (E2EE)</strong> включена, и нажмите <strong>Синхронизировать сейф сейчас</strong>.</span></p>
             <p><span data-lang="en">3. On the new device, tap <strong>I already have a vault → Refresh</strong>, select your vault, and unlock it with your Master Password or Recovery Key.</span><span data-lang="ru">3. На новом устройстве выберите <strong>У меня уже есть хранилище → Обновить</strong>, нажмите на найденный сейф и расшифруйте его мастер-паролем или ключом восстановления.</span></p>
           </div>
         </details>
@@ -209,7 +221,7 @@
             <span data-lang="ru">Восстановление покупок Pro / Lifetime и Семейный доступ Apple</span>
           </summary>
           <div class="faq-body">
-            <p><span data-lang="en">Open <strong>Password Whisper → Settings → Appearance &amp; Transfer → Plan &amp; Subscription</strong> and click <strong>Restore Purchases</strong>. One purchase covers Mac, iPhone, and iPad on the same Apple Account, plus up to 6 members via Apple Family Sharing.</span><span data-lang="ru">Откройте <strong>Настройки → Вид и перенос → Тариф и подписка</strong> и нажмите <strong>Восстановить покупки</strong>. Одна покупка работает на Mac, iPhone и iPad на одном Apple Account и поддерживается в Семейном доступе Apple до 6 человек.</span></p>
+            <p><span data-lang="en">Open <strong>Password Whisper → Settings → Plan &amp; Subscription</strong> and click <strong>Restore Purchases</strong>. One purchase covers Mac, iPhone, and iPad on the same Apple Account, plus up to 6 members via Apple Family Sharing.</span><span data-lang="ru">Откройте <strong>Настройки → Тариф и подписка</strong> и нажмите <strong>Восстановить покупки</strong>. Одна покупка работает на Mac, iPhone и iPad на одном Apple Account и поддерживается в Семейном доступе Apple до 6 человек.</span></p>
           </div>
         </details>
       </div>
@@ -220,7 +232,7 @@
     <div class="container">
       <div class="footer-bottom" style="margin-top: 0; border-top: 0; padding-top: 0;">
         <span>© 2026 Password Whisper · <a href="mailto:av.dvoinev@gmail.com">av.dvoinev@gmail.com</a></span>
-        <span><a href="../">Overview</a> · <a href="../privacy/">Privacy Policy</a> · <a href="../terms/">Terms of Use</a></span>
+        <span><a href="../">Overview</a> · <a href="../security/">Security Center</a> · <a href="../privacy/">Privacy Policy</a> · <a href="../terms/">Terms of Use</a></span>
       </div>
     </div>
   </footer>
@@ -232,7 +244,7 @@
     </div>
     <div class="drawer-links">
       <a href="../"><span data-lang="en">Overview</span><span data-lang="ru">Обзор</span></a>
-      <a href="../#tutorial"><span data-lang="en">Tutorial</span><span data-lang="ru">Туториал</span></a>
+      <a href="../security/"><span data-lang="en">Security &amp; Verify</span><span data-lang="ru">Безопасность</span></a>
       <a href="./"><span data-lang="en">Support</span><span data-lang="ru">Поддержка</span></a>
       <a href="../privacy/"><span data-lang="en">Privacy Policy</span><span data-lang="ru">Конфиденциальность</span></a>
       <a href="../terms/"><span data-lang="en">Terms of Use</span><span data-lang="ru">Условия</span></a>
